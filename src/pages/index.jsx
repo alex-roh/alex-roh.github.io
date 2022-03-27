@@ -28,6 +28,7 @@ const BlogIndex = ({ data }) => {
 
   return (
     <Layout>
+      <meta name="google-site-verification" content="ylc-o4jiapbmhxM56IBFcdqtoI48mtVgIYfDmiTOaE0" />
       <SEO title={title} description={description} url={siteUrl} />
       <VerticalSpace size={48} />
       <Bio />
