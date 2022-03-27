@@ -1,65 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of alex-roh.github.io]]></title><description><![CDATA[Just another ordinary payroller.]]></description><link>https://alex-roh.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 27 Mar 2022 10:41:30 GMT</lastBuildDate><item><title><![CDATA[[L543] Diameter of Binary Tree]]></title><description><![CDATA[1. 문제 설명 트리의 루트 노드가 주어지면 트리의 지름을 반환하시오. (단, 트리의 지름은 두 노드 간 가장 긴 경로를 뜻한다.) 42 2. 제약 조건 한 트리에 있는 노드의 개수는 0개 이상 \(10^4\)개 이하다. 노드의 값은 \(-10…]]></description><link>https://alex-roh.github.io/l-543/</link><guid isPermaLink="false">https://alex-roh.github.io/l-543/</guid><pubDate>Sat, 01 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;1. 문제 설명&lt;/h2&gt;
-&lt;p&gt;트리의 루트 노드가 주어지면 트리의 지름을 반환하시오. (단, 트리의 지름은 두 노드 간 가장 긴 경로를 뜻한다.)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/54312875/116781236-a8f2f380-aabc-11eb-8f1b-b0d632b2e4b1.png&quot; alt=&quot;42&quot;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2&gt;2. 제약 조건&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;한 트리에 있는 노드의 개수는 0개 이상 \(10^4\)개 이하다.&lt;/li&gt;
-&lt;li&gt;노드의 값은 \(-100\) 이상 \(100\) 이하다.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr&gt;
-&lt;h2&gt;3. 접근&lt;/h2&gt;
-&lt;p&gt;트리의 지름은 정의상 &lt;strong&gt;어떤 리프 노드에서 다른 리프 노드까지의 경로&lt;/strong&gt;일 수밖에 없다. 만약 어떤 지름이 리프 노드가 아닌 노드를 포함하고 있다면, 리프 노드를 선택할 경우 언제나 거리가 늘어나기 때문에 모순이 발생하기 때문이다.&lt;/p&gt;
-&lt;p&gt;또한, 트리의 지름은 반드시 &lt;strong&gt;어떤 서브 트리의 루트 노드&lt;/strong&gt;를 지나야 한다. 그 루트 노드가 트리 전체의 루트 노드일 필요는 없지만, 한 리프 노드가 다른 리프 노드와 만나기 위해서는 루트 노드를 지나는 것이 필연적이기 때문이다.&lt;/p&gt;
-&lt;p&gt;따라서 트리의 모든 노드를 루트 노드라고 가정하고 왼쪽과 오른쪽 서브 트리의 최대 깊이를 구한 후, 그 합의 최댓값을 구하면 트리의 지름을 얻을 수 있을 것이다.&lt;/p&gt;
-&lt;p&gt;정리하면, 필요한 연산은 아래와 같다.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;한 노드에서 왼쪽과 오른쪽 서브 트리의 최대 깊이를 구하는 연산&lt;/li&gt;
-&lt;li&gt;1.에서 구한 최대 깊이의 전체 최댓값을 구하는 연산&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr&gt;
-&lt;h2&gt;4. 구현&lt;/h2&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;cpp&quot;&gt;&lt;pre class=&quot;language-cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
-    
-    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; maxDepth &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    
-    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;diameterOfBinaryTree&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;TreeNode&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; root&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-        
-        &lt;span class=&quot;token function&quot;&gt;updateMaxDepth&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; maxDepth&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    
-    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-    
-    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;updateMaxDepth&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;TreeNode&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; root&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-        
-        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;root &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;nullptr&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-        
-        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; left &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;updateMaxDepth&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt;left&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; right &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;updateMaxDepth&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt;right&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-        
-        &lt;span class=&quot;token comment&quot;&gt;// 전체 최댓값 갱신&lt;/span&gt;
-        maxDepth &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;maxDepth&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; left &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; right&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-        
-        &lt;span class=&quot;token comment&quot;&gt;// 양쪽 서브 트리의 깊이 중에서 가장 큰 값 + 자기 자신(1)&lt;/span&gt;
-        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;left&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; right&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-        
-    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-    
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;hr&gt;
-&lt;h2&gt;5. 참고한 링크&lt;/h2&gt;
-&lt;p&gt;포럼에서 &lt;a href=&quot;https://leetcode.com/problems/diameter-of-binary-tree/discuss/101132/Java-Solution-MaxDepth&quot;&gt;가장 많은 업보트를 받은 코드&lt;/a&gt;를 참고했다.&lt;/p&gt;
-&lt;hr&gt;</content:encoded></item><item><title><![CDATA[[L617] Merge Two Binary Trees]]></title><description><![CDATA[1. 문제 설명 두 이진 트리의 root1과 root2가 주어지면 이 둘을 병합하시오. (단, 겹치는 노드가 있으면 그 둘의 합을 새로운 노드로 한다.) 41…]]></description><link>https://alex-roh.github.io/l-617/</link><guid isPermaLink="false">https://alex-roh.github.io/l-617/</guid><pubDate>Sat, 01 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;1. 문제 설명&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of Cave]]></title><description><![CDATA[Just another ordinary payroller.]]></description><link>https://alex-roh.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 27 Mar 2022 11:12:13 GMT</lastBuildDate><item><title><![CDATA[[L617] Merge Two Binary Trees]]></title><description><![CDATA[1. 문제 설명 두 이진 트리의 root1과 root2가 주어지면 이 둘을 병합하시오. (단, 겹치는 노드가 있으면 그 둘의 합을 새로운 노드로 한다.)  2. 제약 조건 병합은 트리의 루트에서부터 이루어져야 한다. 한 트리에 있는 노드의 개수는…]]></description><link>https://alex-roh.github.io/l-617/</link><guid isPermaLink="false">https://alex-roh.github.io/l-617/</guid><pubDate>Sat, 01 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;1. 문제 설명&lt;/h2&gt;
 &lt;p&gt;두 이진 트리의 root1과 root2가 주어지면 이 둘을 병합하시오. (단, 겹치는 노드가 있으면 그 둘의 합을 새로운 노드로 한다.)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/54312875/116778924-81e1f500-aaaf-11eb-9e59-23138d42d3a4.png&quot; alt=&quot;41&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/df75420668c0a1b3bdae0fcb03bb22c9/2cbcd/examples.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 51.764705882352935%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAIAAAA7N+mxAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABA0lEQVQoz31Q7W7EIAzr+z/mpOm6AYUQCJ9t5ytrrz9OF0XBQBwbpn3fraNfpUqt+y3Wdd227fPJNBacOudSSgM/J1obY7y2qFrrnPMbMvpEhJl779iiKYTgvQfAFSrm8hF38emaChoRDfHhAmSAnAtinmfYNsbI0fAiX4avwDgi11qDPphoALbLMgSGu39yiBF/FiXFlEMUPABYm8URG+vMgktfa3NEuVTPnHLpfb3I8vX9UMaqxT6UNs75IEGSj+JD5Ci5tVxraf1Z68DttE2ktG7H/m1cH37W7WVbJP1oY8lDh5iJAzKVAoUz2z1TbbX1k5yeZOcZVvEeORL2PuQg/wEfZUdLF6HZuAAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;두 이진 트리의 병합 예시&apos; title=&apos;두 이진 트리의 병합 예시&apos; src=&apos;/static/df75420668c0a1b3bdae0fcb03bb22c9/ca1dc/examples.png&apos; srcset=&apos;/static/df75420668c0a1b3bdae0fcb03bb22c9/e7570/examples.png 170w,
+/static/df75420668c0a1b3bdae0fcb03bb22c9/f46e7/examples.png 340w,
+/static/df75420668c0a1b3bdae0fcb03bb22c9/ca1dc/examples.png 680w,
+/static/df75420668c0a1b3bdae0fcb03bb22c9/2cbcd/examples.png 764w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;두 이진 트리의 병합 예시&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2&gt;2. 제약 조건&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;병합은 트리의 루트에서부터 이루어져야 한다.&lt;/li&gt;
 &lt;li&gt;한 트리에 있는 노드의 개수는 0개 이상 2000개 이하다.&lt;/li&gt;
-&lt;li&gt;노드의 값은 \(-10^4\) 이상 \(10^4\) 이하다.&lt;/li&gt;
+&lt;li&gt;노드의 값은 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;msup&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mn&gt;4&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;-10^4&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.897438em;vertical-align:-0.08333em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;−&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8141079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.063em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;4&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 이상 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;msup&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mn&gt;4&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;10^4&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8141079999999999em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8141079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.063em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;4&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 이하다.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
 &lt;h2&gt;3. 접근&lt;/h2&gt;
@@ -140,13 +98,86 @@
     
     &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;hr&gt;</content:encoded></item><item><title><![CDATA[[L234] Palindrome Linked List]]></title><description><![CDATA[1. 문제 설명 주어진 일방향 링크드 리스트가 팰린드롬인지 판별하시오. 37 2. 제약 조건 리스트 내 노드의 개수는 1개부터 \(10^5\)개까지 존재한다. 한 노드의 값은 0부터 9까지다. (선택) 시간 복잡도 O(n), 공간 복잡도 O(…]]></description><link>https://alex-roh.github.io/l-234/</link><guid isPermaLink="false">https://alex-roh.github.io/l-234/</guid><pubDate>Fri, 30 Apr 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;1. 문제 설명&lt;/h2&gt;
-&lt;p&gt;주어진 일방향 링크드 리스트가 팰린드롬인지 판별하시오.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/54312875/116727575-b6a66b80-aa1f-11eb-90da-f48a34fd9505.png&quot; alt=&quot;37&quot;&gt;&lt;/p&gt;
+&lt;hr&gt;</content:encoded></item><item><title><![CDATA[[L543] Diameter of Binary Tree]]></title><description><![CDATA[1. 문제 설명 트리의 루트 노드가 주어지면 트리의 지름을 반환하시오. (단, 트리의 지름은 두 노드 간 가장 긴 경로를 뜻한다.)  2. 제약 조건 한 트리에 있는 노드의 개수는 0개 이상 개 이하다. 노드의 값은  이상  이하다.…]]></description><link>https://alex-roh.github.io/l-543/</link><guid isPermaLink="false">https://alex-roh.github.io/l-543/</guid><pubDate>Sat, 01 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;1. 문제 설명&lt;/h2&gt;
+&lt;p&gt;트리의 루트 노드가 주어지면 트리의 지름을 반환하시오. (단, 트리의 지름은 두 노드 간 가장 긴 경로를 뜻한다.)&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 652px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/65932f7cc9f939e6218d6408f2af3d5f/43b96/examples.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 86.47058823529412%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAIAAABSJhvpAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABTklEQVQ4y51TCW6DMBDk/y+s1DSoCbfBN+A7nUCE0khNaKzVMos87OzYZFrrpu2U1pf/r8x7N06T936t53kehsE5t4u8oZQSMphFUQgh3iETQpqmeYeslwVMKd0GeU3GVvSE4JUDclmW+pWLN7IxJs/z0+kUY0QJ2cCMsV1kpRTnHA3xFZQhhHEckV+Q0Qr7+r5HYa0FQF7NW/MzMhQej184oXXy8/mMycHf5TYEl2W13jDvQ9d1dd3gkqBpTOlJYGXGuY/PQ90RJhQTggyMK218mK011hnnZ+vmO7BFiDHzIRRVXdQtFZIyQZkkAwXuKRtgIRdMSC4U3nCpH8k4zKppKefwFubhW84hRZR4wAXksADk9GtdMpwNFxL/Q4zpyl4svt+xxA08zmydP+TfVUuYVNApxwmSJmP/CLfFVTYUKj3Oxvqr1Ah1OwOdfwAl/OO0mYKW6AAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;트리의 지름 예시&apos; title=&apos;트리의 지름 예시&apos; src=&apos;/static/65932f7cc9f939e6218d6408f2af3d5f/43b96/examples.png&apos; srcset=&apos;/static/65932f7cc9f939e6218d6408f2af3d5f/e7570/examples.png 170w,
+/static/65932f7cc9f939e6218d6408f2af3d5f/f46e7/examples.png 340w,
+/static/65932f7cc9f939e6218d6408f2af3d5f/43b96/examples.png 652w&apos; sizes=&apos;(max-width: 652px) 100vw, 652px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;트리의 지름 예시&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2&gt;2. 제약 조건&lt;/h2&gt;
 &lt;ol&gt;
-&lt;li&gt;리스트 내 노드의 개수는 1개부터 \(10^5\)개까지 존재한다.&lt;/li&gt;
+&lt;li&gt;한 트리에 있는 노드의 개수는 0개 이상 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;msup&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mn&gt;4&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;10^4&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8141079999999999em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8141079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.063em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;4&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;개 이하다.&lt;/li&gt;
+&lt;li&gt;노드의 값은 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mn&gt;100&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;-100&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.72777em;vertical-align:-0.08333em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;−&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 이상 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mn&gt;100&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;100&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.64444em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 이하다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2&gt;3. 접근&lt;/h2&gt;
+&lt;p&gt;트리의 지름은 정의상 &lt;strong&gt;어떤 리프 노드에서 다른 리프 노드까지의 경로&lt;/strong&gt;일 수밖에 없다. 만약 어떤 지름이 리프 노드가 아닌 노드를 포함하고 있다면, 리프 노드를 선택할 경우 언제나 거리가 늘어나기 때문에 모순이 발생하기 때문이다.&lt;/p&gt;
+&lt;p&gt;또한, 트리의 지름은 반드시 &lt;strong&gt;어떤 서브 트리의 루트 노드&lt;/strong&gt;를 지나야 한다. 그 루트 노드가 트리 전체의 루트 노드일 필요는 없지만, 한 리프 노드가 다른 리프 노드와 만나기 위해서는 루트 노드를 지나는 것이 필연적이기 때문이다.&lt;/p&gt;
+&lt;p&gt;따라서 트리의 모든 노드를 루트 노드라고 가정하고 왼쪽과 오른쪽 서브 트리의 최대 깊이를 구한 후, 그 합의 최댓값을 구하면 트리의 지름을 얻을 수 있을 것이다.&lt;/p&gt;
+&lt;p&gt;정리하면, 필요한 연산은 아래와 같다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;한 노드에서 왼쪽과 오른쪽 서브 트리의 최대 깊이를 구하는 연산&lt;/li&gt;
+&lt;li&gt;1.에서 구한 최대 깊이의 전체 최댓값을 구하는 연산&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2&gt;4. 구현&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;cpp&quot;&gt;&lt;pre class=&quot;language-cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
+    
+    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; maxDepth &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    
+    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;diameterOfBinaryTree&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;TreeNode&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; root&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        
+        &lt;span class=&quot;token function&quot;&gt;updateMaxDepth&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; maxDepth&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    
+    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;updateMaxDepth&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;TreeNode&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; root&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;root &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;nullptr&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; left &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;updateMaxDepth&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt;left&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; right &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;updateMaxDepth&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt;right&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        
+        &lt;span class=&quot;token comment&quot;&gt;// 전체 최댓값 갱신&lt;/span&gt;
+        maxDepth &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;maxDepth&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; left &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; right&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        
+        &lt;span class=&quot;token comment&quot;&gt;// 양쪽 서브 트리의 깊이 중에서 가장 큰 값 + 자기 자신(1)&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;left&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; right&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+&lt;h2&gt;5. 참고한 링크&lt;/h2&gt;
+&lt;p&gt;포럼에서 &lt;a href=&quot;https://leetcode.com/problems/diameter-of-binary-tree/discuss/101132/Java-Solution-MaxDepth&quot;&gt;가장 많은 업보트를 받은 코드&lt;/a&gt;를 참고했다.&lt;/p&gt;
+&lt;hr&gt;</content:encoded></item><item><title><![CDATA[[L234] Palindrome Linked List]]></title><description><![CDATA[1. 문제 설명 주어진 일방향 링크드 리스트가 팰린드롬인지 판별하시오.  2. 제약 조건 리스트 내 노드의 개수는 1개부터 개까지 존재한다. 한 노드의 값은 0부터 9까지다. (선택) 시간 복잡도 O(n), 공간 복잡도 O(1)으로 해결해야 한다.…]]></description><link>https://alex-roh.github.io/l-234/</link><guid isPermaLink="false">https://alex-roh.github.io/l-234/</guid><pubDate>Fri, 30 Apr 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;1. 문제 설명&lt;/h2&gt;
+&lt;p&gt;주어진 일방향 링크드 리스트가 팰린드롬인지 판별하시오.&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 619px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/919ddc04dd6ea7dbd3938514134c8d91/80833/examples.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 59.411764705882355%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAIAAADtbgqsAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABMUlEQVQoz5WSi46DIBBF+/+fWE2rVkUEfAEKw6Md7Ka7Zjdt9mYcbpSL44mnOyrGRUoxDMaa+390ivvCGM8vl82ksNZqHKcQ0hOl1LIsMSY/7zqE8fLe95RyzintCCHn87lpGkop9jzPsTPGyrIsioKx3hhzCKOEEG3bKqW9D6TryqpaN+OcJ3hE21oLWB1NAnAxvsbe7bTI7FqSnlMu0ItxXhEAuA1c6hb2ngzet+AOb96sFeOk9Ko33Oatc+B9KjTfPpX1zodwCDPOq1stldrZx/ia7D3t54K06rpGtgCAH4+QrLXPgz6EkTZyRhhsV5ZlyFZr/Tn8BWyar9VtGGf8bCYGnn4YQDC/C5E47w9jz1LmRUUob7pe6m01sAGs9o/SBqw7hn8KJwkxhvhOz50POTm5DjMQzzAAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;팰린드롬 리스트와 그렇지 않은 리스트&apos; title=&apos;팰린드롬 리스트와 그렇지 않은 리스트&apos; src=&apos;/static/919ddc04dd6ea7dbd3938514134c8d91/80833/examples.png&apos; srcset=&apos;/static/919ddc04dd6ea7dbd3938514134c8d91/e7570/examples.png 170w,
+/static/919ddc04dd6ea7dbd3938514134c8d91/f46e7/examples.png 340w,
+/static/919ddc04dd6ea7dbd3938514134c8d91/80833/examples.png 619w&apos; sizes=&apos;(max-width: 619px) 100vw, 619px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;팰린드롬 리스트와 그렇지 않은 리스트&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;2. 제약 조건&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;리스트 내 노드의 개수는 1개부터 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;msup&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mn&gt;5&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;10^5&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8141079999999999em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8141079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.063em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;개까지 존재한다.&lt;/li&gt;
 &lt;li&gt;한 노드의 값은 0부터 9까지다.&lt;/li&gt;
 &lt;li&gt;&lt;span style=&quot;color:grey&quot;&gt;(선택)&lt;/span&gt; 시간 복잡도 O(n), 공간 복잡도 O(1)으로 해결해야 한다.&lt;/li&gt;
 &lt;/ol&gt;
@@ -166,14 +197,38 @@
 &lt;hr&gt;
 &lt;h3&gt;3-1. 리스트의 중간 노드를 찾는 연산&lt;/h3&gt;
 &lt;p&gt;가장 먼저 떠오른 방법은 리스트를 순회하여 노드의 총 개수를 구하는 것이었다.&lt;/p&gt;
-&lt;p&gt;그렇게 구한 노드의 개수가 홀수 개인 경우 \(\frac{n}{2} + 1\)번째 노드가 중간 노드이고, 짝수 개인 경우에도 마찬가지로 해당 노드가 뒤집어야 하는 부분의 시작점이다.&lt;/p&gt;
+&lt;p&gt;그렇게 구한 노드의 개수가 홀수 개인 경우 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mfrac&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/mfrac&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;\frac{n}{2} + 1&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:1.040392em;vertical-align:-0.345em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mopen nulldelimiter&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mfrac&quot;&gt;&lt;span class=&quot;vlist-t vlist-t2&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.695392em;&quot;&gt;&lt;span style=&quot;top:-2.6550000000000002em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:3em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;top:-3.23em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:3em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;frac-line&quot; style=&quot;border-bottom-width:0.04em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;top:-3.394em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:3em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mathnormal mtight&quot;&gt;n&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-s&quot;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.345em;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mclose nulldelimiter&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2222222222222222em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mbin&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2222222222222222em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.64444em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;1&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;번째 노드가 중간 노드이고, 짝수 개인 경우에도 마찬가지로 해당 노드가 뒤집어야 하는 부분의 시작점이다.&lt;/p&gt;
 &lt;p&gt;그러나 이 방법은 중간 노드를 한 번의 순회만으로 찾을 수 없다.&lt;/p&gt;
 &lt;p&gt;그렇게 해서 나온 방법이 바로 &lt;strong&gt;두 개의 포인터&lt;/strong&gt;를 사용하는 방법이다. slow 포인터는 노드를 1개씩 방문하고, fast 포인터는 노드를 2개씩 건너뛰면서 방문한다.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/54312875/116774493-d7aaa300-aa97-11eb-879f-1ae165cf9ca9.jpg&quot; alt=&quot;unnamed&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/05cf284bb392aaa1155493b7a3c8be19/720c7/two_pointers.jpg&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 44.11764705882353%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAJABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAECBf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAe9NAo//xAAUEAEAAAAAAAAAAAAAAAAAAAAg/9oACAEBAAEFAl//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAEDAQE/AT//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAECAQE/AT//xAAUEAEAAAAAAAAAAAAAAAAAAAAg/9oACAEBAAY/Al//xAAZEAACAwEAAAAAAAAAAAAAAAABEAAxgZH/2gAIAQEAAT8hOzrFL//aAAwDAQACAAMAAAAQIw//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAEDAQE/ED//xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAECAQE/ED//xAAaEAEAAQUAAAAAAAAAAAAAAAABEQAQITFB/9oACAEBAAE/EEzh24UMpM8PIoILa7f/2Q==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;두 포인터가 이동하는 모습&apos; title=&apos;두 포인터가 이동하는 모습&apos; src=&apos;/static/05cf284bb392aaa1155493b7a3c8be19/a22ce/two_pointers.jpg&apos; srcset=&apos;/static/05cf284bb392aaa1155493b7a3c8be19/0b705/two_pointers.jpg 170w,
+/static/05cf284bb392aaa1155493b7a3c8be19/31389/two_pointers.jpg 340w,
+/static/05cf284bb392aaa1155493b7a3c8be19/a22ce/two_pointers.jpg 680w,
+/static/05cf284bb392aaa1155493b7a3c8be19/29373/two_pointers.jpg 1020w,
+/static/05cf284bb392aaa1155493b7a3c8be19/720c7/two_pointers.jpg 1324w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;두 포인터가 이동하는 모습&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;이렇게 하면 slow 포인터는 언제나 fast 포인터의 중간 지점을 가리키게 된다. 뒤집을 때는 slow 포인터의 다음 노드를 시작점으로 한다.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h3&gt;3-2. 리스트의 절반을 뒤집는 연산&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&quot;https://user-images.githubusercontent.com/54312875/116742448-579e2200-aa32-11eb-94aa-f591d9c31dc3.jpg&quot; alt=&quot;5&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/cf46e3df9af758319dea6b7db69c409b/39368/reverse-operation.jpg&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 38.23529411764706%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAIABQDASIAAhEBAxEB/8QAFwABAAMAAAAAAAAAAAAAAAAAAAECBf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAduQuD//xAAXEAADAQAAAAAAAAAAAAAAAAAAASEQ/9oACAEBAAEFAqK5/8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAwEBPwE//8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAgEBPwE//8QAFBABAAAAAAAAAAAAAAAAAAAAEP/aAAgBAQAGPwJ//8QAGRAAAgMBAAAAAAAAAAAAAAAAAREAEDEh/9oACAEBAAE/Ieidj6Yr/9oADAMBAAIAAwAAABCDz//EABQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQMBAT8QP//EABQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQIBAT8QP//EABkQAQADAQEAAAAAAAAAAAAAAAEAESFBUf/aAAgBAQABPxAo6ALuxWNDOwK9n//Z&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;flip 연산의 원리&apos; title=&apos;flip 연산의 원리&apos; src=&apos;/static/cf46e3df9af758319dea6b7db69c409b/a22ce/reverse-operation.jpg&apos; srcset=&apos;/static/cf46e3df9af758319dea6b7db69c409b/0b705/reverse-operation.jpg 170w,
+/static/cf46e3df9af758319dea6b7db69c409b/31389/reverse-operation.jpg 340w,
+/static/cf46e3df9af758319dea6b7db69c409b/a22ce/reverse-operation.jpg 680w,
+/static/cf46e3df9af758319dea6b7db69c409b/29373/reverse-operation.jpg 1020w,
+/static/cf46e3df9af758319dea6b7db69c409b/39368/reverse-operation.jpg 1205w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;flip 연산의 원리&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;A부터 이동하면서 위와 같은 순서로 포인터를 변경하면 리스트를 뒤집을 수 있다.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2&gt;4. 구현&lt;/h2&gt;
