@@ -6740,6 +6740,11 @@
   "resolved" "https://registry.npmjs.org/gatsby-plugin-google-fonts/-/gatsby-plugin-google-fonts-1.0.1.tgz"
   "version" "1.0.1"
 
+"gatsby-plugin-gtag@^1.0.13":
+  "integrity" "sha512-Oul6O67klajrEjkkF1diD228SmyUWsAwTq/1tYq41vBwmyNiPk4dhk8K93rrNQ5d5zesSv+awBeGBa503tQqGw=="
+  "resolved" "https://registry.npmjs.org/gatsby-plugin-gtag/-/gatsby-plugin-gtag-1.0.13.tgz"
+  "version" "1.0.13"
+
 "gatsby-plugin-manifest@^2.5.2":
   "integrity" "sha512-Kiom3IHQ+hsRA/yt+XcBdOn1q+Rqbso5Iw0mXQQg+F+8U23sU66NaJY67ZXUkW8iwU25SOrwZaSw49C8BV0EGw=="
   "resolved" "https://registry.npmjs.org/gatsby-plugin-manifest/-/gatsby-plugin-manifest-2.12.1.tgz"
