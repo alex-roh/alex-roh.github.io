@@ -1,8 +1,8 @@
 module.exports = {
-  title: "alex-roh.github.io",
+  title: "Cave",
   description: "Just another ordinary payroller.",
   author: "Alex",
-  siteUrl: "https://devhudi.github.io/gatsby-starter-hoodie/",
+  siteUrl: "https://alex-roh.github.io",
   links: {
     github: "https://github.com/alex-roh",
     linkedIn: "https://linkedin.com",
