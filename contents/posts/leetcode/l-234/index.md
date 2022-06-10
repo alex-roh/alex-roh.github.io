@@ -141,6 +141,7 @@ public:
 -----
 
 ## 5. 예외 처리 및 주의사항
+
 리스트에 노드가 없거나 노드가 하나인 경우, 무조건 참을 반환한다.
 ```cpp
 bool isPalindrome(ListNode* head) {
