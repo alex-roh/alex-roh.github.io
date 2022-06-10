@@ -2,8 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 <url> <loc>https://alex-roh.github.io/modulo-operation/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://alex-roh.github.io/l-234/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://alex-roh.github.io/l-543/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://alex-roh.github.io/l-617/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://alex-roh.github.io/l-543/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://alex-roh.github.io/html-basic/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://alex-roh.github.io/b-4375/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://alex-roh.github.io/python-formatter/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
