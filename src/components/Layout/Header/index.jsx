@@ -143,6 +143,7 @@ const Header = ({ toggleTheme }) => {
         <BlogTitle>
           <Link to="/">{title}</Link>
         </BlogTitle>
+        <meta name="google-site-verification" content="m2wAWnkYhlKZBzRdfzy7yOu4Jz5rKJlqPVyW1pJneCU" />
         <Menu>
           <ToggleWrapper>
             <IconRail theme={theme.name}>
