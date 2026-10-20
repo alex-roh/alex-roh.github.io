@@ -10,7 +10,9 @@ tags:
 series: "ENAI607 Python 시험 대비"
 ---
 
-ENAI607 **Lecture 03: Python 3**의 32쪽을 시험 중 찾아보기 쉽게 재구성한 노트다. 각 절에 원본 슬라이드 페이지를 표시했다. 코드와 설명은 학습용으로 다시 작성했으며, **보충**은 슬라이드 밖의 연결 설명, **주의**는 실수하기 쉬운 지점이다.
+센서 이름마다 측정값을 모으고, 평균을 계산한 다음, 높은 순서대로 정렬하려면 어떤 문법이 필요할까?
+
+이 글은 **딕셔너리, comprehension, 조건문과 반복문, 함수, 스코프, lambda와 정렬**을 처음부터 설명한다. 개념과 실행 예제, 예상 결과를 함께 읽고, 시험 중에는 목차와 함수 이름으로 필요한 코드를 찾을 수 있게 구성했다.
 
 각 `python` 코드 블록은 필요한 초기값과 함수를 포함하므로 개별 실행할 수 있다. 문법 틀과 실행하면 안 되는 코드는 `text` 블록으로 구분했다. 예제는 Python 3.14 기준이다.
 
@@ -44,7 +46,7 @@ ENAI607 **Lecture 03: Python 3**의 32쪽을 시험 중 찾아보기 쉽게 재�
 | `lambda x: x[1]`, `sorted`, `sort`, 내림차순 | [14. lambda와 정렬](#lambda) |
 | 센서별 평균·필터·정렬·상태·번호 연결 | [15. 종합 예제](#sensor-example) |
 | 틀린 코드와 고치는 방법 비교 | [16. 실수 점검표](#pitfalls) |
-| 원본 슬라이드별 위치와 공식 문서 | [17. 범위와 참고 자료](#sources) |
+| 공식 문서 | [17. 참고 자료](#sources) |
 
 <a id="quick-reference"></a>
 
@@ -94,8 +96,6 @@ sorted(d.items(), key=lambda pair: pair[1], reverse=True)
 
 ## 1. 딕셔너리 dict — key로 value 찾기
 
-**슬라이드 2–7쪽: Dictionaries 1/9–6/9.**
-
 딕셔너리는 **key와 value의 대응 관계(mapping)**를 저장한다. key를 알면 대응하는 value를 찾는다. 리스트처럼 위치로 찾는 자료형은 아니다. 해시 테이블을 사용하므로 일반적인 key 조회가 효율적이다.
 
 ```python
@@ -111,13 +111,13 @@ print({})              # {}: 빈 딕셔너리
 
 value에는 숫자, 문자열, 리스트, 튜플, 다른 딕셔너리 등을 넣을 수 있다.
 
-> **슬라이드 보충:** 2·8·20·21쪽에는 딕셔너리 순서가 임의라고 적혀 있다. **Python 3.7 이상에서는 삽입 순서가 보장된다.** 다만 이름순·숫자순으로 자동 정렬되는 것은 아니다. 정렬이 필요하면 명시적으로 `sorted()`를 사용한다. [Python 공식 문서: dict](https://docs.python.org/3.14/library/stdtypes.html#mapping-types-dict)
+> **기억:** 딕셔너리는 **Python 3.7 이상에서 삽입 순서가 보장된다.** 다만 이름순·숫자순으로 자동 정렬되는 것은 아니다. 정렬이 필요하면 명시적으로 `sorted()`를 사용한다. [Python 공식 문서: dict](https://docs.python.org/3.14/library/stdtypes.html#mapping-types-dict)
 
 <a id="dict-keys"></a>
 
 ### 1.1 key 규칙 — unique, hashable, immutable
 
-슬라이드의 기본 규칙은 key가 불변이어야 한다는 것이다. 더 정확한 요건은 **hashable(해시 가능)**이다. 이 강의에서 다루는 기본 타입은 다음처럼 구분하면 된다.
+딕셔너리의 key는 **hashable(해시 가능)**이어야 한다. 기본 타입에서는 문자열·숫자·해시 가능한 원소로 이루어진 튜플을 사용할 수 있고, 리스트나 딕셔너리는 사용할 수 없다.
 
 | 타입 | key 사용 | 예 |
 | --- | --- | --- |
@@ -154,7 +154,7 @@ except KeyError:
     print("없는 센서")  # 없는 센서
 ```
 
-**보충: `get()`**은 key가 없을 때 사용할 기본값을 지정한다.
+**`get()`**은 key가 없을 때 사용할 기본값을 지정한다.
 
 ```python
 averages = {"Ava": 24.0}
@@ -194,7 +194,7 @@ print(24.0 in data.values())  # True: value를 검사하려면 values()
 
 <a id="dict-accumulate"></a>
 
-### 1.5 보충 — 같은 이름의 리스트에 값 누적하기
+### 1.5 같은 이름의 리스트에 값 누적하기
 
 ```python
 data = {"Ava": [10.0, 20.0]}
@@ -228,8 +228,6 @@ print(b)  # [10, 20, 30, 40]
 
 ## 2. 복사 — 별칭, shallow copy, 내부 리스트 공유
 
-**슬라이드 5쪽: Dictionaries 4/9.**
-
 `b = a`는 딕셔너리를 복제하지 않는다. 두 이름이 **같은 딕셔너리**를 가리킨다.
 
 ```python
@@ -258,7 +256,7 @@ print(a["Ben"])                 # 15: b의 key/value 연결만 변경
 
 **시험 포인트:** 내부 리스트를 수정하는 것과, 복사본에서 value를 통째로 교체하는 것은 다르다.
 
-보충으로 내부 리스트까지 독립시키려면 `deepcopy()`를 사용할 수 있다.
+내부 리스트까지 독립시키려면 `deepcopy()`를 사용할 수 있다.
 
 ```python
 from copy import deepcopy
@@ -275,8 +273,6 @@ print(b)  # {'Ava': [10, 20, 30]}
 <a id="dict-iteration"></a>
 
 ## 3. keys / values / items — 순회와 리스트 변환
-
-**슬라이드 8–9·20–21쪽.**
 
 | 표현 | 반복할 때 꺼내는 것 | 변수 받는 형태 |
 | --- | --- | --- |
@@ -332,8 +328,6 @@ print(constants)  # {'pi': 3.14, 'e': 2.72}
 <a id="comprehension"></a>
 
 ## 4. comprehension — 리스트와 딕셔너리 만들기
-
-**슬라이드 10쪽: Dictionaries 9/9. 리스트와의 비교는 보충.**
 
 ### 4.1 기본형 — 값만 만들까, key/value를 만들까?
 
@@ -440,8 +434,6 @@ field in fields[1:]                 # 포함 여부 검사; 반복이 아님
 
 ## 5. 조건문 — if / elif / else / 조건 표현식
 
-**슬라이드 11–14쪽: Control Flow 1/11–4/11.**
-
 ### 5.1 if와 여러 갈래의 elif
 
 ```python
@@ -459,7 +451,7 @@ print(grade)  # B
 
 조건을 위에서부터 검사하고 **처음 참이 된 갈래 하나만** 실행한다. `if`를 여러 개 따로 쓰면 각각 검사하므로 여러 블록이 실행될 수 있다. 각 헤더 끝의 **콜론 `:`과 들여쓰기**를 기억한다.
 
-슬라이드 12쪽의 switch 관련 설명은 고전적인 `switch` 문이 없다는 의미로 읽으면 된다. Python 3.10부터는 구조적 패턴 매칭인 `match/case`도 있지만 이 글의 강의 범위에서는 `if/elif/else`를 사용한다. [Python 공식 문서: match](https://docs.python.org/3.14/tutorial/controlflow.html#match-statements)
+Python에는 고전적인 `switch` 문은 없지만, Python 3.10부터 구조적 패턴 매칭인 `match/case`를 사용할 수 있다. 이 글에서는 여러 조건을 나누는 기본 문법인 `if/elif/else`에 집중한다. [Python 공식 문서: match](https://docs.python.org/3.14/tutorial/controlflow.html#match-statements)
 
 ### 5.2 복합 조건 — and / or / not / in
 
@@ -477,7 +469,7 @@ if x == 3 or y == 0:
 
 `and`는 두 조건 모두, `or`는 하나 이상 참이면 조건을 만족한다. `not`은 참/거짓을 뒤집는다. **`=`는 대입, `==`는 같은 값인지 비교**한다.
 
-### 5.3 보충 — truth value, 빈 리스트 검사
+### 5.3 truth value, 빈 리스트 검사
 
 `if values:`는 리스트가 비어 있지 않은지 확인하는 데 사용할 수 있다.
 
@@ -533,8 +525,6 @@ print(average_or_zero([]))        # 0.0
 <a id="while"></a>
 
 ## 6. while / break / continue / pass
-
-**슬라이드 13·15–17쪽.**
 
 ### 6.1 while — 조건을 다시 검사하면서 반복
 
@@ -600,8 +590,6 @@ for x in [1, 2, 3]:
 <a id="for-enumerate"></a>
 
 ## 7. for / enumerate / range
-
-**슬라이드 18–21쪽: Control Flow 8/11–11/11.**
 
 ### 7.1 원소가 필요하면 for item in iterable
 
@@ -681,8 +669,6 @@ print(list(range(1, 5, -1)))   # []: 증가해야 하는 구간에 음수 step
 
 ## 8. zip — 여러 iterable을 나란히 묶기
 
-**슬라이드 22쪽: Iterating Over Multiple Sequences.**
-
 ```python
 numbers = [1, 2, 3, 4]
 fruits = ["Apple", "Orange", "Pear"]
@@ -710,8 +696,6 @@ print(dict(zip(names, averages)))  # {'Ava': 24.0, 'Ben': 15.0}
 <a id="functions"></a>
 
 ## 9. def / return / None / docstring
-
-**슬라이드 23–24쪽: Functions 1/10–2/10.**
 
 ### 9.1 함수 정의와 호출
 
@@ -761,7 +745,7 @@ print(square.__doc__)  # Return x multiplied by itself.
 help(square)           # 함수 이름, 매개변수, docstring 표시
 ```
 
-### 9.4 보충 — 여러 결과를 튜플로 반환
+### 9.4 여러 결과를 튜플로 반환
 
 ```python
 def measurement_summary(values):
@@ -778,8 +762,6 @@ print(count, total)  # 3 60
 <a id="arguments"></a>
 
 ## 10. 함수 인자 — positional / keyword / default
-
-**슬라이드 25–26쪽: Functions 3/10–4/10.**
 
 ### 10.1 위치 인자와 키워드 인자
 
@@ -812,9 +794,9 @@ print(describe(10, "a", 2, "Bye"))  # (10, 'a', 2, 'Bye')
 print(describe(10, "a", message="Bye"))  # (10, 'a', 0, 'Bye')
 ```
 
-슬라이드의 일반 매개변수 형태에서는 **기본값이 없는 매개변수 뒤에 기본값이 있는 매개변수**를 둔다. `def f(a=0, b):`처럼 쓰면 문법 오류다.
+위 예제처럼 일반적인 위치·키워드 매개변수를 정의할 때는 **기본값이 없는 매개변수 뒤에 기본값이 있는 매개변수**를 둔다. `def f(a=0, b):`처럼 쓰면 문법 오류다.
 
-### 10.3 보충 — 리스트를 기본값으로 두는 함정
+### 10.3 리스트를 기본값으로 두는 함정
 
 기본값 객체는 호출마다 새로 만들어지는 것이 아니다. 함수 정의 시 만들어져 다음 호출에서도 사용될 수 있다.
 
@@ -844,8 +826,6 @@ print(collect(2))  # [2]
 
 ## 11. 함수 인자 — 객체 공유와 isinstance
 
-**슬라이드 27쪽: Functions 5/10.**
-
 ### 11.1 원본 수정 mutation vs 이름 재대입 rebinding
 
 함수의 매개변수는 전달된 **객체를 가리키는 이름**이다. 리스트 같은 가변 객체의 내부를 바꾸면 호출한 쪽에서도 변화가 보인다.
@@ -872,7 +852,7 @@ print(numbers)  # [0, 1, 2]
 print(result)   # [99, 100]
 ```
 
-> **기억:** `values[0] = ...`와 `values = ...`는 다르다. 슬라이드의 “by reference”는 객체를 공유한다는 뜻으로 이해하되, 함수가 호출자 변수 자체를 다른 객체에 재연결해 주는 것은 아니다. 원본을 유지해야 하면 복사본을 전달하거나 함수 안에서 복사한다. [Python 공식 문서: 함수 정의](https://docs.python.org/3.14/tutorial/controlflow.html#defining-functions)
+> **기억:** `values[0] = ...`와 `values = ...`는 다르다. 함수와 호출한 쪽은 전달된 객체를 공유하지만, 함수 안에서 매개변수에 재대입한다고 호출자 변수 자체가 다른 객체를 가리키게 되지는 않는다. 원본을 유지해야 하면 복사본을 전달하거나 함수 안에서 복사한다. [Python 공식 문서: 함수 정의](https://docs.python.org/3.14/tutorial/controlflow.html#defining-functions)
 
 ```python
 def replace_first(values):
@@ -905,15 +885,13 @@ except TypeError as exc:
 
 Python은 함수 정의의 매개변수 이름만으로 타입을 제한하지 않는다. 필요한 검사를 직접 작성한다. `isinstance()`는 하위 클래스도 인정한다.
 
-**보충:** `bool`은 `int`의 하위 클래스이므로 `isinstance(True, int)`는 참이다. 문제에서 bool을 숫자로 허용하지 않는다면 별도로 제외해야 한다. 슬라이드 27쪽의 `my_func(y):`는 호출문이므로 끝의 `:`를 제거해야 실행된다.
+**주의:** `bool`은 `int`의 하위 클래스이므로 `isinstance(True, int)`는 참이다. 문제에서 bool을 숫자로 허용하지 않는다면 별도로 제외해야 한다. 함수 정의에는 `:`를 쓰지만, 함수를 호출할 때는 `my_func(y)`처럼 끝에 `:`를 붙이지 않는다.
 
 [목차로 돌아가기](#toc)
 
 <a id="scope"></a>
 
 ## 12. 지역·전역 변수 — local / global / 스코프
-
-**슬라이드 28–29쪽: Functions 6/10–7/10.**
 
 ### 12.1 함수 안의 대입은 기본적으로 지역 변수
 
@@ -942,7 +920,7 @@ print(c)  # Three: 전역 c는 그대로
 | 전역 리스트에 `.append()` 호출 | 불필요 | 이름 재대입 없이 객체 내부를 수정 |
 | 매개변수 리스트의 원소 수정 | 불필요 | 매개변수가 가리키는 객체 내부 수정 |
 
-### 12.2 보충 — UnboundLocalError가 나는 이유
+### 12.2 UnboundLocalError가 나는 이유
 
 ```python
 count = 0
@@ -967,7 +945,7 @@ print(count)  # 1
 
 가능하면 전역 변수 대신 입력과 반환값으로 상태를 전달하면 의존 관계가 명확해진다.
 
-### 12.3 보충 — if / for / try는 별도 지역 범위를 만들지 않는다
+### 12.3 if / for / try는 별도 지역 범위를 만들지 않는다
 
 ```python
 def count_examples():
@@ -982,15 +960,13 @@ def count_examples():
 print(count_examples())  # 2
 ```
 
-`error = 0`을 반복문 전에 한 번만 실행하고, 오류 때마다 같은 변수에 `+= 1`한다. `except` 안에서 `error = 0`을 다시 실행하면 누적되지 않는다. 예외 처리 자체는 이 강의의 중심 범위 밖인 보충 예제다.
+`error = 0`을 반복문 전에 한 번만 실행하고, 오류 때마다 같은 변수에 `+= 1`한다. `except` 안에서 `error = 0`을 다시 실행하면 누적되지 않는다.
 
 [목차로 돌아가기](#toc)
 
 <a id="first-class"></a>
 
 ## 13. 함수는 일급 객체 — 저장·전달·반환
-
-**슬라이드 30쪽: Functions 8/10.**
 
 함수 자체를 변수나 자료구조에 저장하고, 다른 함수에 전달하거나 반환할 수 있다.
 
@@ -1028,7 +1004,7 @@ print(apply_operation(multiply, 2, 3))  # 6
 
 `operations["add"](2, 3)`은 먼저 딕셔너리에서 함수를 꺼내고, 이어서 괄호로 그 함수를 호출한다.
 
-### 13.3 보충 — 함수에서 함수를 반환
+### 13.3 함수에서 함수를 반환
 
 ```python
 def add(a, b):
@@ -1046,8 +1022,6 @@ print(operation(2, 3))  # 5
 <a id="lambda"></a>
 
 ## 14. lambda / sorted / sort — 정렬 기준 함수
-
-**슬라이드 31–32쪽: Functions 9/10–10/10. `sorted()` 비교는 보충.**
 
 ### 14.1 lambda 기본형 — 입력을 받아 표현식 결과 반환
 
@@ -1157,7 +1131,7 @@ sorted(average_data.items(), key=...)  → [('Ava', 24.0), ...]
 
 `sorted()`는 딕셔너리를 입력해도 **리스트를 반환**한다. 이름과 평균을 같이 사용할 예정이면 두 번째 방식이 편하다. [Python 공식 문서: sorted](https://docs.python.org/3.14/library/functions.html#sorted)
 
-### 14.6 보충 — 같은 평균이면 이름순으로 정렬
+### 14.6 같은 평균이면 이름순으로 정렬
 
 ```python
 average_data = {"Ben": 20.0, "Cara": 15.0, "Ava": 20.0}
@@ -1175,9 +1149,9 @@ print(result)  # [('Ava', 20.0), ('Ben', 20.0), ('Cara', 15.0)]
 
 <a id="sensor-example"></a>
 
-## 15. 보충 종합 예제 — 평균 → 필터 → 정렬 → 번호와 상태
+## 15. 종합 예제 — 평균 → 필터 → 정렬 → 번호와 상태
 
-파일 처리 없이 메모리에 있는 딕셔너리로 Lecture 03의 문법을 연결하는 예제다. **comprehension, 함수, lambda, 조건 표현식, enumerate**를 한 번에 확인할 수 있다.
+메모리에 있는 센서 데이터를 평균 계산부터 정렬·상태 출력까지 처리하는 예제다. **comprehension, 함수, lambda, 조건 표현식, enumerate**를 한 번에 확인할 수 있다.
 
 ```python
 def calculate_average(values):
@@ -1228,7 +1202,7 @@ print(f"Sensors with average >= 15.0: {selected_sensors}")
 Sensors with average >= 15.0: ['Ava', 'Ben']
 ```
 
-여기서 `len(data[sensor])`는 **해당 센서의 측정값 수**다. `len(data)`는 센서 수이므로 서로 다르다. `:.2f`는 **출력할 때 소수 둘째 자리까지 표시**하는 형식이며, 원래 평균 변수 값을 바꾸지 않는다. f-string과 숫자 표시 형식은 이전 강의와 연결되는 보충이다.
+여기서 `len(data[sensor])`는 **해당 센서의 측정값 수**다. `len(data)`는 센서 수이므로 서로 다르다. `:.2f`는 **출력할 때 소수 둘째 자리까지 표시**하는 형식이며, 원래 평균 변수 값을 바꾸지 않는다. f-string은 문자열 안의 중괄호 `{}`에 계산값을 넣는 문법이다.
 
 `selected_sensors`는 여기서는 원본 딕셔너리의 삽입 순서다. 이 목록도 평균순이어야 한다면 `average_data.items()` 대신 이미 정렬한 `sorted_average_data`를 순회한다.
 
@@ -1272,34 +1246,7 @@ Sensors with average >= 15.0: ['Ava', 'Ben']
 
 <a id="sources"></a>
 
-## 17. 강의 범위와 참고 자료
-
-### 17.1 원본 슬라이드 페이지별 색인
-
-기준 자료: **ENAI607_Lecture03_Python03.pdf, Lecture 3 / Python 3, 총 32쪽.** 원본 페이지 번호로 돌아가 확인할 수 있도록 주제별 위치를 남긴다. 강의 PDF나 슬라이드 이미지는 이 글에 첨부하지 않았다.
-
-| 원본 페이지 | 강의 주제 | 이 글의 위치 |
-| --- | --- | --- |
-| 1 | 표지 | 글 소개 |
-| 2–4 | mapping, key/value 규칙, 생성, len | [1. dict 기본](#dictionary) |
-| 5 | 조회, KeyError, shallow copy | [조회](#dict-access), [2. 복사](#copy) |
-| 6–7 | 수정·추가·삭제·멤버십 | [1. dict 기본](#dictionary) |
-| 8–9 | dict와 list 사이 변환 | [3. 순회와 변환](#dict-iteration) |
-| 10 | dictionary comprehension, startswith 필터 | [4. comprehension](#comprehension) |
-| 11–13 | if/elif/else, 복합 조건, pass | [5. 조건문](#conditionals), [6. 반복 흐름](#while) |
-| 14 | conditional expression | [한 줄 조건 표현식](#conditional-expression) |
-| 15–17 | while, break, continue | [6. 반복 흐름](#while) |
-| 18–19 | for, enumerate, range | [7. for와 enumerate](#for-enumerate) |
-| 20–21 | 딕셔너리 key/value/item 순회 | [3. 순회와 변환](#dict-iteration) |
-| 22 | zip으로 여러 sequence 순회 | [8. zip](#zip) |
-| 23–24 | 함수 정의·호출·docstring·return | [9. 함수](#functions) |
-| 25–26 | positional/keyword/default 인자 | [10. 인자](#arguments) |
-| 27 | 인자 전달, mutable object, isinstance | [11. 객체 공유](#parameter-sharing) |
-| 28–29 | local/global 변수 | [12. 스코프](#scope) |
-| 30 | 함수가 일급 객체라는 의미 | [13. 일급 객체](#first-class) |
-| 31–32 | lambda, key 기반 sort, 조건 표현식 | [14. lambda와 정렬](#lambda) |
-
-### 17.2 현재 Python 설명을 확인할 공식 문서
+## 17. 공식 문서
 
 - [dict: key, 삽입 순서, copy, keys/values/items](https://docs.python.org/3.14/library/stdtypes.html#mapping-types-dict)
 - [조건문·반복문·함수·기본값·lambda](https://docs.python.org/3.14/tutorial/controlflow.html)
