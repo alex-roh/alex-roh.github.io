@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of Cave]]></title><description><![CDATA[Just another ordinary payroller.]]></description><link>https://alex-roh.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 20 Oct 2026 05:54:44 GMT</lastBuildDate><item><title><![CDATA[[2] 파이썬과 변수]]></title><description><![CDATA[…]]></description><link>https://alex-roh.github.io/python-ch1-2/</link><guid isPermaLink="false">https://alex-roh.github.io/python-ch1-2/</guid><content:encoded>&lt;h2&gt;1. 변수의 이름&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of Cave]]></title><description><![CDATA[Just another ordinary payroller.]]></description><link>https://alex-roh.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 20 Oct 2026 06:04:03 GMT</lastBuildDate><item><title><![CDATA[[2] 파이썬과 변수]]></title><description><![CDATA[…]]></description><link>https://alex-roh.github.io/python-ch1-2/</link><guid isPermaLink="false">https://alex-roh.github.io/python-ch1-2/</guid><content:encoded>&lt;h2&gt;1. 변수의 이름&lt;/h2&gt;
 &lt;p&gt;변수의 이름을 짓는 규칙은 다음과 같다.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;그 변수의 의미와 기능을 가장 짧게 표현할 수 있어야 한다.&lt;/strong&gt;&lt;/li&gt;
@@ -186,7 +186,7 @@ b &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; 3_903_832_102_389_
 &lt;p&gt;(+) 예컨대 아주 큰 숫자와 아주 작은 숫자가 더해지면, 아주 작은 숫자가 무시된다.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token number&quot;&gt;100000000000000000000000.0&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1.2&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;# 1e+23&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;마지막으로 복소수의 경우, 리터럴 안에 j를 붙여 허수부를 표현할 수 있다.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2j&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[[ENAI607] Lecture 04 — 예외 처리, 모듈, 파일 입출력과 with 시험 대비]]></title><description><![CDATA[…]]></description><link>https://alex-roh.github.io/enai607-lecture04/</link><guid isPermaLink="false">https://alex-roh.github.io/enai607-lecture04/</guid><pubDate>Tue, 20 Oct 2026 05:45:00 GMT</pubDate><content:encoded>&lt;p&gt;파일을 읽다가 숫자가 아닌 값을 만나면 어떻게 할까? 오류를 처리하고 다음 줄로 넘어가려면 어떻게 해야 할까? 여러 파일에 함수를 나누면 어떻게 가져다 쓸까?&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2j&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[[ENAI607] Lecture 04 — 예외 처리, 모듈, 파일 입출력과 with]]></title><description><![CDATA[…]]></description><link>https://alex-roh.github.io/enai607-lecture04/</link><guid isPermaLink="false">https://alex-roh.github.io/enai607-lecture04/</guid><pubDate>Tue, 20 Oct 2026 05:45:00 GMT</pubDate><content:encoded>&lt;p&gt;파일을 읽다가 숫자가 아닌 값을 만나면 어떻게 할까? 오류를 처리하고 다음 줄로 넘어가려면 어떻게 해야 할까? 여러 파일에 함수를 나누면 어떻게 가져다 쓸까?&lt;/p&gt;
 &lt;p&gt;이 글은 &lt;strong&gt;예외 처리, 모듈, 텍스트·바이너리 파일 입출력, &lt;code class=&quot;language-text&quot;&gt;with&lt;/code&gt; 문&lt;/strong&gt;을 처음부터 설명한다. 개념을 이해한 뒤 코드를 실행해 보고, 시험 중에는 목차와 함수 이름으로 필요한 예제를 찾을 수 있게 구성했다.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;사용법:&lt;/strong&gt; 상단 목차를 클릭하거나 &lt;code class=&quot;language-text&quot;&gt;Ctrl+F&lt;/code&gt;로 &lt;code class=&quot;language-text&quot;&gt;ValueError&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;finally&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;readline&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;write&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sys.path&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;EOF&lt;/code&gt; 등을 검색한다. 오른쪽 자동 목차는 넓은 화면에서 본문을 따라 표시된다. 위의 &lt;code class=&quot;language-text&quot;&gt;SERIES&lt;/code&gt; 상자는 이 글의 목차가 아니라 같은 시리즈의 글 목록이다.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;예제 준비:&lt;/strong&gt; 파일 읽기 예제는 작업 폴더에 &lt;code class=&quot;language-text&quot;&gt;hello.txt&lt;/code&gt;가 있다고 가정한다. 해당 예제 앞에서 준비 파일 내용을 확인한다. &lt;code class=&quot;language-text&quot;&gt;my_math.py&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;use_math.py&lt;/code&gt;는 각각 별도 파일로 저장한다. &lt;code class=&quot;language-text&quot;&gt;python&lt;/code&gt; 블록은 실행 코드, &lt;code class=&quot;language-text&quot;&gt;text&lt;/code&gt; 블록은 문법 틀·파일 내용·출력이다. 검증 기준은 Python 3.14다.&lt;/p&gt;
@@ -326,7 +326,6 @@ with open(path, &amp;quot;rb&amp;quot;) as fobj:
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;특히 기억:&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;except&lt;/code&gt;는 오류 메시지가 아니라 &lt;strong&gt;예외 클래스&lt;/strong&gt;로 매칭한다. &lt;code class=&quot;language-text&quot;&gt;readline()&lt;/code&gt;의 EOF는 &lt;code class=&quot;language-text&quot;&gt;&amp;#39;&amp;#39;&lt;/code&gt;, 빈 줄은 보통 &lt;code class=&quot;language-text&quot;&gt;&amp;#39;\n&amp;#39;&lt;/code&gt;이다. &lt;code class=&quot;language-text&quot;&gt;write()&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;writelines()&lt;/code&gt;는 줄바꿈을 자동 추가하지 않는다. &lt;code class=&quot;language-text&quot;&gt;&amp;#39;w&amp;#39;&lt;/code&gt;는 열 때 기존 내용을 지운다. &lt;code class=&quot;language-text&quot;&gt;with&lt;/code&gt;는 파일을 닫아 주지만 오류까지 자동으로 처리하지는 않는다.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;exceptions&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;1. 예외 exception — 오류 발생과 전파&lt;/h2&gt;
 &lt;p&gt;예외는 실행 중 문제가 생겼을 때 정상 처리 흐름을 중단하고 오류 처리 코드로 이동하게 하는 장치다. 파일·디스크 같은 외부 상황이나, 0으로 나누기·잘못된 인덱스 같은 코드 문제를 처리할 수 있다.&lt;/p&gt;
@@ -421,7 +420,6 @@ fields &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span clas
 &lt;span class=&quot;token keyword&quot;&gt;except&lt;/span&gt; InvalidDataError &lt;span class=&quot;token keyword&quot;&gt;as&lt;/span&gt; exc&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;exc&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;                    &lt;span class=&quot;token comment&quot;&gt;# 숫자가 아닙니다: hello&lt;/span&gt;
     &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;exc&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;__cause__&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;__name__&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# ValueError&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;except&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;3. try / except / as exc — 오류 잡기&lt;/h2&gt;
 &lt;h3&gt;3.1 기본형&lt;/h3&gt;
@@ -453,7 +451,6 @@ fields &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span clas
 &lt;span class=&quot;token comment&quot;&gt;# ValueError&lt;/span&gt;
 &lt;span class=&quot;token comment&quot;&gt;# TypeError&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;strong&gt;주의:&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;except ValueError or TypeError:&lt;/code&gt;라고 쓰지 않는다. 여러 예외를 묶을 때는 &lt;code class=&quot;language-text&quot;&gt;(ValueError, TypeError)&lt;/code&gt;를 사용한다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;hierarchy&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;4. 예외 종류와 상속 계층&lt;/h2&gt;
 &lt;table&gt;
@@ -565,7 +562,6 @@ fields &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span clas
 &lt;span class=&quot;token keyword&quot;&gt;except&lt;/span&gt; ArithmeticError&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;그 밖의 산술 오류&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;ArithmeticError&lt;/code&gt;를 먼저 쓰면 &lt;code class=&quot;language-text&quot;&gt;ZeroDivisionError&lt;/code&gt;도 그쪽에서 처리되어 아래 처리기는 실행되지 않는다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;try-else&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;5. try의 else는 성공했을 때만&lt;/h2&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;try&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;else&lt;/code&gt;는 &lt;strong&gt;try 블록이 예외 없이 정상 완료됐을 때&lt;/strong&gt; 실행한다. &lt;code class=&quot;language-text&quot;&gt;if&lt;/code&gt;에 붙는 &lt;code class=&quot;language-text&quot;&gt;else&lt;/code&gt;와 구분한다. 아래 코드는 입력 하나가 잘못되면 그 줄의 값을 저장하지 않는다.&lt;/p&gt;
@@ -586,7 +582,6 @@ lines &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;error&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# 1&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;숫자 변환이 전부 끝나기 전에는 딕셔너리를 수정하지 않으므로 잘못된 줄의 일부만 들어가지 않는다. &lt;code class=&quot;language-text&quot;&gt;error = 0&lt;/code&gt;은 반복문 밖에서 한 번만 실행해야 누적된다.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;주의:&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;else&lt;/code&gt; 안에서 발생한 오류는 같은 &lt;code class=&quot;language-text&quot;&gt;try&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;except&lt;/code&gt;가 잡지 않는다. 또 &lt;code class=&quot;language-text&quot;&gt;try&lt;/code&gt;에서 &lt;code class=&quot;language-text&quot;&gt;return&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;break&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;continue&lt;/code&gt;로 빠져나가면 &lt;code class=&quot;language-text&quot;&gt;else&lt;/code&gt;도 실행하지 않는다. 성공한 경우에만 해야 하는 작업을 &lt;code class=&quot;language-text&quot;&gt;else&lt;/code&gt;에 분리하면 보호하려는 작업 범위가 명확해진다. &lt;a href=&quot;https://docs.python.org/3.14/tutorial/errors.html#handling-exceptions&quot;&gt;Python 공식 문서: 예외 처리&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;finally&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;6. finally — 정리 코드와 세 가지 실행 흐름&lt;/h2&gt;
 &lt;h3&gt;6.1 정상·처리한 예외·미처리 예외&lt;/h3&gt;
@@ -678,7 +673,6 @@ finally:
     if fo is not None:
         fo.close()&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;파일은 보통 &lt;a href=&quot;#with&quot;&gt;15절의 &lt;code class=&quot;language-text&quot;&gt;with open(...)&lt;/code&gt;&lt;/a&gt;으로 더 간단하게 정리한다. 또 &lt;strong&gt;일반적인 파일 순회나 &lt;code class=&quot;language-text&quot;&gt;readline()&lt;/code&gt;은 끝에 도달했다고 &lt;code class=&quot;language-text&quot;&gt;EOFError&lt;/code&gt;를 발생시키지 않는다.&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;except EOFError&lt;/code&gt;로 파일이 없는 문제를 처리할 수는 없다. 이 차이는 &lt;a href=&quot;#eof&quot;&gt;EOF 절&lt;/a&gt;에서 확인한다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;modules&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;7. 모듈 module — import와 namespace&lt;/h2&gt;
 &lt;p&gt;모듈은 관련 함수와 객체를 묶는 단위다. 직접 만드는 경우 보통 &lt;code class=&quot;language-text&quot;&gt;.py&lt;/code&gt; 파일 하나가 모듈이 된다. 표준 라이브러리나 확장 모듈에는 컴파일된 구현도 있다.&lt;/p&gt;
@@ -727,7 +721,6 @@ x &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; np&lt;span class=&
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;from ... import *&lt;/code&gt;는 출처와 이름 충돌을 파악하기 어려워지므로 시험 코드에서도 필요한 이름만 명시하는 편이 좋다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;own-module&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;8. 사용자 모듈 — my_math.py 만들고 사용하기&lt;/h2&gt;
 &lt;p&gt;다음처럼 두 파일을 같은 폴더에 둔다.&lt;/p&gt;
@@ -763,7 +756,6 @@ PI &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&q
 &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; __name__ &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;__main__&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
     main&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;직접 실행하면 &lt;code class=&quot;language-text&quot;&gt;__name__&lt;/code&gt;이 &lt;code class=&quot;language-text&quot;&gt;&amp;quot;__main__&amp;quot;&lt;/code&gt;이라 테스트가 실행된다. 다른 파일에서 &lt;code class=&quot;language-text&quot;&gt;import sensor_utils&lt;/code&gt;하면 함수는 정의되지만 &lt;code class=&quot;language-text&quot;&gt;main()&lt;/code&gt;은 자동 호출하지 않는다. 반면 가드 밖의 최상위 코드는 최초 import 때 실행될 수 있다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;module-path&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;9. 모듈 검색 경로 — sys.path / .pth / import 캐시&lt;/h2&gt;
 &lt;h3&gt;9.1 sys.path는 디렉터리 목록&lt;/h3&gt;
@@ -805,7 +797,6 @@ importlib&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span 
 &lt;li&gt;외부 패키지라면 그 인터프리터에 설치되어 있는가?&lt;/li&gt;
 &lt;li&gt;내 파일 이름이 기존 모듈을 가리고 있지 않은가?&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;open&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;10. open — 파일 객체, 모드, 인코딩과 경로&lt;/h2&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;fobj = open(file_path, mode, encoding=&amp;quot;utf-8&amp;quot;)
@@ -891,7 +882,6 @@ BASE_DIR &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; Path&lt;spa
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;r&amp;quot;C:\Users\Alex\Documents\hello.txt&amp;quot;   # raw 문자열
 &amp;quot;C:/Users/Alex/Documents/hello.txt&amp;quot;     # 슬래시 사용
 &amp;quot;C:\\Users\\Alex\\Documents\\hello.txt&amp;quot;  # 역슬래시 이스케이프&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;read&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;11. 텍스트 읽기 — readline / readlines / read / 파일 순회&lt;/h2&gt;
 &lt;p&gt;다음 공통 준비 코드를 한 번 실행하면 읽기 예제에 쓸 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;hello.txt&lt;/code&gt;&lt;/strong&gt;가 만들어진다. 첫 줄, 빈 줄, 마지막 줄이 있으며 마지막 줄 끝에는 줄바꿈이 없다.&lt;/p&gt;
@@ -977,7 +967,6 @@ fobj&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;close&lt;span 
 
     fobj&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;seek&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;fobj&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;read&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; first&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# True&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;strip-split&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;12. strip / split / 빈 줄 제외&lt;/h2&gt;
 &lt;p&gt;파일 줄을 데이터로 변환할 때 자주 함께 쓰는 문자열 처리다.&lt;/p&gt;
@@ -1005,7 +994,6 @@ fields &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span clas
 values &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;field&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; field &lt;span class=&quot;token keyword&quot;&gt;in&lt;/span&gt; fields&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;values&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# []: 예외가 발생하지 않는다.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;strong&gt;빈 리스트를 순회하는 comprehension은 그냥 빈 리스트를 만든다.&lt;/strong&gt; 측정값이 최소 하나 있어야 한다면 &lt;code class=&quot;language-text&quot;&gt;len(fields) &amp;lt; 2&lt;/code&gt;를 검사해 직접 오류를 발생시켜야 한다. &lt;code class=&quot;language-text&quot;&gt;Ava,&lt;/code&gt;는 빈 문자열 &lt;code class=&quot;language-text&quot;&gt;&amp;#39;&amp;#39;&lt;/code&gt;를 숫자로 변환하려 하므로 &lt;code class=&quot;language-text&quot;&gt;ValueError&lt;/code&gt;가 발생한다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;write&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;13. 텍스트 쓰기 — write / writelines / 줄바꿈&lt;/h2&gt;
 &lt;h3&gt;13.1 write는 문자열 하나를 받는다&lt;/h3&gt;
@@ -1063,7 +1051,6 @@ fobj.write(f&amp;quot;평균: {average}\n&amp;quot;)   # 문자열 하나로 만
 &lt;span class=&quot;token keyword&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;print_demo.txt&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;r&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; encoding&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;as&lt;/span&gt; fobj&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;repr&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;fobj&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;read&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# &apos;average = 24.0\n&apos;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;print(..., file=fobj)&lt;/code&gt;는 여러 인자를 받고 기본 줄바꿈도 넣는다. 문제에서 &lt;code class=&quot;language-text&quot;&gt;write()&lt;/code&gt; 사용을 요구하면 그 요구대로 작성한다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;binary&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;14. 바이너리 파일 — bytes / rb / wb / hex&lt;/h2&gt;
 &lt;p&gt;텍스트는 문자를 인코딩·디코딩해서 다루지만 바이너리는 &lt;strong&gt;바이트 열 자체&lt;/strong&gt;를 다룬다. 이미지나 임의의 이진 데이터를 읽을 때 사용한다.&lt;/p&gt;
@@ -1102,7 +1089,6 @@ decoded &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; encoded&lt;s
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;encoded&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# 6: UTF-8 바이트 수&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;decoded&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;       &lt;span class=&quot;token comment&quot;&gt;# 한글&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;str.encode()&lt;/code&gt;는 문자열 → 바이트, &lt;code class=&quot;language-text&quot;&gt;bytes.decode()&lt;/code&gt;는 바이트 → 문자열이다. 바이트 수와 문자 수는 같지 않을 수 있다. 파일을 텍스트 모드로 열면 이런 인코딩·디코딩을 파일 객체가 맡는다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;with&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;15. with — context manager와 자동 close&lt;/h2&gt;
 &lt;p&gt;파일은 읽기·쓰기가 끝나면 닫아야 한다. 직접 &lt;code class=&quot;language-text&quot;&gt;close()&lt;/code&gt;를 호출하는 대신 &lt;strong&gt;정리 작업을 보장하는 문맥 관리자(context manager)&lt;/strong&gt;를 사용할 수 있다. &lt;code class=&quot;language-text&quot;&gt;open()&lt;/code&gt;이 반환하는 파일 객체는 문맥 관리자로 동작한다.&lt;/p&gt;
@@ -1141,7 +1127,6 @@ decoded &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; encoded&lt;s
 
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;source&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;closed&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; target&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;closed&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# True True&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;두 파일 모두 블록을 나올 때 닫힌다. 이 예제는 텍스트 복사이며, 이미지 같은 바이너리 데이터는 &lt;code class=&quot;language-text&quot;&gt;rb&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;wb&lt;/code&gt;로 처리해야 한다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;sensor-example&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;16. 종합 예제 — 센서 파일 검증과 summary.txt&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;목표:&lt;/strong&gt; 파일을 읽고, 빈 줄을 제외하고, 잘못된 줄은 전체를 버리며, 같은 센서의 값을 누적한다. 그다음 평균을 내림차순으로 정렬해 파일에 보고서를 쓴다.&lt;/p&gt;
@@ -1275,7 +1260,6 @@ Sensors with average &amp;gt;= 15.0: [&amp;#39;Ava&amp;#39;, &amp;#39;Ben&amp;#3
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;센서 이름은 사람 이름인지 판별하지 않는다. &lt;code class=&quot;language-text&quot;&gt;Sensor_01&lt;/code&gt;이나 &lt;code class=&quot;language-text&quot;&gt;123&lt;/code&gt;을 금지하는 별도 규칙이 없다면 문자열 이름으로 쓸 수 있다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;pitfalls&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;17. 실수 점검표 — 증상으로 찾기&lt;/h2&gt;
 &lt;table&gt;
@@ -1404,7 +1388,6 @@ Sensors with average &amp;gt;= 15.0: [&amp;#39;Ava&amp;#39;, &amp;#39;Ben&amp;#3
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;sources&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;18. 공식 문서&lt;/h2&gt;
 &lt;ul&gt;
@@ -1413,8 +1396,7 @@ Sensors with average &amp;gt;= 15.0: [&amp;#39;Ava&amp;#39;, &amp;#39;Ben&amp;#3
 &lt;li&gt;&lt;a href=&quot;https://docs.python.org/3.14/library/site.html&quot;&gt;site와 .pth 파일&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://docs.python.org/3.14/tutorial/inputoutput.html#reading-and-writing-files&quot;&gt;텍스트·바이너리 파일 읽기와 쓰기&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://docs.python.org/3.14/library/functions.html#open&quot;&gt;open 함수의 모드와 인코딩&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;맨 위 목차로 돌아가기&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda 시험 대비]]></title><description><![CDATA[센서 이름마다 측정값을 모으고, 평균을 계산한 다음, 높은 순서대로 정렬하려면 어떤 문법이 필요할까? 이 글은 딕셔너리, comprehension, 조건문과 반복문, 함수, 스코프, lambda…]]></description><link>https://alex-roh.github.io/enai607-lecture03/</link><guid isPermaLink="false">https://alex-roh.github.io/enai607-lecture03/</guid><pubDate>Tue, 20 Oct 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;센서 이름마다 측정값을 모으고, 평균을 계산한 다음, 높은 순서대로 정렬하려면 어떤 문법이 필요할까?&lt;/p&gt;
+&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda]]></title><description><![CDATA[센서 이름마다 측정값을 모으고, 평균을 계산한 다음, 높은 순서대로 정렬하려면 어떤 문법이 필요할까? 이 글은 딕셔너리, comprehension, 조건문과 반복문, 함수, 스코프, lambda…]]></description><link>https://alex-roh.github.io/enai607-lecture03/</link><guid isPermaLink="false">https://alex-roh.github.io/enai607-lecture03/</guid><pubDate>Tue, 20 Oct 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;센서 이름마다 측정값을 모으고, 평균을 계산한 다음, 높은 순서대로 정렬하려면 어떤 문법이 필요할까?&lt;/p&gt;
 &lt;p&gt;이 글은 &lt;strong&gt;딕셔너리, comprehension, 조건문과 반복문, 함수, 스코프, lambda와 정렬&lt;/strong&gt;을 처음부터 설명한다. 개념과 실행 예제, 예상 결과를 함께 읽고, 시험 중에는 목차와 함수 이름으로 필요한 코드를 찾을 수 있게 구성했다.&lt;/p&gt;
 &lt;p&gt;각 &lt;code class=&quot;language-text&quot;&gt;python&lt;/code&gt; 코드 블록은 필요한 초기값과 함수를 포함하므로 개별 실행할 수 있다. 문법 틀과 실행하면 안 되는 코드는 &lt;code class=&quot;language-text&quot;&gt;text&lt;/code&gt; 블록으로 구분했다. 예제는 Python 3.14 기준이다.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;찾는 방법:&lt;/strong&gt; 아래 목차를 클릭하거나 &lt;code class=&quot;language-text&quot;&gt;Ctrl+F&lt;/code&gt;로 &lt;code class=&quot;language-text&quot;&gt;items&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;copy&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;enumerate&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;lambda&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;global&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;return&lt;/code&gt; 같은 함수·키워드를 검색한다. 블로그의 검색은 본문도 검색하므로 한국어 설명과 영문 이름을 함께 적었다.&lt;/p&gt;
@@ -1559,7 +1541,6 @@ sorted(d.items(), key=lambda pair: pair[1], reverse=True)&lt;/code&gt;&lt;/pre&g
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;특히 기억:&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;in d&lt;/code&gt;는 key 검사, &lt;code class=&quot;language-text&quot;&gt;items()&lt;/code&gt;는 key/value 쌍, &lt;code class=&quot;language-text&quot;&gt;copy()&lt;/code&gt;는 내부 객체 공유, &lt;code class=&quot;language-text&quot;&gt;range()&lt;/code&gt;는 끝값 제외, &lt;code class=&quot;language-text&quot;&gt;return&lt;/code&gt; 생략 시 &lt;code class=&quot;language-text&quot;&gt;None&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sort()&lt;/code&gt;의 반환값도 &lt;code class=&quot;language-text&quot;&gt;None&lt;/code&gt;이다.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;dictionary&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;1. 딕셔너리 dict — key로 value 찾기&lt;/h2&gt;
 &lt;p&gt;딕셔너리는 &lt;strong&gt;key와 value의 대응 관계(mapping)&lt;/strong&gt;를 저장한다. key를 알면 대응하는 value를 찾는다. 리스트처럼 위치로 찾는 자료형은 아니다. 해시 테이블을 사용하므로 일반적인 key 조회가 효율적이다.&lt;/p&gt;
@@ -1674,7 +1655,6 @@ a&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;append&lt;span cl
 b&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;extend&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;40&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;a&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# [10, 20, [30, 40]]&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;b&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# [10, 20, 30, 40]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;copy&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;2. 복사 — 별칭, shallow copy, 내부 리스트 공유&lt;/h2&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;b = a&lt;/code&gt;는 딕셔너리를 복제하지 않는다. 두 이름이 &lt;strong&gt;같은 딕셔너리&lt;/strong&gt;를 가리킨다.&lt;/p&gt;
@@ -1704,7 +1684,6 @@ b &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; deepcopy&lt;span c
 b&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Ava&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;append&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;a&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# {&apos;Ava&apos;: [10, 20]}&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;b&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# {&apos;Ava&apos;: [10, 20, 30]}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;dict-iteration&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;3. keys / values / items — 순회와 리스트 변환&lt;/h2&gt;
 &lt;table&gt;
@@ -1762,7 +1741,6 @@ b&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&q
 constants &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;pairs&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;constants&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# {&apos;pi&apos;: 3.14, &apos;e&apos;: 2.72}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;각 원소는 key와 value &lt;strong&gt;두 항목&lt;/strong&gt;으로 이루어져야 한다. 또 &lt;code class=&quot;language-text&quot;&gt;dict&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;list&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sum&lt;/code&gt; 같은 내장 이름을 변수 이름으로 쓰면 해당 함수를 가려 버리므로 &lt;code class=&quot;language-text&quot;&gt;data&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;readings&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;total&lt;/code&gt; 같은 이름을 사용한다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;comprehension&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;4. comprehension — 리스트와 딕셔너리 만들기&lt;/h2&gt;
 &lt;h3&gt;4.1 기본형 — 값만 만들까, key/value를 만들까?&lt;/h3&gt;
@@ -1831,7 +1809,6 @@ readings &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span cl
 field in fields[1:]                 # 포함 여부 검사; 반복이 아님
 [float(field) for field in fields[1:]]  # 원소마다 변환해 새 리스트 생성&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;strong&gt;언제 쓰나?&lt;/strong&gt; 짧은 변환·필터의 결과를 새 리스트나 딕셔너리로 모을 때 사용한다. 여러 단계의 처리, 파일 출력, 예외 처리가 중심이면 일반 &lt;code class=&quot;language-text&quot;&gt;for&lt;/code&gt;문으로 풀어 쓰는 편이 읽기 쉽다. comprehension의 반복 변수는 그 comprehension 바깥에 새 변수로 남지 않는다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;conditionals&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;5. 조건문 — if / elif / else / 조건 표현식&lt;/h2&gt;
 &lt;h3&gt;5.1 if와 여러 갈래의 elif&lt;/h3&gt;
@@ -1890,7 +1867,6 @@ parity &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span clas
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;average_or_zero&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# 15.0&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;average_or_zero&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;        &lt;span class=&quot;token comment&quot;&gt;# 0.0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;선택된 쪽만 계산하므로 빈 리스트일 때 0으로 나누지 않는다. 다만 &lt;strong&gt;빈 리스트의 평균이 수학적으로 0이라는 뜻은 아니다.&lt;/strong&gt; 위 함수가 빈 입력을 0으로 처리하도록 정한 것이다. 문제에서 입력이 비어 있지 않다고 보장하면 단순히 &lt;code class=&quot;language-text&quot;&gt;sum(values) / len(values)&lt;/code&gt;만 써도 된다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;while&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;6. while / break / continue / pass&lt;/h2&gt;
 &lt;h3&gt;6.1 while — 조건을 다시 검사하면서 반복&lt;/h3&gt;
@@ -1958,7 +1934,6 @@ parity &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span clas
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;기억:&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;pass&lt;/code&gt;는 “이번 반복을 건너뛰어라”가 아니다. 함수 안의 &lt;code class=&quot;language-text&quot;&gt;break&lt;/code&gt;도 함수 자체를 종료하지 않는다.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;for-enumerate&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;7. for / enumerate / range&lt;/h2&gt;
 &lt;h3&gt;7.1 원소가 필요하면 for item in iterable&lt;/h3&gt;
@@ -2005,7 +1980,6 @@ range(start, stop, step)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;token comment&quot;&gt;# [5, 4, 3, 2, 1]&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;token comment&quot;&gt;# []: 증가해야 하는 구간에 음수 step&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;strong&gt;끝값 &lt;code class=&quot;language-text&quot;&gt;stop&lt;/code&gt;은 항상 제외된다.&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;range()&lt;/code&gt;는 정수 범위를 위한 것이며 &lt;code class=&quot;language-text&quot;&gt;step=0&lt;/code&gt;은 허용하지 않는다. &lt;code class=&quot;language-text&quot;&gt;range(1, 10, 2)&lt;/code&gt;는 10까지 포함해서 2씩 가는 것이 아니다. 10에 도달하기 전까지만 생성한다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;zip&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;8. zip — 여러 iterable을 나란히 묶기&lt;/h2&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;numbers &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
@@ -2022,7 +1996,6 @@ averages &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span cl
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;names&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; averages&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# [(&apos;Ava&apos;, 24.0), (&apos;Ben&apos;, 15.0)]&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;names&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; averages&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# {&apos;Ava&apos;: 24.0, &apos;Ben&apos;: 15.0}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;enumerate()&lt;/code&gt;는 번호를 붙이고, &lt;code class=&quot;language-text&quot;&gt;zip()&lt;/code&gt;은 입력들의 같은 위치 값을 묶는다.&lt;/strong&gt; 센서 이름에 중복이 있으면 &lt;code class=&quot;language-text&quot;&gt;dict(zip(...))&lt;/code&gt;에서도 나중 value가 앞의 값을 덮어쓴다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;functions&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;9. def / return / None / docstring&lt;/h2&gt;
 &lt;h3&gt;9.1 함수 정의와 호출&lt;/h3&gt;
@@ -2065,7 +2038,6 @@ y &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; calculate_total&lt
 count&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; total &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; measurement_summary&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;count&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; total&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# 3 60&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;return a, b&lt;/code&gt;는 튜플을 반환한다. &lt;code class=&quot;language-text&quot;&gt;load_readings()&lt;/code&gt;가 &lt;code class=&quot;language-text&quot;&gt;(data, error)&lt;/code&gt;를 반환한다면 호출할 때도 &lt;code class=&quot;language-text&quot;&gt;data, error = load_readings(...)&lt;/code&gt;처럼 나눠 받는다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;arguments&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;10. 함수 인자 — positional / keyword / default&lt;/h2&gt;
 &lt;h3&gt;10.1 위치 인자와 키워드 인자&lt;/h3&gt;
@@ -2106,7 +2078,6 @@ power(2)              # TypeError: exponent가 빠짐&lt;/code&gt;&lt;/pre&gt;&l
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;collect&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# [1]&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;collect&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# [2]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;호출마다 새 리스트가 필요하면 &lt;code class=&quot;language-text&quot;&gt;None&lt;/code&gt;을 기본값으로 두고 함수 안에서 만든다. &lt;a href=&quot;https://docs.python.org/3.14/tutorial/controlflow.html#default-argument-values&quot;&gt;Python 공식 문서: 기본 인자&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;parameter-sharing&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;11. 함수 인자 — 객체 공유와 isinstance&lt;/h2&gt;
 &lt;h3&gt;11.1 원본 수정 mutation vs 이름 재대입 rebinding&lt;/h3&gt;
@@ -2153,7 +2124,6 @@ replace_first&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;numbe
     &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;exc&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# 정수가 필요합니다.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Python은 함수 정의의 매개변수 이름만으로 타입을 제한하지 않는다. 필요한 검사를 직접 작성한다. &lt;code class=&quot;language-text&quot;&gt;isinstance()&lt;/code&gt;는 하위 클래스도 인정한다.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;주의:&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;bool&lt;/code&gt;은 &lt;code class=&quot;language-text&quot;&gt;int&lt;/code&gt;의 하위 클래스이므로 &lt;code class=&quot;language-text&quot;&gt;isinstance(True, int)&lt;/code&gt;는 참이다. 문제에서 bool을 숫자로 허용하지 않는다면 별도로 제외해야 한다. 함수 정의에는 &lt;code class=&quot;language-text&quot;&gt;:&lt;/code&gt;를 쓰지만, 함수를 호출할 때는 &lt;code class=&quot;language-text&quot;&gt;my_func(y)&lt;/code&gt;처럼 끝에 &lt;code class=&quot;language-text&quot;&gt;:&lt;/code&gt;를 붙이지 않는다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;scope&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;12. 지역·전역 변수 — local / global / 스코프&lt;/h2&gt;
 &lt;h3&gt;12.1 함수 안의 대입은 기본적으로 지역 변수&lt;/h3&gt;
@@ -2234,7 +2204,6 @@ increment&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span 
 
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;count_examples&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# 2&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;error = 0&lt;/code&gt;을 반복문 전에 한 번만 실행하고, 오류 때마다 같은 변수에 &lt;code class=&quot;language-text&quot;&gt;+= 1&lt;/code&gt;한다. &lt;code class=&quot;language-text&quot;&gt;except&lt;/code&gt; 안에서 &lt;code class=&quot;language-text&quot;&gt;error = 0&lt;/code&gt;을 다시 실행하면 누적되지 않는다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;first-class&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;13. 함수는 일급 객체 — 저장·전달·반환&lt;/h2&gt;
 &lt;p&gt;함수 자체를 변수나 자료구조에 저장하고, 다른 함수에 전달하거나 반환할 수 있다.&lt;/p&gt;
@@ -2271,7 +2240,6 @@ operations &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span 
 
 operation &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; get_operation&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;operation&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# 5&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;lambda&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;14. lambda / sorted / sort — 정렬 기준 함수&lt;/h2&gt;
 &lt;h3&gt;14.1 lambda 기본형 — 입력을 받아 표현식 결과 반환&lt;/h3&gt;
@@ -2378,7 +2346,6 @@ result &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span clas
 &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;result&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# [(&apos;Ava&apos;, 20.0), (&apos;Ben&apos;, 20.0), (&apos;Cara&apos;, 15.0)]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;기준을 튜플로 반환하면 앞의 기준부터 비교한다. &lt;code class=&quot;language-text&quot;&gt;-평균&lt;/code&gt;으로 평균 내림차순, 이름으로 동률 시 오름차순을 만든다. 위 코드에는 &lt;code class=&quot;language-text&quot;&gt;reverse=True&lt;/code&gt;를 추가하지 않는다. 단순 정렬에서 동률이면 Python 정렬은 기존 순서를 유지하는 &lt;strong&gt;안정 정렬(stable sort)&lt;/strong&gt;이다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;sensor-example&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;15. 종합 예제 — 평균 → 필터 → 정렬 → 번호와 상태&lt;/h2&gt;
 &lt;p&gt;메모리에 있는 센서 데이터를 평균 계산부터 정렬·상태 출력까지 처리하는 예제다. &lt;strong&gt;comprehension, 함수, lambda, 조건 표현식, enumerate&lt;/strong&gt;를 한 번에 확인할 수 있다.&lt;/p&gt;
@@ -2426,7 +2393,6 @@ sorted_average_data &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; 
 Sensors with average &amp;gt;= 15.0: [&amp;#39;Ava&amp;#39;, &amp;#39;Ben&amp;#39;]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;여기서 &lt;code class=&quot;language-text&quot;&gt;len(data[sensor])&lt;/code&gt;는 &lt;strong&gt;해당 센서의 측정값 수&lt;/strong&gt;다. &lt;code class=&quot;language-text&quot;&gt;len(data)&lt;/code&gt;는 센서 수이므로 서로 다르다. &lt;code class=&quot;language-text&quot;&gt;:.2f&lt;/code&gt;는 &lt;strong&gt;출력할 때 소수 둘째 자리까지 표시&lt;/strong&gt;하는 형식이며, 원래 평균 변수 값을 바꾸지 않는다. f-string은 문자열 안의 중괄호 &lt;code class=&quot;language-text&quot;&gt;{}&lt;/code&gt;에 계산값을 넣는 문법이다.&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;selected_sensors&lt;/code&gt;는 여기서는 원본 딕셔너리의 삽입 순서다. 이 목록도 평균순이어야 한다면 &lt;code class=&quot;language-text&quot;&gt;average_data.items()&lt;/code&gt; 대신 이미 정렬한 &lt;code class=&quot;language-text&quot;&gt;sorted_average_data&lt;/code&gt;를 순회한다.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;pitfalls&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;16. 실수 점검표 — 시험 직전 확인&lt;/h2&gt;
 &lt;table&gt;
@@ -2547,7 +2513,6 @@ Sensors with average &amp;gt;= 15.0: [&amp;#39;Ava&amp;#39;, &amp;#39;Ben&amp;#3
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;목차로 돌아가기&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a id=&quot;sources&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;17. 공식 문서&lt;/h2&gt;
 &lt;ul&gt;
@@ -2557,8 +2522,7 @@ Sensors with average &amp;gt;= 15.0: [&amp;#39;Ava&amp;#39;, &amp;#39;Ben&amp;#3
 &lt;li&gt;&lt;a href=&quot;https://docs.python.org/3.14/reference/executionmodel.html#naming-and-binding&quot;&gt;이름 바인딩과 지역·전역 범위&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://docs.python.org/3.14/library/functions.html#sorted&quot;&gt;sorted의 key와 reverse&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://docs.python.org/3.14/library/functions.html#enumerate&quot;&gt;enumerate&lt;/a&gt;, &lt;a href=&quot;https://docs.python.org/3.14/library/stdtypes.html#ranges&quot;&gt;range&lt;/a&gt;, &lt;a href=&quot;https://docs.python.org/3.14/library/functions.html#zip&quot;&gt;zip&lt;/a&gt;, &lt;a href=&quot;https://docs.python.org/3.14/library/functions.html#isinstance&quot;&gt;isinstance&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;#toc&quot;&gt;맨 위 목차로 돌아가기&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[파이썬 포매터 : Black]]></title><description><![CDATA[포매터 사용법 (formatter) 포매터 black…]]></description><link>https://alex-roh.github.io/python-formatter/</link><guid isPermaLink="false">https://alex-roh.github.io/python-formatter/</guid><pubDate>Fri, 10 Jun 2022 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;포매터 사용법 (formatter)&lt;/h2&gt;
+&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[파이썬 포매터 : Black]]></title><description><![CDATA[포매터 사용법 (formatter) 포매터 black…]]></description><link>https://alex-roh.github.io/python-formatter/</link><guid isPermaLink="false">https://alex-roh.github.io/python-formatter/</guid><pubDate>Fri, 10 Jun 2022 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;포매터 사용법 (formatter)&lt;/h2&gt;
 &lt;p&gt;포매터 &lt;a href=&quot;https://black.readthedocs.io/en/stable/index.html&quot;&gt;black&lt;/a&gt;을 사용하면 띄어쓰기와 같은 사소한 규칙들은 무시하고 코드의 내용에 집중할 수 있다. 또한, 코드 스타일을 통일시키므로 가독성과 생산성이 증진된다.&lt;/p&gt;
 &lt;h2&gt;포매터 설치 방법&lt;/h2&gt;
 &lt;p&gt;터미널에서 &lt;code class=&quot;language-text&quot;&gt;pip install black&lt;/code&gt;으로 간단하게 설치할 수 있다. 그 후에 VSCode의 설정 화면에서 python formatting provider를 Black으로 설정하고 format on save에 체크하면, VSCode에서 파이썬 코드를 저장할 때마다 자동으로 포매팅된다.&lt;/p&gt;
