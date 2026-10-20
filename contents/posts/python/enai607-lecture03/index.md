@@ -1,5 +1,5 @@
 ---
-title: "[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda 시험 대비"
+title: "[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda"
 description: "dict·copy·comprehension·if·while·enumerate·range·zip·def·global·lambda·정렬을 예제와 출력으로 찾는 오픈북 노트"
 date: 2026-10-20
 update: 2026-10-20
@@ -7,7 +7,7 @@ tags:
   - python
   - ENAI607
   - open-book
-series: "ENAI607 Python 시험 대비"
+series: "ENAI607 Python"
 ---
 
 센서 이름마다 측정값을 모으고, 평균을 계산한 다음, 높은 순서대로 정렬하려면 어떤 문법이 필요할까?
@@ -89,8 +89,6 @@ sorted(d.items(), key=lambda pair: pair[1], reverse=True)
 ```
 
 > **특히 기억:** `in d`는 key 검사, `items()`는 key/value 쌍, `copy()`는 내부 객체 공유, `range()`는 끝값 제외, `return` 생략 시 `None`, `sort()`의 반환값도 `None`이다.
-
-[목차로 돌아가기](#toc)
 
 <a id="dictionary"></a>
 
@@ -222,8 +220,6 @@ print(a)  # [10, 20, [30, 40]]
 print(b)  # [10, 20, 30, 40]
 ```
 
-[목차로 돌아가기](#toc)
-
 <a id="copy"></a>
 
 ## 2. 복사 — 별칭, shallow copy, 내부 리스트 공유
@@ -267,8 +263,6 @@ b["Ava"].append(30)
 print(a)  # {'Ava': [10, 20]}
 print(b)  # {'Ava': [10, 20, 30]}
 ```
-
-[목차로 돌아가기](#toc)
 
 <a id="dict-iteration"></a>
 
@@ -322,8 +316,6 @@ print(constants)  # {'pi': 3.14, 'e': 2.72}
 ```
 
 각 원소는 key와 value **두 항목**으로 이루어져야 한다. 또 `dict`, `list`, `sum` 같은 내장 이름을 변수 이름으로 쓰면 해당 함수를 가려 버리므로 `data`, `readings`, `total` 같은 이름을 사용한다.
-
-[목차로 돌아가기](#toc)
 
 <a id="comprehension"></a>
 
@@ -428,8 +420,6 @@ field in fields[1:]                 # 포함 여부 검사; 반복이 아님
 
 **언제 쓰나?** 짧은 변환·필터의 결과를 새 리스트나 딕셔너리로 모을 때 사용한다. 여러 단계의 처리, 파일 출력, 예외 처리가 중심이면 일반 `for`문으로 풀어 쓰는 편이 읽기 쉽다. comprehension의 반복 변수는 그 comprehension 바깥에 새 변수로 남지 않는다.
 
-[목차로 돌아가기](#toc)
-
 <a id="conditionals"></a>
 
 ## 5. 조건문 — if / elif / else / 조건 표현식
@@ -520,8 +510,6 @@ print(average_or_zero([]))        # 0.0
 
 선택된 쪽만 계산하므로 빈 리스트일 때 0으로 나누지 않는다. 다만 **빈 리스트의 평균이 수학적으로 0이라는 뜻은 아니다.** 위 함수가 빈 입력을 0으로 처리하도록 정한 것이다. 문제에서 입력이 비어 있지 않다고 보장하면 단순히 `sum(values) / len(values)`만 써도 된다.
 
-[목차로 돌아가기](#toc)
-
 <a id="while"></a>
 
 ## 6. while / break / continue / pass
@@ -584,8 +572,6 @@ for x in [1, 2, 3]:
 | `return` | 함수 종료 | 함수를 호출한 곳 |
 
 > **기억:** `pass`는 “이번 반복을 건너뛰어라”가 아니다. 함수 안의 `break`도 함수 자체를 종료하지 않는다.
-
-[목차로 돌아가기](#toc)
 
 <a id="for-enumerate"></a>
 
@@ -663,8 +649,6 @@ print(list(range(1, 5, -1)))   # []: 증가해야 하는 구간에 음수 step
 
 **끝값 `stop`은 항상 제외된다.** `range()`는 정수 범위를 위한 것이며 `step=0`은 허용하지 않는다. `range(1, 10, 2)`는 10까지 포함해서 2씩 가는 것이 아니다. 10에 도달하기 전까지만 생성한다.
 
-[목차로 돌아가기](#toc)
-
 <a id="zip"></a>
 
 ## 8. zip — 여러 iterable을 나란히 묶기
@@ -690,8 +674,6 @@ print(dict(zip(names, averages)))  # {'Ava': 24.0, 'Ben': 15.0}
 ```
 
 **`enumerate()`는 번호를 붙이고, `zip()`은 입력들의 같은 위치 값을 묶는다.** 센서 이름에 중복이 있으면 `dict(zip(...))`에서도 나중 value가 앞의 값을 덮어쓴다.
-
-[목차로 돌아가기](#toc)
 
 <a id="functions"></a>
 
@@ -757,8 +739,6 @@ print(count, total)  # 3 60
 
 `return a, b`는 튜플을 반환한다. `load_readings()`가 `(data, error)`를 반환한다면 호출할 때도 `data, error = load_readings(...)`처럼 나눠 받는다.
 
-[목차로 돌아가기](#toc)
-
 <a id="arguments"></a>
 
 ## 10. 함수 인자 — positional / keyword / default
@@ -819,8 +799,6 @@ print(collect(2))  # [2]
 ```
 
 호출마다 새 리스트가 필요하면 `None`을 기본값으로 두고 함수 안에서 만든다. [Python 공식 문서: 기본 인자](https://docs.python.org/3.14/tutorial/controlflow.html#default-argument-values)
-
-[목차로 돌아가기](#toc)
 
 <a id="parameter-sharing"></a>
 
@@ -886,8 +864,6 @@ except TypeError as exc:
 Python은 함수 정의의 매개변수 이름만으로 타입을 제한하지 않는다. 필요한 검사를 직접 작성한다. `isinstance()`는 하위 클래스도 인정한다.
 
 **주의:** `bool`은 `int`의 하위 클래스이므로 `isinstance(True, int)`는 참이다. 문제에서 bool을 숫자로 허용하지 않는다면 별도로 제외해야 한다. 함수 정의에는 `:`를 쓰지만, 함수를 호출할 때는 `my_func(y)`처럼 끝에 `:`를 붙이지 않는다.
-
-[목차로 돌아가기](#toc)
 
 <a id="scope"></a>
 
@@ -962,8 +938,6 @@ print(count_examples())  # 2
 
 `error = 0`을 반복문 전에 한 번만 실행하고, 오류 때마다 같은 변수에 `+= 1`한다. `except` 안에서 `error = 0`을 다시 실행하면 누적되지 않는다.
 
-[목차로 돌아가기](#toc)
-
 <a id="first-class"></a>
 
 ## 13. 함수는 일급 객체 — 저장·전달·반환
@@ -1016,8 +990,6 @@ def get_operation():
 operation = get_operation()
 print(operation(2, 3))  # 5
 ```
-
-[목차로 돌아가기](#toc)
 
 <a id="lambda"></a>
 
@@ -1145,8 +1117,6 @@ print(result)  # [('Ava', 20.0), ('Ben', 20.0), ('Cara', 15.0)]
 
 기준을 튜플로 반환하면 앞의 기준부터 비교한다. `-평균`으로 평균 내림차순, 이름으로 동률 시 오름차순을 만든다. 위 코드에는 `reverse=True`를 추가하지 않는다. 단순 정렬에서 동률이면 Python 정렬은 기존 순서를 유지하는 **안정 정렬(stable sort)**이다.
 
-[목차로 돌아가기](#toc)
-
 <a id="sensor-example"></a>
 
 ## 15. 종합 예제 — 평균 → 필터 → 정렬 → 번호와 상태
@@ -1206,8 +1176,6 @@ Sensors with average >= 15.0: ['Ava', 'Ben']
 
 `selected_sensors`는 여기서는 원본 딕셔너리의 삽입 순서다. 이 목록도 평균순이어야 한다면 `average_data.items()` 대신 이미 정렬한 `sorted_average_data`를 순회한다.
 
-[목차로 돌아가기](#toc)
-
 <a id="pitfalls"></a>
 
 ## 16. 실수 점검표 — 시험 직전 확인
@@ -1242,8 +1210,6 @@ Sensors with average >= 15.0: ['Ava', 'Ben']
 | `sorted(average_data)` | 평균이 아니라 key인 센서 이름순 |
 | 정렬된 딕셔너리라고 생각한 `sorted(...)` | 반환 타입은 리스트 |
 
-[목차로 돌아가기](#toc)
-
 <a id="sources"></a>
 
 ## 17. 공식 문서
@@ -1254,5 +1220,3 @@ Sensors with average >= 15.0: ['Ava', 'Ben']
 - [이름 바인딩과 지역·전역 범위](https://docs.python.org/3.14/reference/executionmodel.html#naming-and-binding)
 - [sorted의 key와 reverse](https://docs.python.org/3.14/library/functions.html#sorted)
 - [enumerate](https://docs.python.org/3.14/library/functions.html#enumerate), [range](https://docs.python.org/3.14/library/stdtypes.html#ranges), [zip](https://docs.python.org/3.14/library/functions.html#zip), [isinstance](https://docs.python.org/3.14/library/functions.html#isinstance)
-
-[맨 위 목차로 돌아가기](#toc)

@@ -13,7 +13,11 @@ import VerticalSpace from "components/VerticalSpace"
 import { title, description, siteUrl } from "../../blog-config"
 
 const BlogIndex = ({ data }) => {
-  const posts = data.allMarkdownRemark.nodes
+  // Keep the query's newest-first order, with undated posts after dated posts.
+  const posts = _.sortBy(
+    data.allMarkdownRemark.nodes,
+    post => !post.frontmatter.date
+  )
   const tags = _.sortBy(data.allMarkdownRemark.group, ["totalCount"]).reverse()
 
   if (posts.length === 0) {

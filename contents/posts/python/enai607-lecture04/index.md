@@ -1,5 +1,5 @@
 ---
-title: "[ENAI607] Lecture 04 — 예외 처리, 모듈, 파일 입출력과 with 시험 대비"
+title: "[ENAI607] Lecture 04 — 예외 처리, 모듈, 파일 입출력과 with"
 description: "try·except·raise·finally·import·sys.path·open·readline·write·bytes·with를 예제와 출력으로 찾는 오픈북 노트"
 date: 2026-10-20T01:45:00-04:00
 update: 2026-10-20
@@ -7,7 +7,7 @@ tags:
   - python
   - ENAI607
   - open-book
-series: "ENAI607 Python 시험 대비"
+series: "ENAI607 Python"
 ---
 
 파일을 읽다가 숫자가 아닌 값을 만나면 어떻게 할까? 오류를 처리하고 다음 줄로 넘어가려면 어떻게 해야 할까? 여러 파일에 함수를 나누면 어떻게 가져다 쓸까?
@@ -87,8 +87,6 @@ with open(path, "rb") as fobj:
 ```
 
 > **특히 기억:** `except`는 오류 메시지가 아니라 **예외 클래스**로 매칭한다. `readline()`의 EOF는 `''`, 빈 줄은 보통 `'\n'`이다. `write()`와 `writelines()`는 줄바꿈을 자동 추가하지 않는다. `'w'`는 열 때 기존 내용을 지운다. `with`는 파일을 닫아 주지만 오류까지 자동으로 처리하지는 않는다.
-
-[목차로 돌아가기](#toc)
 
 <a id="exceptions"></a>
 
@@ -221,8 +219,6 @@ except InvalidDataError as exc:
     print(type(exc.__cause__).__name__)  # ValueError
 ```
 
-[목차로 돌아가기](#toc)
-
 <a id="except"></a>
 
 ## 3. try / except / as exc — 오류 잡기
@@ -270,8 +266,6 @@ for value in ["hello", None]:
 ```
 
 **주의:** `except ValueError or TypeError:`라고 쓰지 않는다. 여러 예외를 묶을 때는 `(ValueError, TypeError)`를 사용한다.
-
-[목차로 돌아가기](#toc)
 
 <a id="hierarchy"></a>
 
@@ -341,8 +335,6 @@ except ArithmeticError:
 
 `ArithmeticError`를 먼저 쓰면 `ZeroDivisionError`도 그쪽에서 처리되어 아래 처리기는 실행되지 않는다.
 
-[목차로 돌아가기](#toc)
-
 <a id="try-else"></a>
 
 ## 5. try의 else는 성공했을 때만
@@ -370,8 +362,6 @@ print(error)  # 1
 숫자 변환이 전부 끝나기 전에는 딕셔너리를 수정하지 않으므로 잘못된 줄의 일부만 들어가지 않는다. `error = 0`은 반복문 밖에서 한 번만 실행해야 누적된다.
 
 **주의:** `else` 안에서 발생한 오류는 같은 `try`의 `except`가 잡지 않는다. 또 `try`에서 `return`, `break`, `continue`로 빠져나가면 `else`도 실행하지 않는다. 성공한 경우에만 해야 하는 작업을 `else`에 분리하면 보호하려는 작업 범위가 명확해진다. [Python 공식 문서: 예외 처리](https://docs.python.org/3.14/tutorial/errors.html#handling-exceptions)
-
-[목차로 돌아가기](#toc)
 
 <a id="finally"></a>
 
@@ -471,8 +461,6 @@ finally:
 
 파일은 보통 [15절의 `with open(...)`](#with)으로 더 간단하게 정리한다. 또 **일반적인 파일 순회나 `readline()`은 끝에 도달했다고 `EOFError`를 발생시키지 않는다.** `except EOFError`로 파일이 없는 문제를 처리할 수는 없다. 이 차이는 [EOF 절](#eof)에서 확인한다.
 
-[목차로 돌아가기](#toc)
-
 <a id="modules"></a>
 
 ## 7. 모듈 module — import와 namespace
@@ -519,8 +507,6 @@ print(round(sin(pi / 6), 2))  # 0.5
 | `from math import sin` | `sin(...)` | `sin` |
 
 `from ... import *`는 출처와 이름 충돌을 파악하기 어려워지므로 시험 코드에서도 필요한 이름만 명시하는 편이 좋다.
-
-[목차로 돌아가기](#toc)
 
 <a id="own-module"></a>
 
@@ -581,8 +567,6 @@ if __name__ == "__main__":
 ```
 
 직접 실행하면 `__name__`이 `"__main__"`이라 테스트가 실행된다. 다른 파일에서 `import sensor_utils`하면 함수는 정의되지만 `main()`은 자동 호출하지 않는다. 반면 가드 밖의 최상위 코드는 최초 import 때 실행될 수 있다.
-
-[목차로 돌아가기](#toc)
 
 <a id="module-path"></a>
 
@@ -653,8 +637,6 @@ print(my_math.area(10))  # 314.0
 3. IDE가 선택한 인터프리터가 맞는가? `sys.executable`로 확인한다.
 4. 외부 패키지라면 그 인터프리터에 설치되어 있는가?
 5. 내 파일 이름이 기존 모듈을 가리고 있지 않은가?
-
-[목차로 돌아가기](#toc)
 
 <a id="open"></a>
 
@@ -735,8 +717,6 @@ r"C:\Users\Alex\Documents\hello.txt"   # raw 문자열
 "C:/Users/Alex/Documents/hello.txt"     # 슬래시 사용
 "C:\\Users\\Alex\\Documents\\hello.txt"  # 역슬래시 이스케이프
 ```
-
-[목차로 돌아가기](#toc)
 
 <a id="read"></a>
 
@@ -831,8 +811,6 @@ with open("hello.txt", "r", encoding="utf-8") as fobj:
     print(fobj.read() == first)  # True
 ```
 
-[목차로 돌아가기](#toc)
-
 <a id="strip-split"></a>
 
 ## 12. strip / split / 빈 줄 제외
@@ -877,8 +855,6 @@ print(values)  # []: 예외가 발생하지 않는다.
 ```
 
 **빈 리스트를 순회하는 comprehension은 그냥 빈 리스트를 만든다.** 측정값이 최소 하나 있어야 한다면 `len(fields) < 2`를 검사해 직접 오류를 발생시켜야 한다. `Ava,`는 빈 문자열 `''`를 숫자로 변환하려 하므로 `ValueError`가 발생한다.
-
-[목차로 돌아가기](#toc)
 
 <a id="write"></a>
 
@@ -967,8 +943,6 @@ with open("print_demo.txt", "r", encoding="utf-8") as fobj:
 
 `print(..., file=fobj)`는 여러 인자를 받고 기본 줄바꿈도 넣는다. 문제에서 `write()` 사용을 요구하면 그 요구대로 작성한다.
 
-[목차로 돌아가기](#toc)
-
 <a id="binary"></a>
 
 ## 14. 바이너리 파일 — bytes / rb / wb / hex
@@ -1028,8 +1002,6 @@ print(decoded)       # 한글
 ```
 
 `str.encode()`는 문자열 → 바이트, `bytes.decode()`는 바이트 → 문자열이다. 바이트 수와 문자 수는 같지 않을 수 있다. 파일을 텍스트 모드로 열면 이런 인코딩·디코딩을 파일 객체가 맡는다.
-
-[목차로 돌아가기](#toc)
 
 <a id="with"></a>
 
@@ -1094,8 +1066,6 @@ print(source.closed, target.closed)  # True True
 ```
 
 두 파일 모두 블록을 나올 때 닫힌다. 이 예제는 텍스트 복사이며, 이미지 같은 바이너리 데이터는 `rb`와 `wb`로 처리해야 한다.
-
-[목차로 돌아가기](#toc)
 
 <a id="sensor-example"></a>
 
@@ -1217,8 +1187,6 @@ Sensors with average >= 15.0: ['Ava', 'Ben']
 
 센서 이름은 사람 이름인지 판별하지 않는다. `Sensor_01`이나 `123`을 금지하는 별도 규칙이 없다면 문자열 이름으로 쓸 수 있다.
 
-[목차로 돌아가기](#toc)
-
 <a id="pitfalls"></a>
 
 ## 17. 실수 점검표 — 증상으로 찾기
@@ -1255,8 +1223,6 @@ Sensors with average >= 15.0: ['Ava', 'Ben']
 | read(4)는 언제나 길이 4? | 남은 데이터가 적으면 더 짧게 반환 |
 | with를 썼으니 파일 없음 오류도 없어짐? | 자동 close와 예외 처리는 별개 |
 
-[목차로 돌아가기](#toc)
-
 <a id="sources"></a>
 
 ## 18. 공식 문서
@@ -1266,5 +1232,3 @@ Sensors with average >= 15.0: ['Ava', 'Ben']
 - [site와 .pth 파일](https://docs.python.org/3.14/library/site.html)
 - [텍스트·바이너리 파일 읽기와 쓰기](https://docs.python.org/3.14/tutorial/inputoutput.html#reading-and-writing-files)
 - [open 함수의 모드와 인코딩](https://docs.python.org/3.14/library/functions.html#open)
-
-[맨 위 목차로 돌아가기](#toc)
