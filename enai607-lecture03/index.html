@@ -174,7 +174,8 @@ data-styled.g64[id="Footer__CommentWrapper-sc-zqxmks-7"]{content:"hTvPKA,"}/*!sc
 data-styled.g65[id="Footer__SpinnerWrapper-sc-zqxmks-8"]{content:"dSXEbN,"}/*!sc*/
 .iUksSM{display:none;}/*!sc*/
 data-styled.g66[id="Footer__HiddenWrapper-sc-zqxmks-9"]{content:"iUksSM,"}/*!sc*/
-</style><title data-react-helmet="true">[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda 시험 대비</title><meta data-react-helmet="true" property="og:url" content="https://alex-roh.github.io/enai607-lecture03/"/><meta data-react-helmet="true" property="og:title" content="[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda 시험 대비"/><meta data-react-helmet="true" property="og:image" content="https://alex-roh.github.io/og-image.png"/><meta data-react-helmet="true" name="description" content="ENAI607 Lecture 03: Python 3의 32쪽을 시험 중 찾아보기 쉽게 재구성한 노트다. 각 절에 원본 슬라이드 페이지를 표시했다. 코드와 설명은 학습용으로 다시 작성했으며, 보충은 슬라이드 밖의 연결 설명, 주의는 실수하기 쉬운 지점이다. 각  코드 블록은 필요한 초기값과 함수를 포함하므로 개별 실행할 수 있다. 문법 틀과 실행하면 안 되…"/><meta data-react-helmet="true" property="og:description" content="ENAI607 Lecture 03: Python 3의 32쪽을 시험 중 찾아보기 쉽게 재구성한 노트다. 각 절에 원본 슬라이드 페이지를 표시했다. 코드와 설명은 학습용으로 다시 작성했으며, 보충은 슬라이드 밖의 연결 설명, 주의는 실수하기 쉬운 지점이다. 각  코드 블록은 필요한 초기값과 함수를 포함하므로 개별 실행할 수 있다. 문법 틀과 실행하면 안 되…"/><link rel="icon" href="/favicon-32x32.png?v=fbf1b831e2f09467071e283f69ee6fbb" type="image/png"/><link rel="manifest" href="/manifest.webmanifest" crossorigin="anonymous"/><meta name="theme-color" content="#ced4da"/><link rel="apple-touch-icon" sizes="48x48" href="/icons/icon-48x48.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="256x256" href="/icons/icon-256x256.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="sitemap" type="application/xml" href="/sitemap.xml"/><link as="script" rel="preload" href="/webpack-runtime-ede8d3f7ceb3f3746e60.js"/><link as="script" rel="preload" href="/framework-31b40719cb76dbe7926d.js"/><link as="script" rel="preload" href="/styles-f2c1808a00cfb3adf39e.js"/><link as="script" rel="preload" href="/app-a81e06a5132840eccdfa.js"/><link as="script" rel="preload" href="/1bfc9850-c925103f75fbccc1ba6d.js"/><link as="script" rel="preload" href="/d7eeaac4-36c1ff09a1a840fb26fb.js"/><link as="script" rel="preload" href="/1a48c3c1-cc4fe8819746d933af93.js"/><link as="script" rel="preload" href="/commons-bb2265f0e979355f7d53.js"/><link as="script" rel="preload" href="/7c3caac6ccbcbb47fe85751a1b576b7a35334396-5d8fe7a749e87444af01.js"/><link as="script" rel="preload" href="/component---src-templates-post-jsx-f275fe26164c6ac8c6c5.js"/><link as="fetch" rel="preload" href="/page-data\enai607-lecture03\page-data.json" crossorigin="anonymous"/><link as="fetch" rel="preload" href="/page-data\app-data.json" crossorigin="anonymous"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><header class="Header__HeaderWrapper-sc-12xtq5x-0 eWCYrK"><div class="Header__Inner-sc-12xtq5x-1 gSGTJH"><span class="Header__BlogTitle-sc-12xtq5x-2 cnqXNp"><a href="/">Cave</a></span><div class="Header__Menu-sc-12xtq5x-3 kIgAnV"><div class="Header__ToggleWrapper-sc-12xtq5x-4 jyLtll"><div class="Header__IconRail-sc-12xtq5x-5 czpHkz"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"></path></svg><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M283.211 512c78.962 0 151.079-35.925 198.857-94.792 7.068-8.708-.639-21.43-11.562-19.35-124.203 23.654-238.262-71.576-238.262-196.954 0-72.222 38.662-138.635 101.498-174.394 9.686-5.512 7.25-20.197-3.756-22.23A258.156 258.156 0 0 0 283.211 0c-141.309 0-256 114.511-256 256 0 141.309 114.511 256 256 256z"></path></svg></div></div><a href="/tags"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"></path></svg></a><a href="/series"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M48 48a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm448 16H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></svg></a><a href="/rss.xml"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M128.081 415.959c0 35.369-28.672 64.041-64.041 64.041S0 451.328 0 415.959s28.672-64.041 64.041-64.041 64.04 28.673 64.04 64.041zm175.66 47.25c-8.354-154.6-132.185-278.587-286.95-286.95C7.656 175.765 0 183.105 0 192.253v48.069c0 8.415 6.49 15.472 14.887 16.018 111.832 7.284 201.473 96.702 208.772 208.772.547 8.397 7.604 14.887 16.018 14.887h48.069c9.149.001 16.489-7.655 15.995-16.79zm144.249.288C439.596 229.677 251.465 40.445 16.503 32.01 7.473 31.686 0 38.981 0 48.016v48.068c0 8.625 6.835 15.645 15.453 15.999 191.179 7.839 344.627 161.316 352.465 352.465.353 8.618 7.373 15.453 15.999 15.453h48.068c9.034-.001 16.329-7.474 16.005-16.504z"></path></svg></a><a href="/search"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" style="margin-right:0" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path></svg></a></div></div></header><div class="Body__BodyWrapper-sc-v34kqr-0 dAWskm"><article class="Article-sc-1tzp0ke-0 jvdCbx"><div class="Header__Wrapper-sc-1d3p6ct-0 kQhbb"><h1 class="Header__ArticleTitle-sc-1d3p6ct-1 eDJcvQ"> <!-- -->[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda 시험 대비<!-- --> </h1><div class="Header__Information-sc-1d3p6ct-2 besjYa"><span class="Header__Author-sc-1d3p6ct-3 aMdsf"> @<!-- -->Alex<!-- --> </span><span class="Header__Date-sc-1d3p6ct-4 bUYGnA">· <!-- -->October 20, 2026<!-- --> </span><span class="Header__Date-sc-1d3p6ct-4 bUYGnA">· <!-- -->28<!-- --> min read </span></div><div class="TagList__TagListWrapper-sc-s1uz5f-0 glAEqt"><a href="/tags?q=python"><div class="TagList__TagLink-sc-s1uz5f-1 hnWGMX">python</div></a><a href="/tags?q=ENAI607"><div class="TagList__TagLink-sc-s1uz5f-1 hnWGMX">ENAI607</div></a><a href="/tags?q=open-book"><div class="TagList__TagLink-sc-s1uz5f-1 hnWGMX">open-book</div></a></div><hr class="Divider-sc-1jz0jl-0 DXwrD"/></div><div class="Series__SeriesWrapper-sc-ifd2zz-0 gUBEtB"><h2 class="Series__SeriesHeader-sc-ifd2zz-1 cquswq"><a href="/series/ENAI607-Python-시험-대비">SERIES: <!-- -->ENAI607 Python 시험 대비</a> <span>(<!-- -->2<!-- -->)</span></h2><ul class="Series__PostWrapper-sc-ifd2zz-2 kvRELr"><li class="Series__Post-sc-ifd2zz-3 iuCKqf"><a aria-current="page" class="" href="/enai607-lecture03/">[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda 시험 대비</a> <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M872 474H286.9l350.2-304c5.6-4.9 2.2-14-5.2-14h-88.5c-3.9 0-7.6 1.4-10.5 3.9L155 487.8a31.96 31.96 0 0 0 0 48.3L535.1 866c1.5 1.3 3.3 2 5.2 2h91.5c7.4 0 10.8-9.2 5.2-14L286.9 550H872c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"></path></svg> </li><li class="Series__Post-sc-ifd2zz-3 bvkBcE"><a href="/enai607-lecture04/">[ENAI607] Lecture 04 — 예외 처리, 모듈, 파일 입출력과 with 시험 대비</a> <!-- --> </li></ul></div><div class="Body__Wrapper-sc-7hat30-0 demLdO"><div class="RevealOnScroll__StyledWrapper-sc-j177rt-0 eDbujk"><div class="Toc__TocWrapper-sc-1axrmab-0 jORHVv"><div></div></div></div><div id="article-body" itemProp="articleBody" class="StyledMarkdown-sc-lqtcur-0 CRVhM"><p>ENAI607 <strong>Lecture 03: Python 3</strong>의 32쪽을 시험 중 찾아보기 쉽게 재구성한 노트다. 각 절에 원본 슬라이드 페이지를 표시했다. 코드와 설명은 학습용으로 다시 작성했으며, <strong>보충</strong>은 슬라이드 밖의 연결 설명, <strong>주의</strong>는 실수하기 쉬운 지점이다.</p>
+</style><title data-react-helmet="true">[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda 시험 대비</title><meta data-react-helmet="true" property="og:url" content="https://alex-roh.github.io/enai607-lecture03/"/><meta data-react-helmet="true" property="og:title" content="[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda 시험 대비"/><meta data-react-helmet="true" property="og:image" content="https://alex-roh.github.io/og-image.png"/><meta data-react-helmet="true" name="description" content="센서 이름마다 측정값을 모으고, 평균을 계산한 다음, 높은 순서대로 정렬하려면 어떤 문법이 필요할까? 이 글은 딕셔너리, comprehension, 조건문과 반복문, 함수, 스코프, lambda와 정렬을 처음부터 설명한다. 개념과 실행 예제, 예상 결과를 함께 읽고, 시험 중에는 목차와 함수 이름으로 필요한 코드를 찾을 수 있게 구성했다. 각  코드 블록…"/><meta data-react-helmet="true" property="og:description" content="센서 이름마다 측정값을 모으고, 평균을 계산한 다음, 높은 순서대로 정렬하려면 어떤 문법이 필요할까? 이 글은 딕셔너리, comprehension, 조건문과 반복문, 함수, 스코프, lambda와 정렬을 처음부터 설명한다. 개념과 실행 예제, 예상 결과를 함께 읽고, 시험 중에는 목차와 함수 이름으로 필요한 코드를 찾을 수 있게 구성했다. 각  코드 블록…"/><link rel="icon" href="/favicon-32x32.png?v=fbf1b831e2f09467071e283f69ee6fbb" type="image/png"/><link rel="manifest" href="/manifest.webmanifest" crossorigin="anonymous"/><meta name="theme-color" content="#ced4da"/><link rel="apple-touch-icon" sizes="48x48" href="/icons/icon-48x48.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="256x256" href="/icons/icon-256x256.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png?v=fbf1b831e2f09467071e283f69ee6fbb"/><link rel="sitemap" type="application/xml" href="/sitemap.xml"/><link as="script" rel="preload" href="/webpack-runtime-ede8d3f7ceb3f3746e60.js"/><link as="script" rel="preload" href="/framework-31b40719cb76dbe7926d.js"/><link as="script" rel="preload" href="/styles-f2c1808a00cfb3adf39e.js"/><link as="script" rel="preload" href="/app-a81e06a5132840eccdfa.js"/><link as="script" rel="preload" href="/1bfc9850-c925103f75fbccc1ba6d.js"/><link as="script" rel="preload" href="/d7eeaac4-36c1ff09a1a840fb26fb.js"/><link as="script" rel="preload" href="/1a48c3c1-cc4fe8819746d933af93.js"/><link as="script" rel="preload" href="/commons-bb2265f0e979355f7d53.js"/><link as="script" rel="preload" href="/7c3caac6ccbcbb47fe85751a1b576b7a35334396-5d8fe7a749e87444af01.js"/><link as="script" rel="preload" href="/component---src-templates-post-jsx-f275fe26164c6ac8c6c5.js"/><link as="fetch" rel="preload" href="/page-data\enai607-lecture03\page-data.json" crossorigin="anonymous"/><link as="fetch" rel="preload" href="/page-data\app-data.json" crossorigin="anonymous"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><header class="Header__HeaderWrapper-sc-12xtq5x-0 eWCYrK"><div class="Header__Inner-sc-12xtq5x-1 gSGTJH"><span class="Header__BlogTitle-sc-12xtq5x-2 cnqXNp"><a href="/">Cave</a></span><div class="Header__Menu-sc-12xtq5x-3 kIgAnV"><div class="Header__ToggleWrapper-sc-12xtq5x-4 jyLtll"><div class="Header__IconRail-sc-12xtq5x-5 czpHkz"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"></path></svg><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M283.211 512c78.962 0 151.079-35.925 198.857-94.792 7.068-8.708-.639-21.43-11.562-19.35-124.203 23.654-238.262-71.576-238.262-196.954 0-72.222 38.662-138.635 101.498-174.394 9.686-5.512 7.25-20.197-3.756-22.23A258.156 258.156 0 0 0 283.211 0c-141.309 0-256 114.511-256 256 0 141.309 114.511 256 256 256z"></path></svg></div></div><a href="/tags"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"></path></svg></a><a href="/series"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M48 48a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm448 16H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></svg></a><a href="/rss.xml"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M128.081 415.959c0 35.369-28.672 64.041-64.041 64.041S0 451.328 0 415.959s28.672-64.041 64.041-64.041 64.04 28.673 64.04 64.041zm175.66 47.25c-8.354-154.6-132.185-278.587-286.95-286.95C7.656 175.765 0 183.105 0 192.253v48.069c0 8.415 6.49 15.472 14.887 16.018 111.832 7.284 201.473 96.702 208.772 208.772.547 8.397 7.604 14.887 16.018 14.887h48.069c9.149.001 16.489-7.655 15.995-16.79zm144.249.288C439.596 229.677 251.465 40.445 16.503 32.01 7.473 31.686 0 38.981 0 48.016v48.068c0 8.625 6.835 15.645 15.453 15.999 191.179 7.839 344.627 161.316 352.465 352.465.353 8.618 7.373 15.453 15.999 15.453h48.068c9.034-.001 16.329-7.474 16.005-16.504z"></path></svg></a><a href="/search"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" style="margin-right:0" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path></svg></a></div></div></header><div class="Body__BodyWrapper-sc-v34kqr-0 dAWskm"><article class="Article-sc-1tzp0ke-0 jvdCbx"><div class="Header__Wrapper-sc-1d3p6ct-0 kQhbb"><h1 class="Header__ArticleTitle-sc-1d3p6ct-1 eDJcvQ"> <!-- -->[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda 시험 대비<!-- --> </h1><div class="Header__Information-sc-1d3p6ct-2 besjYa"><span class="Header__Author-sc-1d3p6ct-3 aMdsf"> @<!-- -->Alex<!-- --> </span><span class="Header__Date-sc-1d3p6ct-4 bUYGnA">· <!-- -->October 20, 2026<!-- --> </span><span class="Header__Date-sc-1d3p6ct-4 bUYGnA">· <!-- -->27<!-- --> min read </span></div><div class="TagList__TagListWrapper-sc-s1uz5f-0 glAEqt"><a href="/tags?q=python"><div class="TagList__TagLink-sc-s1uz5f-1 hnWGMX">python</div></a><a href="/tags?q=ENAI607"><div class="TagList__TagLink-sc-s1uz5f-1 hnWGMX">ENAI607</div></a><a href="/tags?q=open-book"><div class="TagList__TagLink-sc-s1uz5f-1 hnWGMX">open-book</div></a></div><hr class="Divider-sc-1jz0jl-0 DXwrD"/></div><div class="Series__SeriesWrapper-sc-ifd2zz-0 gUBEtB"><h2 class="Series__SeriesHeader-sc-ifd2zz-1 cquswq"><a href="/series/ENAI607-Python-시험-대비">SERIES: <!-- -->ENAI607 Python 시험 대비</a> <span>(<!-- -->2<!-- -->)</span></h2><ul class="Series__PostWrapper-sc-ifd2zz-2 kvRELr"><li class="Series__Post-sc-ifd2zz-3 iuCKqf"><a aria-current="page" class="" href="/enai607-lecture03/">[ENAI607] Lecture 03 — 딕셔너리, 제어문, 함수와 lambda 시험 대비</a> <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M872 474H286.9l350.2-304c5.6-4.9 2.2-14-5.2-14h-88.5c-3.9 0-7.6 1.4-10.5 3.9L155 487.8a31.96 31.96 0 0 0 0 48.3L535.1 866c1.5 1.3 3.3 2 5.2 2h91.5c7.4 0 10.8-9.2 5.2-14L286.9 550H872c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"></path></svg> </li><li class="Series__Post-sc-ifd2zz-3 bvkBcE"><a href="/enai607-lecture04/">[ENAI607] Lecture 04 — 예외 처리, 모듈, 파일 입출력과 with 시험 대비</a> <!-- --> </li></ul></div><div class="Body__Wrapper-sc-7hat30-0 demLdO"><div class="RevealOnScroll__StyledWrapper-sc-j177rt-0 eDbujk"><div class="Toc__TocWrapper-sc-1axrmab-0 jORHVv"><div></div></div></div><div id="article-body" itemProp="articleBody" class="StyledMarkdown-sc-lqtcur-0 CRVhM"><p>센서 이름마다 측정값을 모으고, 평균을 계산한 다음, 높은 순서대로 정렬하려면 어떤 문법이 필요할까?</p>
+<p>이 글은 <strong>딕셔너리, comprehension, 조건문과 반복문, 함수, 스코프, lambda와 정렬</strong>을 처음부터 설명한다. 개념과 실행 예제, 예상 결과를 함께 읽고, 시험 중에는 목차와 함수 이름으로 필요한 코드를 찾을 수 있게 구성했다.</p>
 <p>각 <code class="language-text">python</code> 코드 블록은 필요한 초기값과 함수를 포함하므로 개별 실행할 수 있다. 문법 틀과 실행하면 안 되는 코드는 <code class="language-text">text</code> 블록으로 구분했다. 예제는 Python 3.14 기준이다.</p>
 <p><strong>찾는 방법:</strong> 아래 목차를 클릭하거나 <code class="language-text">Ctrl+F</code>로 <code class="language-text">items</code>, <code class="language-text">copy</code>, <code class="language-text">enumerate</code>, <code class="language-text">lambda</code>, <code class="language-text">global</code>, <code class="language-text">return</code> 같은 함수·키워드를 검색한다. 블로그의 검색은 본문도 검색하므로 한국어 설명과 영문 이름을 함께 적었다.</p>
 <p><a id="toc"></a></p>
@@ -276,8 +277,8 @@ data-styled.g66[id="Footer__HiddenWrapper-sc-zqxmks-9"]{content:"iUksSM,"}/*!sc*
 <td><a href="#pitfalls">16. 실수 점검표</a></td>
 </tr>
 <tr>
-<td>원본 슬라이드별 위치와 공식 문서</td>
-<td><a href="#sources">17. 범위와 참고 자료</a></td>
+<td>공식 문서</td>
+<td><a href="#sources">17. 참고 자료</a></td>
 </tr>
 </tbody>
 </table>
@@ -321,7 +322,6 @@ sorted(d.items(), key=lambda pair: pair[1], reverse=True)</code></pre></div>
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="dictionary"></a></p>
 <h2>1. 딕셔너리 dict — key로 value 찾기</h2>
-<p><strong>슬라이드 2–7쪽: Dictionaries 1/9–6/9.</strong></p>
 <p>딕셔너리는 <strong>key와 value의 대응 관계(mapping)</strong>를 저장한다. key를 알면 대응하는 value를 찾는다. 리스트처럼 위치로 찾는 자료형은 아니다. 해시 테이블을 사용하므로 일반적인 key 조회가 효율적이다.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">readings <span class="token operator">=</span> <span class="token punctuation">{</span>
     <span class="token string">"Ava"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
@@ -333,11 +333,11 @@ sorted(d.items(), key=lambda pair: pair[1], reverse=True)</code></pre></div>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>              <span class="token comment"># {}: 빈 딕셔너리</span></code></pre></div>
 <p>value에는 숫자, 문자열, 리스트, 튜플, 다른 딕셔너리 등을 넣을 수 있다.</p>
 <blockquote>
-<p><strong>슬라이드 보충:</strong> 2·8·20·21쪽에는 딕셔너리 순서가 임의라고 적혀 있다. <strong>Python 3.7 이상에서는 삽입 순서가 보장된다.</strong> 다만 이름순·숫자순으로 자동 정렬되는 것은 아니다. 정렬이 필요하면 명시적으로 <code class="language-text">sorted()</code>를 사용한다. <a href="https://docs.python.org/3.14/library/stdtypes.html#mapping-types-dict">Python 공식 문서: dict</a></p>
+<p><strong>기억:</strong> 딕셔너리는 <strong>Python 3.7 이상에서 삽입 순서가 보장된다.</strong> 다만 이름순·숫자순으로 자동 정렬되는 것은 아니다. 정렬이 필요하면 명시적으로 <code class="language-text">sorted()</code>를 사용한다. <a href="https://docs.python.org/3.14/library/stdtypes.html#mapping-types-dict">Python 공식 문서: dict</a></p>
 </blockquote>
 <p><a id="dict-keys"></a></p>
 <h3>1.1 key 규칙 — unique, hashable, immutable</h3>
-<p>슬라이드의 기본 규칙은 key가 불변이어야 한다는 것이다. 더 정확한 요건은 <strong>hashable(해시 가능)</strong>이다. 이 강의에서 다루는 기본 타입은 다음처럼 구분하면 된다.</p>
+<p>딕셔너리의 key는 <strong>hashable(해시 가능)</strong>이어야 한다. 기본 타입에서는 문자열·숫자·해시 가능한 원소로 이루어진 튜플을 사용할 수 있고, 리스트나 딕셔너리는 사용할 수 없다.</p>
 <table>
 <thead>
 <tr>
@@ -391,7 +391,7 @@ data <span class="token operator">=</span> <span class="token punctuation">{</sp
     <span class="token keyword">print</span><span class="token punctuation">(</span>averages<span class="token punctuation">[</span><span class="token string">"Cara"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 <span class="token keyword">except</span> KeyError<span class="token punctuation">:</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"없는 센서"</span><span class="token punctuation">)</span>  <span class="token comment"># 없는 센서</span></code></pre></div>
-<p><strong>보충: <code class="language-text">get()</code></strong>은 key가 없을 때 사용할 기본값을 지정한다.</p>
+<p><strong><code class="language-text">get()</code></strong>은 key가 없을 때 사용할 기본값을 지정한다.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">averages <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"Ava"</span><span class="token punctuation">:</span> <span class="token number">24.0</span><span class="token punctuation">}</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>averages<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"Ava"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>        <span class="token comment"># 24.0</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>averages<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"Ben"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>        <span class="token comment"># None</span>
@@ -415,7 +415,7 @@ data<span class="token punctuation">[</span><span class="token string">"Ben"</sp
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token number">24.0</span> <span class="token keyword">in</span> data<span class="token punctuation">)</span>           <span class="token comment"># False: key 중에는 24.0이 없다.</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token number">24.0</span> <span class="token keyword">in</span> data<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># True: value를 검사하려면 values()</span></code></pre></div>
 <p><a id="dict-accumulate"></a></p>
-<h3>1.5 보충 — 같은 이름의 리스트에 값 누적하기</h3>
+<h3>1.5 같은 이름의 리스트에 값 누적하기</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">data <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"Ava"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">10.0</span><span class="token punctuation">,</span> <span class="token number">20.0</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
 name <span class="token operator">=</span> <span class="token string">"Ava"</span>
 values <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">30.0</span><span class="token punctuation">,</span> <span class="token number">40.0</span><span class="token punctuation">]</span>
@@ -437,7 +437,6 @@ b<span class="token punctuation">.</span>extend<span class="token punctuation">(
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="copy"></a></p>
 <h2>2. 복사 — 별칭, shallow copy, 내부 리스트 공유</h2>
-<p><strong>슬라이드 5쪽: Dictionaries 4/9.</strong></p>
 <p><code class="language-text">b = a</code>는 딕셔너리를 복제하지 않는다. 두 이름이 <strong>같은 딕셔너리</strong>를 가리킨다.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">a <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"Ava"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
 b <span class="token operator">=</span> a
@@ -457,7 +456,7 @@ b<span class="token punctuation">[</span><span class="token string">"Ava"</span>
 b<span class="token punctuation">[</span><span class="token string">"Ben"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">99</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span><span class="token string">"Ben"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>                 <span class="token comment"># 15: b의 key/value 연결만 변경</span></code></pre></div>
 <p><strong>시험 포인트:</strong> 내부 리스트를 수정하는 것과, 복사본에서 value를 통째로 교체하는 것은 다르다.</p>
-<p>보충으로 내부 리스트까지 독립시키려면 <code class="language-text">deepcopy()</code>를 사용할 수 있다.</p>
+<p>내부 리스트까지 독립시키려면 <code class="language-text">deepcopy()</code>를 사용할 수 있다.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">from</span> copy <span class="token keyword">import</span> deepcopy
 
 a <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"Ava"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
@@ -468,7 +467,6 @@ b<span class="token punctuation">[</span><span class="token string">"Ava"</span>
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="dict-iteration"></a></p>
 <h2>3. keys / values / items — 순회와 리스트 변환</h2>
-<p><strong>슬라이드 8–9·20–21쪽.</strong></p>
 <table>
 <thead>
 <tr>
@@ -527,7 +525,6 @@ constants <span class="token operator">=</span> <span class="token builtin">dict
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="comprehension"></a></p>
 <h2>4. comprehension — 리스트와 딕셔너리 만들기</h2>
-<p><strong>슬라이드 10쪽: Dictionaries 9/9. 리스트와의 비교는 보충.</strong></p>
 <h3>4.1 기본형 — 값만 만들까, key/value를 만들까?</h3>
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">[표현식 for 변수 in 반복할_대상]                   # list
 {key_표현식: value_표현식 for 변수 in 반복할_대상}  # dict</code></pre></div>
@@ -597,7 +594,6 @@ field in fields[1:]                 # 포함 여부 검사; 반복이 아님
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="conditionals"></a></p>
 <h2>5. 조건문 — if / elif / else / 조건 표현식</h2>
-<p><strong>슬라이드 11–14쪽: Control Flow 1/11–4/11.</strong></p>
 <h3>5.1 if와 여러 갈래의 elif</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">score <span class="token operator">=</span> <span class="token number">75</span>
 
@@ -610,7 +606,7 @@ field in fields[1:]                 # 포함 여부 검사; 반복이 아님
 
 <span class="token keyword">print</span><span class="token punctuation">(</span>grade<span class="token punctuation">)</span>  <span class="token comment"># B</span></code></pre></div>
 <p>조건을 위에서부터 검사하고 <strong>처음 참이 된 갈래 하나만</strong> 실행한다. <code class="language-text">if</code>를 여러 개 따로 쓰면 각각 검사하므로 여러 블록이 실행될 수 있다. 각 헤더 끝의 <strong>콜론 <code class="language-text">:</code>과 들여쓰기</strong>를 기억한다.</p>
-<p>슬라이드 12쪽의 switch 관련 설명은 고전적인 <code class="language-text">switch</code> 문이 없다는 의미로 읽으면 된다. Python 3.10부터는 구조적 패턴 매칭인 <code class="language-text">match/case</code>도 있지만 이 글의 강의 범위에서는 <code class="language-text">if/elif/else</code>를 사용한다. <a href="https://docs.python.org/3.14/tutorial/controlflow.html#match-statements">Python 공식 문서: match</a></p>
+<p>Python에는 고전적인 <code class="language-text">switch</code> 문은 없지만, Python 3.10부터 구조적 패턴 매칭인 <code class="language-text">match/case</code>를 사용할 수 있다. 이 글에서는 여러 조건을 나누는 기본 문법인 <code class="language-text">if/elif/else</code>에 집중한다. <a href="https://docs.python.org/3.14/tutorial/controlflow.html#match-statements">Python 공식 문서: match</a></p>
 <h3>5.2 복합 조건 — and / or / not / in</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">x <span class="token operator">=</span> <span class="token number">3</span>
 y <span class="token operator">=</span> <span class="token number">6</span>
@@ -622,7 +618,7 @@ numbers <span class="token operator">=</span> <span class="token punctuation">[<
 <span class="token keyword">if</span> x <span class="token operator">==</span> <span class="token number">3</span> <span class="token keyword">or</span> y <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"둘 중 하나 이상 참"</span><span class="token punctuation">)</span>  <span class="token comment"># 둘 중 하나 이상 참</span></code></pre></div>
 <p><code class="language-text">and</code>는 두 조건 모두, <code class="language-text">or</code>는 하나 이상 참이면 조건을 만족한다. <code class="language-text">not</code>은 참/거짓을 뒤집는다. <strong><code class="language-text">=</code>는 대입, <code class="language-text">==</code>는 같은 값인지 비교</strong>한다.</p>
-<h3>5.3 보충 — truth value, 빈 리스트 검사</h3>
+<h3>5.3 truth value, 빈 리스트 검사</h3>
 <p><code class="language-text">if values:</code>는 리스트가 비어 있지 않은지 확인하는 데 사용할 수 있다.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">values <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">]</span>
 <span class="token keyword">if</span> values<span class="token punctuation">:</span>
@@ -657,7 +653,6 @@ parity <span class="token operator">=</span> <span class="token string">"Even"</
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="while"></a></p>
 <h2>6. while / break / continue / pass</h2>
-<p><strong>슬라이드 13·15–17쪽.</strong></p>
 <h3>6.1 while — 조건을 다시 검사하면서 반복</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">x <span class="token operator">=</span> <span class="token number">0</span>
 <span class="token keyword">while</span> x <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">:</span>
@@ -726,7 +721,6 @@ parity <span class="token operator">=</span> <span class="token string">"Even"</
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="for-enumerate"></a></p>
 <h2>7. for / enumerate / range</h2>
-<p><strong>슬라이드 18–21쪽: Control Flow 8/11–11/11.</strong></p>
 <h3>7.1 원소가 필요하면 for item in iterable</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">names <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Ava"</span><span class="token punctuation">,</span> <span class="token string">"Ben"</span><span class="token punctuation">,</span> <span class="token string">"Cara"</span><span class="token punctuation">]</span>
 <span class="token keyword">for</span> name <span class="token keyword">in</span> names<span class="token punctuation">:</span>
@@ -774,7 +768,6 @@ range(start, stop, step)</code></pre></div>
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="zip"></a></p>
 <h2>8. zip — 여러 iterable을 나란히 묶기</h2>
-<p><strong>슬라이드 22쪽: Iterating Over Multiple Sequences.</strong></p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">numbers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
 fruits <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Apple"</span><span class="token punctuation">,</span> <span class="token string">"Orange"</span><span class="token punctuation">,</span> <span class="token string">"Pear"</span><span class="token punctuation">]</span>
 
@@ -792,7 +785,6 @@ averages <span class="token operator">=</span> <span class="token punctuation">[
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="functions"></a></p>
 <h2>9. def / return / None / docstring</h2>
-<p><strong>슬라이드 23–24쪽: Functions 1/10–2/10.</strong></p>
 <h3>9.1 함수 정의와 호출</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">factorial</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""Return n! for a nonnegative integer n."""</span>
@@ -826,7 +818,7 @@ y <span class="token operator">=</span> calculate_total<span class="token punctu
 
 <span class="token keyword">print</span><span class="token punctuation">(</span>square<span class="token punctuation">.</span>__doc__<span class="token punctuation">)</span>  <span class="token comment"># Return x multiplied by itself.</span>
 <span class="token builtin">help</span><span class="token punctuation">(</span>square<span class="token punctuation">)</span>           <span class="token comment"># 함수 이름, 매개변수, docstring 표시</span></code></pre></div>
-<h3>9.4 보충 — 여러 결과를 튜플로 반환</h3>
+<h3>9.4 여러 결과를 튜플로 반환</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">measurement_summary</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span>
 
@@ -836,7 +828,6 @@ count<span class="token punctuation">,</span> total <span class="token operator"
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="arguments"></a></p>
 <h2>10. 함수 인자 — positional / keyword / default</h2>
-<p><strong>슬라이드 25–26쪽: Functions 3/10–4/10.</strong></p>
 <h3>10.1 위치 인자와 키워드 인자</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">power</span><span class="token punctuation">(</span>base<span class="token punctuation">,</span> exponent<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">return</span> base <span class="token operator">**</span> exponent
@@ -856,8 +847,8 @@ power(2)              # TypeError: exponent가 빠짐</code></pre></div>
 <span class="token keyword">print</span><span class="token punctuation">(</span>describe<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>         <span class="token comment"># (10, 'a', 2, 'Hello')</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>describe<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"Bye"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># (10, 'a', 2, 'Bye')</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>describe<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">,</span> message<span class="token operator">=</span><span class="token string">"Bye"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># (10, 'a', 0, 'Bye')</span></code></pre></div>
-<p>슬라이드의 일반 매개변수 형태에서는 <strong>기본값이 없는 매개변수 뒤에 기본값이 있는 매개변수</strong>를 둔다. <code class="language-text">def f(a=0, b):</code>처럼 쓰면 문법 오류다.</p>
-<h3>10.3 보충 — 리스트를 기본값으로 두는 함정</h3>
+<p>위 예제처럼 일반적인 위치·키워드 매개변수를 정의할 때는 <strong>기본값이 없는 매개변수 뒤에 기본값이 있는 매개변수</strong>를 둔다. <code class="language-text">def f(a=0, b):</code>처럼 쓰면 문법 오류다.</p>
+<h3>10.3 리스트를 기본값으로 두는 함정</h3>
 <p>기본값 객체는 호출마다 새로 만들어지는 것이 아니다. 함수 정의 시 만들어져 다음 호출에서도 사용될 수 있다.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">collect_bad</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> bucket<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     bucket<span class="token punctuation">.</span>append<span class="token punctuation">(</span>value<span class="token punctuation">)</span>
@@ -878,7 +869,6 @@ power(2)              # TypeError: exponent가 빠짐</code></pre></div>
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="parameter-sharing"></a></p>
 <h2>11. 함수 인자 — 객체 공유와 isinstance</h2>
-<p><strong>슬라이드 27쪽: Functions 5/10.</strong></p>
 <h3>11.1 원본 수정 mutation vs 이름 재대입 rebinding</h3>
 <p>함수의 매개변수는 전달된 <strong>객체를 가리키는 이름</strong>이다. 리스트 같은 가변 객체의 내부를 바꾸면 호출한 쪽에서도 변화가 보인다.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">replace_first</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -897,7 +887,7 @@ result <span class="token operator">=</span> replace_list<span class="token punc
 <span class="token keyword">print</span><span class="token punctuation">(</span>numbers<span class="token punctuation">)</span>  <span class="token comment"># [0, 1, 2]</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span>   <span class="token comment"># [99, 100]</span></code></pre></div>
 <blockquote>
-<p><strong>기억:</strong> <code class="language-text">values[0] = ...</code>와 <code class="language-text">values = ...</code>는 다르다. 슬라이드의 “by reference”는 객체를 공유한다는 뜻으로 이해하되, 함수가 호출자 변수 자체를 다른 객체에 재연결해 주는 것은 아니다. 원본을 유지해야 하면 복사본을 전달하거나 함수 안에서 복사한다. <a href="https://docs.python.org/3.14/tutorial/controlflow.html#defining-functions">Python 공식 문서: 함수 정의</a></p>
+<p><strong>기억:</strong> <code class="language-text">values[0] = ...</code>와 <code class="language-text">values = ...</code>는 다르다. 함수와 호출한 쪽은 전달된 객체를 공유하지만, 함수 안에서 매개변수에 재대입한다고 호출자 변수 자체가 다른 객체를 가리키게 되지는 않는다. 원본을 유지해야 하면 복사본을 전달하거나 함수 안에서 복사한다. <a href="https://docs.python.org/3.14/tutorial/controlflow.html#defining-functions">Python 공식 문서: 함수 정의</a></p>
 </blockquote>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">replace_first</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span><span class="token punctuation">:</span>
     values<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
@@ -922,11 +912,10 @@ replace_first<span class="token punctuation">(</span>numbers<span class="token p
 <span class="token keyword">except</span> TypeError <span class="token keyword">as</span> exc<span class="token punctuation">:</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span>exc<span class="token punctuation">)</span>  <span class="token comment"># 정수가 필요합니다.</span></code></pre></div>
 <p>Python은 함수 정의의 매개변수 이름만으로 타입을 제한하지 않는다. 필요한 검사를 직접 작성한다. <code class="language-text">isinstance()</code>는 하위 클래스도 인정한다.</p>
-<p><strong>보충:</strong> <code class="language-text">bool</code>은 <code class="language-text">int</code>의 하위 클래스이므로 <code class="language-text">isinstance(True, int)</code>는 참이다. 문제에서 bool을 숫자로 허용하지 않는다면 별도로 제외해야 한다. 슬라이드 27쪽의 <code class="language-text">my_func(y):</code>는 호출문이므로 끝의 <code class="language-text">:</code>를 제거해야 실행된다.</p>
+<p><strong>주의:</strong> <code class="language-text">bool</code>은 <code class="language-text">int</code>의 하위 클래스이므로 <code class="language-text">isinstance(True, int)</code>는 참이다. 문제에서 bool을 숫자로 허용하지 않는다면 별도로 제외해야 한다. 함수 정의에는 <code class="language-text">:</code>를 쓰지만, 함수를 호출할 때는 <code class="language-text">my_func(y)</code>처럼 끝에 <code class="language-text">:</code>를 붙이지 않는다.</p>
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="scope"></a></p>
 <h2>12. 지역·전역 변수 — local / global / 스코프</h2>
-<p><strong>슬라이드 28–29쪽: Functions 6/10–7/10.</strong></p>
 <h3>12.1 함수 안의 대입은 기본적으로 지역 변수</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">a <span class="token operator">=</span> <span class="token string">"One"</span>
 b <span class="token operator">=</span> <span class="token string">"Two"</span>
@@ -974,7 +963,7 @@ update_values<span class="token punctuation">(</span><span class="token punctuat
 </tr>
 </tbody>
 </table>
-<h3>12.2 보충 — UnboundLocalError가 나는 이유</h3>
+<h3>12.2 UnboundLocalError가 나는 이유</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">count <span class="token operator">=</span> <span class="token number">0</span>
 
 <span class="token keyword">def</span> <span class="token function">increment_bad</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -993,7 +982,7 @@ increment<span class="token punctuation">(</span><span class="token punctuation"
 <span class="token keyword">print</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>  <span class="token comment"># 1</span></code></pre></div>
 <p><code class="language-text">count += 1</code>은 기존 값을 읽은 뒤 대입한다. 함수 안에 대입이 있으므로 <code class="language-text">global</code> 선언이 없으면 <code class="language-text">count</code>를 지역 이름으로 취급하는데, 읽을 시점에는 지역 값이 없어 오류가 난다.</p>
 <p>가능하면 전역 변수 대신 입력과 반환값으로 상태를 전달하면 의존 관계가 명확해진다.</p>
-<h3>12.3 보충 — if / for / try는 별도 지역 범위를 만들지 않는다</h3>
+<h3>12.3 if / for / try는 별도 지역 범위를 만들지 않는다</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">count_examples</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     error <span class="token operator">=</span> <span class="token number">0</span>
     <span class="token keyword">for</span> text <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token string">"bad"</span><span class="token punctuation">,</span> <span class="token string">"10"</span><span class="token punctuation">,</span> <span class="token string">"oops"</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
@@ -1004,11 +993,10 @@ increment<span class="token punctuation">(</span><span class="token punctuation"
     <span class="token keyword">return</span> error
 
 <span class="token keyword">print</span><span class="token punctuation">(</span>count_examples<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 2</span></code></pre></div>
-<p><code class="language-text">error = 0</code>을 반복문 전에 한 번만 실행하고, 오류 때마다 같은 변수에 <code class="language-text">+= 1</code>한다. <code class="language-text">except</code> 안에서 <code class="language-text">error = 0</code>을 다시 실행하면 누적되지 않는다. 예외 처리 자체는 이 강의의 중심 범위 밖인 보충 예제다.</p>
+<p><code class="language-text">error = 0</code>을 반복문 전에 한 번만 실행하고, 오류 때마다 같은 변수에 <code class="language-text">+= 1</code>한다. <code class="language-text">except</code> 안에서 <code class="language-text">error = 0</code>을 다시 실행하면 누적되지 않는다.</p>
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="first-class"></a></p>
 <h2>13. 함수는 일급 객체 — 저장·전달·반환</h2>
-<p><strong>슬라이드 30쪽: Functions 8/10.</strong></p>
 <p>함수 자체를 변수나 자료구조에 저장하고, 다른 함수에 전달하거나 반환할 수 있다.</p>
 <h3>13.1 함수 이름과 괄호 구분</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -1034,7 +1022,7 @@ operations <span class="token operator">=</span> <span class="token punctuation"
 <span class="token keyword">print</span><span class="token punctuation">(</span>operations<span class="token punctuation">[</span><span class="token string">"add"</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>         <span class="token comment"># 5</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>apply_operation<span class="token punctuation">(</span>multiply<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 6</span></code></pre></div>
 <p><code class="language-text">operations[&quot;add&quot;](2, 3)</code>은 먼저 딕셔너리에서 함수를 꺼내고, 이어서 괄호로 그 함수를 호출한다.</p>
-<h3>13.3 보충 — 함수에서 함수를 반환</h3>
+<h3>13.3 함수에서 함수를 반환</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">return</span> a <span class="token operator">+</span> b
 
@@ -1046,7 +1034,6 @@ operation <span class="token operator">=</span> get_operation<span class="token 
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="lambda"></a></p>
 <h2>14. lambda / sorted / sort — 정렬 기준 함수</h2>
-<p><strong>슬라이드 31–32쪽: Functions 9/10–10/10. <code class="language-text">sorted()</code> 비교는 보충.</strong></p>
 <h3>14.1 lambda 기본형 — 입력을 받아 표현식 결과 반환</h3>
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">lambda 매개변수: 반환할_표현식
 lambda 매개변수1, 매개변수2: 반환할_표현식</code></pre></div>
@@ -1142,7 +1129,7 @@ sorted_average_data <span class="token operator">=</span> <span class="token bui
 <div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">sorted(average_data, key=...)          → [&#39;Ava&#39;, &#39;Ben&#39;, &#39;Cara&#39;]
 sorted(average_data.items(), key=...)  → [(&#39;Ava&#39;, 24.0), ...]</code></pre></div>
 <p><code class="language-text">sorted()</code>는 딕셔너리를 입력해도 <strong>리스트를 반환</strong>한다. 이름과 평균을 같이 사용할 예정이면 두 번째 방식이 편하다. <a href="https://docs.python.org/3.14/library/functions.html#sorted">Python 공식 문서: sorted</a></p>
-<h3>14.6 보충 — 같은 평균이면 이름순으로 정렬</h3>
+<h3>14.6 같은 평균이면 이름순으로 정렬</h3>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python">average_data <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"Ben"</span><span class="token punctuation">:</span> <span class="token number">20.0</span><span class="token punctuation">,</span> <span class="token string">"Cara"</span><span class="token punctuation">:</span> <span class="token number">15.0</span><span class="token punctuation">,</span> <span class="token string">"Ava"</span><span class="token punctuation">:</span> <span class="token number">20.0</span><span class="token punctuation">}</span>
 
 result <span class="token operator">=</span> <span class="token builtin">sorted</span><span class="token punctuation">(</span>
@@ -1153,8 +1140,8 @@ result <span class="token operator">=</span> <span class="token builtin">sorted<
 <p>기준을 튜플로 반환하면 앞의 기준부터 비교한다. <code class="language-text">-평균</code>으로 평균 내림차순, 이름으로 동률 시 오름차순을 만든다. 위 코드에는 <code class="language-text">reverse=True</code>를 추가하지 않는다. 단순 정렬에서 동률이면 Python 정렬은 기존 순서를 유지하는 <strong>안정 정렬(stable sort)</strong>이다.</p>
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="sensor-example"></a></p>
-<h2>15. 보충 종합 예제 — 평균 → 필터 → 정렬 → 번호와 상태</h2>
-<p>파일 처리 없이 메모리에 있는 딕셔너리로 Lecture 03의 문법을 연결하는 예제다. <strong>comprehension, 함수, lambda, 조건 표현식, enumerate</strong>를 한 번에 확인할 수 있다.</p>
+<h2>15. 종합 예제 — 평균 → 필터 → 정렬 → 번호와 상태</h2>
+<p>메모리에 있는 센서 데이터를 평균 계산부터 정렬·상태 출력까지 처리하는 예제다. <strong>comprehension, 함수, lambda, 조건 표현식, enumerate</strong>를 한 번에 확인할 수 있다.</p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">calculate_average</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">return</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token builtin">len</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span>
 
@@ -1197,7 +1184,7 @@ sorted_average_data <span class="token operator">=</span> <span class="token bui
 2. Ben: count = 3, average = 15.00, status = LOW
 3. Cara: count = 3, average = 12.00, status = LOW
 Sensors with average &gt;= 15.0: [&#39;Ava&#39;, &#39;Ben&#39;]</code></pre></div>
-<p>여기서 <code class="language-text">len(data[sensor])</code>는 <strong>해당 센서의 측정값 수</strong>다. <code class="language-text">len(data)</code>는 센서 수이므로 서로 다르다. <code class="language-text">:.2f</code>는 <strong>출력할 때 소수 둘째 자리까지 표시</strong>하는 형식이며, 원래 평균 변수 값을 바꾸지 않는다. f-string과 숫자 표시 형식은 이전 강의와 연결되는 보충이다.</p>
+<p>여기서 <code class="language-text">len(data[sensor])</code>는 <strong>해당 센서의 측정값 수</strong>다. <code class="language-text">len(data)</code>는 센서 수이므로 서로 다르다. <code class="language-text">:.2f</code>는 <strong>출력할 때 소수 둘째 자리까지 표시</strong>하는 형식이며, 원래 평균 변수 값을 바꾸지 않는다. f-string은 문자열 안의 중괄호 <code class="language-text">{}</code>에 계산값을 넣는 문법이다.</p>
 <p><code class="language-text">selected_sensors</code>는 여기서는 원본 딕셔너리의 삽입 순서다. 이 목록도 평균순이어야 한다면 <code class="language-text">average_data.items()</code> 대신 이미 정렬한 <code class="language-text">sorted_average_data</code>를 순회한다.</p>
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="pitfalls"></a></p>
@@ -1322,111 +1309,7 @@ Sensors with average &gt;= 15.0: [&#39;Ava&#39;, &#39;Ben&#39;]</code></pre></di
 </table>
 <p><a href="#toc">목차로 돌아가기</a></p>
 <p><a id="sources"></a></p>
-<h2>17. 강의 범위와 참고 자료</h2>
-<h3>17.1 원본 슬라이드 페이지별 색인</h3>
-<p>기준 자료: <strong>ENAI607<em>Lecture03</em>Python03.pdf, Lecture 3 / Python 3, 총 32쪽.</strong> 원본 페이지 번호로 돌아가 확인할 수 있도록 주제별 위치를 남긴다. 강의 PDF나 슬라이드 이미지는 이 글에 첨부하지 않았다.</p>
-<table>
-<thead>
-<tr>
-<th>원본 페이지</th>
-<th>강의 주제</th>
-<th>이 글의 위치</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>표지</td>
-<td>글 소개</td>
-</tr>
-<tr>
-<td>2–4</td>
-<td>mapping, key/value 규칙, 생성, len</td>
-<td><a href="#dictionary">1. dict 기본</a></td>
-</tr>
-<tr>
-<td>5</td>
-<td>조회, KeyError, shallow copy</td>
-<td><a href="#dict-access">조회</a>, <a href="#copy">2. 복사</a></td>
-</tr>
-<tr>
-<td>6–7</td>
-<td>수정·추가·삭제·멤버십</td>
-<td><a href="#dictionary">1. dict 기본</a></td>
-</tr>
-<tr>
-<td>8–9</td>
-<td>dict와 list 사이 변환</td>
-<td><a href="#dict-iteration">3. 순회와 변환</a></td>
-</tr>
-<tr>
-<td>10</td>
-<td>dictionary comprehension, startswith 필터</td>
-<td><a href="#comprehension">4. comprehension</a></td>
-</tr>
-<tr>
-<td>11–13</td>
-<td>if/elif/else, 복합 조건, pass</td>
-<td><a href="#conditionals">5. 조건문</a>, <a href="#while">6. 반복 흐름</a></td>
-</tr>
-<tr>
-<td>14</td>
-<td>conditional expression</td>
-<td><a href="#conditional-expression">한 줄 조건 표현식</a></td>
-</tr>
-<tr>
-<td>15–17</td>
-<td>while, break, continue</td>
-<td><a href="#while">6. 반복 흐름</a></td>
-</tr>
-<tr>
-<td>18–19</td>
-<td>for, enumerate, range</td>
-<td><a href="#for-enumerate">7. for와 enumerate</a></td>
-</tr>
-<tr>
-<td>20–21</td>
-<td>딕셔너리 key/value/item 순회</td>
-<td><a href="#dict-iteration">3. 순회와 변환</a></td>
-</tr>
-<tr>
-<td>22</td>
-<td>zip으로 여러 sequence 순회</td>
-<td><a href="#zip">8. zip</a></td>
-</tr>
-<tr>
-<td>23–24</td>
-<td>함수 정의·호출·docstring·return</td>
-<td><a href="#functions">9. 함수</a></td>
-</tr>
-<tr>
-<td>25–26</td>
-<td>positional/keyword/default 인자</td>
-<td><a href="#arguments">10. 인자</a></td>
-</tr>
-<tr>
-<td>27</td>
-<td>인자 전달, mutable object, isinstance</td>
-<td><a href="#parameter-sharing">11. 객체 공유</a></td>
-</tr>
-<tr>
-<td>28–29</td>
-<td>local/global 변수</td>
-<td><a href="#scope">12. 스코프</a></td>
-</tr>
-<tr>
-<td>30</td>
-<td>함수가 일급 객체라는 의미</td>
-<td><a href="#first-class">13. 일급 객체</a></td>
-</tr>
-<tr>
-<td>31–32</td>
-<td>lambda, key 기반 sort, 조건 표현식</td>
-<td><a href="#lambda">14. lambda와 정렬</a></td>
-</tr>
-</tbody>
-</table>
-<h3>17.2 현재 Python 설명을 확인할 공식 문서</h3>
+<h2>17. 공식 문서</h2>
 <ul>
 <li><a href="https://docs.python.org/3.14/library/stdtypes.html#mapping-types-dict">dict: key, 삽입 순서, copy, keys/values/items</a></li>
 <li><a href="https://docs.python.org/3.14/tutorial/controlflow.html">조건문·반복문·함수·기본값·lambda</a></li>
