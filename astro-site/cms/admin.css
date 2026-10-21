@@ -32,3 +32,14 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 #publish-status{background:var(--hover)!important;color:var(--ink)!important;border-color:var(--accent)!important}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media(max-width:800px){#nc-root [class*="ControlPaneContainer"]{padding-left:10px;padding-right:10px}#nc-root [class*="BackCollection"]{max-width:38vw;white-space:normal!important;font-size:11px}#nc-root [class*="ToolbarContainer"]{padding-left:8px}#nc-root [class*="StyledDropdownButton"]{white-space:normal;height:auto;min-height:36px}#nc-root [class*="ControlHint"]{font-size:12px}}
+
+/* Decap's active navigation and collection header have their own surface rules. */
+#nc-root [class*="CollectionTopRow"]{background:var(--wash)!important;border:1px solid var(--line);box-shadow:none!important}
+#nc-root .sidebar-active{background:var(--hover)!important;color:var(--accent)!important;border-left-color:var(--accent)!important}
+#nc-root [class*="BackCollection"],#nc-root [class*="BackArrow"]{color:var(--ink)!important}
+#nc-root [class*="ControlPaneContainer"] [class*="Hint"]{color:var(--muted)!important}
+
+#nc-root [class*="FieldLabel"]{background:var(--paper)!important;color:var(--muted)!important}
+#nc-root [class*="BackStatusUnchanged"]{background:transparent!important;color:var(--accent)!important}
+#nc-root [class*="AppHeader"] svg{color:var(--accent)}
+@media(max-width:800px){#nc-root [class*="ToolbarSectionBackLink"]{max-width:43vw;padding:0 10px}#nc-root [class*="ToolbarSectionMeta"]{display:none}#nc-root [class*="ToolbarSubSectionLast"]{margin-right:0}#nc-root [class*="ToolbarSectionMain"]{padding:0 5px}#nc-root [class*="ToolbarSectionBackLink"] [class*="BackArrow"]{margin-right:6px}}
