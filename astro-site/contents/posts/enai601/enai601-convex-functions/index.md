@@ -1,7 +1,6 @@
 ---
 title: "[ENAI601] 04 — Convex Function, 기울기의 변화에서 Hessian까지"
-description: f·f′·f″를 같은 x에서 읽는 직관에서 출발해 chord, 직선 제한, 접선의 전역 하한,
-  gradient·Hessian·PSD로 연결한다. 필기의 흐름에 교안의 sublevel set과 볼록성 보존 연산을 보충했다.
+description: f·f′·f″를 같은 x에서 읽는 직관에서 출발해 chord, 직선 제한, 접선의 전역 하한, gradient·Hessian·PSD로 연결
 tags:
   - ENAI601
   - convex-functions
@@ -10,7 +9,7 @@ series: ENAI601 Numerical Methods
 seriesOrder: 4
 date: 2026-10-21
 publishedAt: 2026-10-21T02:52:02-04:00
-updatedAt: 2026-10-21T18:56:12.341Z
+updatedAt: 2026-10-21T22:28:17.259Z
 ---
 
 Convex function을 이해할 때 출발점은, 부등식보다 미분이었다. <strong>$f$는 높이, $f'$는 기울기, $f''$는 기울기의 변화</strong>다. 이 세 가지를 구분하고 나면, 왜 그래프가 chord 아래에 놓이는지, 왜 접선은 함수 전체의 하한이 되는지, 왜 다변수에서는 Hessian을 보는지가 하나의 흐름으로 이어진다.
