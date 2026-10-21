@@ -45,3 +45,6 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 @media(max-width:800px){#nc-root [class*="ToolbarSectionBackLink"]{max-width:43vw;padding:0 10px}#nc-root [class*="ToolbarSectionMeta"]{display:none}#nc-root [class*="ToolbarSubSectionLast"]{margin-right:0}#nc-root [class*="ToolbarSectionMain"]{padding:0 5px}#nc-root [class*="ToolbarSectionBackLink"] [class*="BackArrow"]{margin-right:6px}}
 
 #nc-root [class*="FieldLabel"]::before,#nc-root [class*="FieldLabel"]::after{display:none}
+
+#nc-root [class*="CollectionTopContainer"]{background:var(--wash)!important;color:var(--ink)!important;border:1px solid var(--line)!important;box-shadow:none!important}
+#nc-root [class*="CollectionTopRow"]{border:0}
