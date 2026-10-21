@@ -26,7 +26,7 @@ CMS.registerEventListener({
       field: entry.get('newRecord') ? 'publishedAt' : 'updatedAt' };
     // Unknown historical publication times stay unknown.
     return entry.get('newRecord')
-      ? data.set('publishedAt', data.get('publishedAt') || now)
+      ? data.set('publishedAt', now).delete('updatedAt')
       : data.set('updatedAt', now);
   },
 });
@@ -41,15 +41,22 @@ CMS.registerEventListener({
     if (!expected) return;
     const started = Date.now();
     deploymentTimer = setInterval(async () => {
-      if (Date.now() - started > 180000) { clearInterval(deploymentTimer); return; }
+      if (Date.now() - started > 180000) {
+        clearInterval(deploymentTimer);
+        status.innerHTML = 'GitHub 저장은 완료됐지만 아직 블로그 반영을 확인하지 못했습니다. <a href="https://github.com/alex-roh/alex-roh.github.io/actions/workflows/deploy-astro.yml" target="_blank" rel="noopener noreferrer">배포 상태 확인 ↗</a>';
+        return;
+      }
       try {
         const result = await fetch(`/deployment.json?v=${Date.now()}`, { cache: 'no-store' });
         if (!result.ok) return;
         const deployment = await result.json();
-        const post = deployment.posts[expected.slug];
+        const match = expected.slug
+          ? [expected.slug, deployment.posts[expected.slug]]
+          : Object.entries(deployment.posts).find(([, post]) => Date.parse(post[expected.field]) === Date.parse(expected.timestamp));
+        const [slug, post] = match || [];
         if (post && Date.parse(post[expected.field]) === Date.parse(expected.timestamp)) {
           clearInterval(deploymentTimer);
-          status.innerHTML = `블로그 반영이 완료되었습니다. <a href="/${encodeURIComponent(expected.slug)}/" target="_blank" rel="noopener noreferrer">수정한 글 열기 ↗</a>`;
+          status.innerHTML = `블로그 반영이 완료되었습니다. <a href="/${encodeURIComponent(slug)}/" target="_blank" rel="noopener noreferrer">수정한 글 열기 ↗</a>`;
         }
       } catch { /* Keep the saved change and expose the Actions link on timeout. */ }
     }, 5000);

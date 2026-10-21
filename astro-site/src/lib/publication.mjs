@@ -9,3 +9,8 @@ export function formatPublicationTime(value) {
     .formatToParts(date).find(part => part.type === 'timeZoneName')?.value;
   return `${local} ${zone}`;
 }
+
+// YAML timestamps saved by CMS editors can arrive as Date objects.
+export function normalizeTimestampInput(value) {
+  return value instanceof Date && !Number.isNaN(value.getTime()) ? value.toISOString() : value;
+}

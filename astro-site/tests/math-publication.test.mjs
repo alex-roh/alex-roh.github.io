@@ -44,3 +44,15 @@ test('the stylesheet matches the renderer and reduces norm subscripts and square
     assert.ok(ratio > 0 && ratio < 1, `${selector} must be smaller than its parent`);
   }
 });
+
+test('CMS YAML dates and quoted ISO timestamps preserve the same instant', async () => {
+  const { normalizeTimestampInput } = await import('../src/lib/publication.mjs');
+  const { z } = await import('astro/zod');
+  const schema = z.preprocess(normalizeTimestampInput, z.iso.datetime({ offset: true }));
+  const original = '2026-10-21T02:52:02-04:00';
+  assert.equal(schema.parse(original), original);
+  assert.equal(Date.parse(schema.parse(new Date(original))), Date.parse(original));
+  assert.match(formatPublicationTime(schema.parse(new Date(original))), /02:52.*EDT/);
+  assert.equal(schema.safeParse('not-a-timestamp').success, false);
+  assert.equal(schema.safeParse(new Date('invalid')).success, false);
+});
