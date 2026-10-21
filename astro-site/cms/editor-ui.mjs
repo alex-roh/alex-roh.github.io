@@ -14,6 +14,7 @@ function applyTheme() { document.documentElement.dataset.theme = theme(); }
 
 export function initializeEditor() {
   applyTheme();
+  if (!stored('cms.md-mode')) save('cms.md-mode', 'raw');
   // The built-in ratio sync misses iframe document scroll events in this layout.
   // Use one source-aware synchronizer, avoiding two controllers fighting each other.
   save('cms.scroll-sync-enabled', 'false');
@@ -68,7 +69,9 @@ export function attachPreview(article) {
     const paneTop = pane.getBoundingClientRect().top;
     const lines = [...editable.children];
     const candidates = [[0, 0]];
-    for (const element of article.querySelectorAll('[data-source-line]')) {
+    // Rich Text has no one-to-one Markdown lines: use proportional sync there.
+    const blocks = editable.closest('[class*="RawEditorContainer"]') ? article.querySelectorAll('[data-source-line]') : [];
+    for (const element of blocks) {
       const first = Number(element.dataset.sourceLine) - 1;
       const last = Number(element.dataset.sourceEnd) - 1;
       const rect = element.getBoundingClientRect();
@@ -117,6 +120,10 @@ export function attachPreview(article) {
   const contentObserver = new MutationObserver(updateLayout);
   contentObserver.observe(article, { childList: true, subtree: true, characterData: true });
   contentObserver.observe(editable, { childList: true, subtree: true, characterData: true });
+  const sourceObserver = new MutationObserver(() => {
+    if (!editable.isConnected && article.isConnected) attachPreview(article);
+  });
+  sourceObserver.observe(pane, { childList: true, subtree: true });
   const sizes = new ResizeObserver(updateLayout);
   sizes.observe(article);
   sizes.observe(editable);
@@ -133,7 +140,7 @@ export function attachPreview(article) {
   disposePreview = () => {
     cancelAnimationFrame(frame);
     cancelAnimationFrame(layoutFrame);
-    themeObserver.disconnect(); contentObserver.disconnect(); sizes.disconnect();
+    themeObserver.disconnect(); contentObserver.disconnect(); sourceObserver.disconnect(); sizes.disconnect();
     syncButton.remove();
     for (const event of ['wheel', 'pointerdown', 'touchstart', 'keydown']) {
       pane.removeEventListener(event, leadSource, true);

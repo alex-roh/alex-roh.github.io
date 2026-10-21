@@ -30,7 +30,7 @@ test('CMS writes only to canonical production repo and preserves raw math source
   for (const collection of config.collections) {
     assert.equal(collection.delete, false);
     assert.ok(collection.folder.startsWith('astro-site/contents/posts/'));
-    assert.deepEqual(collection.fields.find(field => field.name === 'body').modes, ['raw']);
+    assert.deepEqual(collection.fields.find(field => field.name === 'body').modes, ['raw', 'rich_text']);
   }
 });
 

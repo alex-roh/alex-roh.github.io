@@ -13,7 +13,7 @@ const fields = [
   { label: '기존 수정일', name: 'update', widget: 'hidden', required: false },
   { label: '최초 게시 시각', name: 'publishedAt', widget: 'hidden', required: false },
   { label: '수정 시각', name: 'updatedAt', widget: 'hidden', required: false },
-  { label: '본문', name: 'body', widget: 'markdown', modes: ['raw'], buttons: [], hint: '왼쪽에서 Markdown을 수정하고 오른쪽에서 수식과 본문을 확인하세요. ↕ 버튼으로 양방향 스크롤 동기화를 켜거나 끌 수 있습니다. 게시하면 자동 배포됩니다.' },
+  { label: '본문', name: 'body', widget: 'markdown', modes: ['raw', 'rich_text'], hint: '서식 도구는 Rich Text 모드에서 사용할 수 있습니다. 수식·HTML이 많은 글은 Markdown 원문 모드를 권장합니다. ↕ 버튼으로 양방향 스크롤 동기화를 켜거나 끌 수 있습니다. 게시하면 자동 배포됩니다.' },
 ];
 
 export const config = {
