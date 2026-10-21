@@ -1,0 +1,32 @@
+=== ENAI 607 MEGA REVIEW ===
+Report: lab_summary.txt Sorted: [('Ava', 24.0), ('Ben', 15.0), ('Cara', 12.0)]
+str_insert(): position input parameter out of range.
+is_palindrome(): the input parameter must be a string.
+String helpers OK: ...Lab...
+Reading rejected: reading must be nonnegative
+Reading rejected: reading must be numeric
+Sensor 0 (Ava): n=5, avg=24.00
+Sensor 1 (Ben): n=3, avg=24.50
+Before edits, identity/equality: False True
+Original/independent first grades: B+ C
+After replacement, identity/equality: False False
+Sorted products: [('cool stuff', 6.87), ('gadget', 10.44), ('widget', 5.28), ('widget', 5.55)]
+Complex pairs: (('S1', (1+1j)), ('S2', (3+4j)), ('S3', (-1+1j)))
+Default gain: (3+4j)
+Positional gain: (6+8j)
+Keyword gain: (1.5+2j)
+Polar values: [(1.4142135623730951, 0.7853981633974483), (5.0, 0.9272952180016122), (1.4142135623730951, 2.356194490192345)]
+Batch / total conversions: 3 3
+Valid dates: February 29, 2000 February 29, 2024
+Rejected: (1900, 2, 29) Invalid date
+Rejected: (2023, 2, 29) Invalid date
+Rejected: (2024, 4, 31) Invalid date
+Invalid date
+Updated meeting date: March 1, 2023
+Curve shape / mean / std: (500,) 0.03235318381799808 0.2179505766924193
+Max / index / x: 0.7801696579337015 23 0.4609218436873747
+Matrix / transpose shapes: (3, 4) (4, 3)
+Metadata: 2 10 (5, 2) int64
+Converted dtype / arange: float64 [0 2 4 6 8]
+Determinant / solution: 2.9999999999999996 [2. 3.]
+All checks passed. Optional mode: --game or --show

@@ -1,0 +1,83 @@
+{
+  "source_repository": "https://github.com/alex-roh/alex-roh.github.io",
+  "source_commit": "ad8a6d329516811b624767389620c36397e1002f",
+  "files": [
+    {
+      "path": "contents/posts/algorithm/modulo-operation/index.md",
+      "sha256": "7afec83b77276d6bd5b902f76b0ecec1bb3c7d7df21a9680dea2bab9d0503804"
+    },
+    {
+      "path": "contents/posts/boj/b-4375/index.md",
+      "sha256": "410987520eb5dde3424b034fd341ce2223d90b528dae2e7c333e2cd2c9b19de4"
+    },
+    {
+      "path": "contents/posts/leetcode/l-234/examples.png",
+      "sha256": "bd35793391c234fc28f4db0a2ea9922a5a7c637555f88fa674bff198a8440e45"
+    },
+    {
+      "path": "contents/posts/leetcode/l-234/index.md",
+      "sha256": "c41e7b3e3602bbdc17f6368daa4bd99c3e1298a07728b67296d1e8e8dd757949"
+    },
+    {
+      "path": "contents/posts/leetcode/l-234/reverse-operation.jpg",
+      "sha256": "d28185c790982e63983a29f04ba451a35fa9907e4e3da734efebc4279795de3a"
+    },
+    {
+      "path": "contents/posts/leetcode/l-234/two_pointers.jpg",
+      "sha256": "08b719eba6d2a9df33e344f7b9d0d48dabb009ae1bc5406e4cf27d9f608c9f57"
+    },
+    {
+      "path": "contents/posts/leetcode/l-543/examples.png",
+      "sha256": "5079b074708237b065d2114f87002596960390ce1dc2846c47ede895fd151b71"
+    },
+    {
+      "path": "contents/posts/leetcode/l-543/index.md",
+      "sha256": "5f189e8d503333ed23dd81674751920fc3411fb3bc6437328aa437c0c9860068"
+    },
+    {
+      "path": "contents/posts/leetcode/l-617/examples.png",
+      "sha256": "2ba921125fd7fd67c1959bb9111bf00b7061e87eab79f8e4018536a0246e5804"
+    },
+    {
+      "path": "contents/posts/leetcode/l-617/index.md",
+      "sha256": "ad28eec39d1780016155d49d7696b10d5a1b3925567a902df6464bb71c8989e2"
+    },
+    {
+      "path": "contents/posts/python/enai607-lecture03/index.md",
+      "sha256": "7c36b6ce4bbc2632296e4a1b96f686dd81c583f42efbc16813bf9172ccd62103"
+    },
+    {
+      "path": "contents/posts/python/enai607-lecture04/index.md",
+      "sha256": "eb79a1cb535ecc6342f4cebc3efa3be3670b27daa83002d5673d0e5d81981ea6"
+    },
+    {
+      "path": "contents/posts/python/python-ch1-1/index.md",
+      "sha256": "04d12956c70f7b25dae02db7cffd16eebd96f4f904b2118e2b667be3d6a88e5a"
+    },
+    {
+      "path": "contents/posts/python/python-ch1-2/dynamic-typing.jpg",
+      "sha256": "51e296c324f16d4460572e6fc03b07238088687fd78538a3531952494ec71b02"
+    },
+    {
+      "path": "contents/posts/python/python-ch1-2/index.md",
+      "sha256": "24e5b9aa8aa99d7ce0bf7ea1539c00623ad4d6c8e3211dbbbbe91ad61335f0c6"
+    },
+    {
+      "path": "contents/posts/python/python-ch1-2/practice.py",
+      "sha256": "a16bcd6e9b4ef2acc921616247780a58aa947b50583745fdb9f4a1d117e6ecb1"
+    },
+    {
+      "path": "contents/posts/python/python-formatter/index.md",
+      "sha256": "2e8aa7688d5a8fd1c0be1b6f8749e3a98e52877c61dbc974c36ff0943ece4c84"
+    },
+    {
+      "path": "contents/posts/python/python-formatter/practice.py",
+      "sha256": "8aa0e11d5cd57e6485a33a762ef3a2609e02a82070729197ed531d86ef96827c"
+    },
+    {
+      "path": "contents/posts/starter-kit/html-basic/index.md",
+      "sha256": "3753f57fa2deb25512fc26092ee28dfb644fadfce95dc1a2a5966fd11d5b4f8a"
+    }
+  ],
+  "note": "All original Markdown and post assets copied byte for byte. Existing repository left unchanged."
+}

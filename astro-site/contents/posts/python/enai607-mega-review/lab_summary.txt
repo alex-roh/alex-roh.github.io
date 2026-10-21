@@ -1,0 +1,5 @@
+1. Ava: count = 5, average = 24.00, status = HIGH
+2. Ben: count = 3, average = 15.00, status = LOW
+3. Cara: count = 3, average = 12.00, status = LOW
+Invalid lines: 1
+Sensors with average >= 15.0: ['Ava', 'Ben']

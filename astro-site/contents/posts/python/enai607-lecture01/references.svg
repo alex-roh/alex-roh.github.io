@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="660" viewBox="0 0 940 660" role="img" aria-labelledby="title desc">
+<title id="title">Shared list mutation versus rebinding a name</title>
+<desc id="desc">First x and y refer to the same list. Append changes that shared list. Reassigning x to a new list leaves y referring to the original list.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#39725c"/></marker></defs>
+<rect width="940" height="660" rx="16" fill="#f6f8f7"/>
+<g font-family="system-ui, sans-serif" fill="#233f33">
+<text x="32" y="46" font-size="27" font-weight="700">Names point to objects</text>
+<text x="32" y="76" font-size="18">Mutating an object and rebinding a name are different operations.</text>
+<g stroke="#c9d8d0" fill="#fff"><rect x="28" y="100" width="884" height="158" rx="10"/><rect x="28" y="276" width="884" height="158" rx="10"/><rect x="28" y="452" width="884" height="180" rx="10"/></g>
+<g font-size="21" font-weight="600"><text x="50" y="133">1. x = [10, 20]; y = x</text><text x="50" y="309">2. x.append(30)</text><text x="50" y="485">3. x = [99]</text></g>
+<g font-family="Consolas, monospace" font-size="25"><text x="125" y="180">x</text><text x="125" y="230">y</text><text x="125" y="356">x</text><text x="125" y="406">y</text><text x="125" y="540">x</text><text x="125" y="599">y</text></g>
+<g fill="none" stroke="#39725c" stroke-width="3" marker-end="url(#arrow)"><path d="M160 173 L405 189"/><path d="M160 223 L405 202"/><path d="M160 349 L405 365"/><path d="M160 399 L405 378"/><path d="M160 533 L405 533"/><path d="M160 592 L405 592"/></g>
+<g fill="#e4f0e9" stroke="#80a38e" stroke-width="2"><rect x="420" y="161" width="265" height="68" rx="8"/><rect x="420" y="337" width="265" height="68" rx="8"/><rect x="420" y="508" width="265" height="48" rx="8"/><rect x="420" y="567" width="265" height="48" rx="8"/></g>
+<g font-family="Consolas, monospace" font-size="25" text-anchor="middle"><text x="552" y="204">[10, 20]</text><text x="552" y="380">[10, 20, 30]</text><text x="552" y="540">[99]</text><text x="552" y="599">[10, 20, 30]</text></g>
+<g font-size="18" fill="#52675c"><text x="711" y="202">One shared list</text><text x="711" y="378">Both see the edit</text><text x="711" y="540">New list</text><text x="711" y="599">Original list</text></g>
+</g></svg>

@@ -1,0 +1,7 @@
+---
+import Base from '../../layouts/Base.astro';
+import { allPosts, seriesHref, seriesPosts } from '../../lib/posts';
+const posts = await allPosts();
+const names = [...new Set(posts.map(p => p.data.series).filter((x): x is string => !!x))];
+---
+<Base title="시리즈"><div class="container"><header class="page-heading"><p class="eyebrow">COLLECTIONS</p><h1>시리즈</h1><p>하나의 주제를 차근차근 이어 쓴 글.</p></header><div class="series-grid">{names.map(name => <a class="series-card" href={seriesHref(name)}><span>{seriesPosts(posts,name).length}개의 글</span><h2>{name}</h2><p>{seriesPosts(posts,name).map(p => p.data.title).slice(0,2).join(' · ')}</p><b aria-hidden="true">↗</b></a>)}</div></div></Base>

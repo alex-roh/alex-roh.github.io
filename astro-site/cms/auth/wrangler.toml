@@ -1,0 +1,11 @@
+name = "cave-cms-auth"
+main = "worker.mjs"
+compatibility_date = "2026-10-21"
+workers_dev = true
+
+# Deploy ONLY on Workers Free. No KV, database, R2 or paid services.
+[observability]
+enabled = false
+
+# Configure GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET as encrypted secrets.
+# Never commit their values or put them in the public admin files.

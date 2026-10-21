@@ -1,0 +1,81 @@
+---
+import '../styles/global.css';
+import 'katex/dist/katex.min.css';
+import { site } from '../site';
+import { href } from '../lib/posts';
+interface Props { title?: string; description?: string; noindex?: boolean; }
+const { title, description = site.description, noindex = false } = Astro.props;
+const isPreview = import.meta.env.BASE_URL !== '/';
+const canonical = new URL(Astro.url.pathname.replace(import.meta.env.BASE_URL, '/'), site.url);
+const nav = [['글', ''], ['시리즈', 'series/'], ['태그', 'tags/'], ['검색', 'search/']];
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} | ${site.title}` : site.title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" />
+    <script is:inline>
+      (() => {
+        let theme;
+        try { theme = localStorage.getItem('cave-theme'); } catch {}
+        if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#161a1f' : '#ffffff';
+      })();
+    </script>
+    <meta name="robots" content={(noindex || isPreview) ? 'noindex, follow' : 'index, follow'} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title || site.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(href('og-image.png'), site.url)} />
+    <link rel="icon" href={href('favicon.png')} />
+    <link rel="alternate" type="application/rss+xml" title={site.title} href={href('rss.xml')} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+    <header class="site-header">
+      <a class="brand" href={href()}>{site.title}<span class="brand-dot">.</span></a>
+      <div class="header-controls"><nav aria-label="주 메뉴">
+        {nav.map(([label,path]) => <a href={href(path)} aria-current={Astro.url.pathname === href(path) ? 'page' : undefined}>{label}</a>)}
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크모드 켜기" aria-pressed="false">
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20.5 14a8.5 8.5 0 0 1-10.5-10.5A8.5 8.5 0 1 0 20.5 14Z" /></svg>
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5" /></svg>
+      </button></div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer"><span>© {new Date().getFullYear()} {site.author}</span><a href={site.github}>GitHub ↗</a><a href={href('rss.xml')}>RSS</a></footer>
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('#theme-toggle')!;
+      const systemTheme = matchMedia('(prefers-color-scheme: dark)');
+      let preference: string | null = null;
+      try { preference = localStorage.getItem('cave-theme'); } catch {}
+      if (preference !== 'light' && preference !== 'dark') preference = null;
+      function applyTheme(theme: string) {
+        document.documentElement.dataset.theme = theme;
+        const dark = theme === 'dark';
+        toggle.setAttribute('aria-pressed', String(dark));
+        toggle.setAttribute('aria-label', dark ? '라이트모드 켜기' : '다크모드 켜기');
+        document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')!.content = dark ? '#161a1f' : '#ffffff';
+      }
+      applyTheme(document.documentElement.dataset.theme || (systemTheme.matches ? 'dark' : 'light'));
+      toggle.addEventListener('click', () => {
+        preference = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        try { localStorage.setItem('cave-theme', preference); } catch {}
+        applyTheme(preference);
+      });
+      systemTheme.addEventListener('change', e => { if (!preference) applyTheme(e.matches ? 'dark' : 'light'); });
+      addEventListener('storage', e => {
+        if (e.key === 'cave-theme' || e.key === null) {
+          preference = e.newValue === 'light' || e.newValue === 'dark' ? e.newValue : null;
+          applyTheme(preference || (systemTheme.matches ? 'dark' : 'light'));
+        }
+      });
+    </script>
+  </body>
+</html>

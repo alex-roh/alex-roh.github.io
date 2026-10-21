@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="검색"><div class="container"><header class="page-heading"><p class="eyebrow">FIND A NOTE</p><h1>검색</h1><p>제목·본문·코드를 검색하고, 일치한 설명이 있는 절로 바로 이동하세요.</p></header><form id="search-form" role="search"><label class="sr-only" for="query">검색어</label><input id="query" name="q" type="search" placeholder="예: lambda, 예외 처리, fields[1:]" autocomplete="off" /><button type="submit">검색</button></form><p id="search-status" role="status">검색어를 입력하세요.</p><div id="search-results" class="post-list"></div><noscript>검색 기능을 사용하려면 JavaScript를 켜주세요.</noscript></div>
+<script>
+ import { searchPosts } from '../lib/search.mjs';
+ import { href } from '../lib/urls';
+ const input = document.querySelector<HTMLInputElement>('#query')!;
+ const form = document.querySelector<HTMLFormElement>('#search-form')!;
+ const status = document.querySelector('#search-status')!;
+ const results = document.querySelector('#search-results')!;
+ let data: Promise<import('../lib/search.mjs').SearchPost[]> | undefined;
+ let request = 0;
+ async function search() {
+  const id = ++request; const query = input.value.trim();
+  const url = new URL(location.href); query ? url.searchParams.set('q', query) : url.searchParams.delete('q');
+  history.replaceState(null,'',url); results.replaceChildren();
+  if (!query) { status.textContent='검색어를 입력하세요.'; return; }
+  status.textContent='검색 중…';
+  try {
+   data ??= fetch(href('search-index.json')).then(r => { if (!r.ok) throw Error('Search unavailable'); return r.json(); });
+   const matches = searchPosts(await data, query);
+   if (id !== request) return;
+   status.textContent=`${matches.length}개의 글을 찾았습니다.`;
+   for (const post of matches) {
+    const article=document.createElement('article'); article.className='post-card';
+    const heading=document.createElement('h2'); const a=document.createElement('a'); a.href=post.url; a.textContent=post.title; heading.append(a);
+    article.append(heading);
+    if (post.matches.length) {
+     const count=document.createElement('p'); count.className='search-hit-count'; count.textContent=`${post.matches.length}개 위치에서 일치`; article.append(count);
+     const more=document.createElement('details'); more.className='search-more';
+     const summary=document.createElement('summary'); summary.textContent=`추가 ${Math.max(0,post.matches.length-3)}개 위치 보기`; more.append(summary);
+     post.matches.forEach((hit, index) => {
+      const section=document.createElement('div'); section.className='search-hit';
+      const link=document.createElement('a'); link.href=hit.url; link.textContent=hit.heading;
+      const p=document.createElement('p'); p.textContent=hit.snippet;
+      section.append(link,p); (index<3 ? article : more).append(section);
+     });
+     if (post.matches.length>3) article.append(more);
+    } else {
+     const p=document.createElement('p'); p.textContent=post.snippet; article.append(p);
+    }
+    results.append(article);
+   }
+  } catch { data=undefined; if (id === request) status.textContent='검색 데이터를 불러오지 못했습니다. 다시 시도해주세요.'; }
+ }
+ form.addEventListener('submit', e => {e.preventDefault(); search();});
+ let timer: ReturnType<typeof setTimeout>;
+ input.addEventListener('input', () => { clearTimeout(timer); timer=setTimeout(search,150); });
+ input.value=new URLSearchParams(location.search).get('q') || ''; if (input.value) search();
+</script>
+</Base>
+
+<style is:global>
+.search-hit-count{font-size:12px!important;color:var(--muted);margin-bottom:14px!important}
+.search-hit{margin-top:17px;padding-left:14px;border-left:2px solid var(--line)}
+.search-hit>a{font-size:15px;font-weight:700;color:var(--accent);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.search-hit>p{font-size:14px;line-height:1.8;margin:6px 0 0;overflow-wrap:anywhere;white-space:normal}
+.search-more{margin-top:18px;font-size:14px}.search-more>summary{cursor:pointer;color:var(--accent)}
+</style>

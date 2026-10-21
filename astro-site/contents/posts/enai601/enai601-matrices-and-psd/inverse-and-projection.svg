@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+<title id="title">Exact recovery and least-squares projection</title>
+<desc id="desc">E embeds (3,5) as (3,5,0). E plus recovers the original two coordinates. For an observation (3,5,100), E plus returns (3,5) and E reconstructs the projection (3,5,0). The residual is (0,0,100).</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,4 L0,8 Z" fill="#397664"/></marker></defs>
+<rect width="960" height="560" rx="14" fill="#f7faf8"/>
+<g font-family="Arial, sans-serif" fill="#243b34">
+<text x="40" y="43" font-size="23" font-weight="700">E maps (x1, x2) to (x1, x2, 0)</text>
+<text x="40" y="77" font-size="18">E+ extracts the first two coordinates. Order changes the result.</text>
+<rect x="28" y="102" width="904" height="165" rx="10" fill="#ffffff" stroke="#cddbd4"/>
+<text x="50" y="135" font-size="18" font-weight="700">1. Exact recovery of an output produced by E</text>
+<g fill="#e8f1ec" stroke="#9ebdad"><rect x="55" y="160" width="205" height="64" rx="8"/><rect x="376" y="160" width="205" height="64" rx="8"/><rect x="700" y="160" width="205" height="64" rx="8"/></g>
+<g text-anchor="middle" font-size="22"><text x="157" y="201">x = (3, 5)</text><text x="479" y="201">Ex = (3, 5, 0)</text><text x="802" y="201">E+Ex = (3, 5)</text></g>
+<g stroke="#397664" stroke-width="3" marker-end="url(#arrow)"><path d="M274 192 H359"/><path d="M597 192 H683"/></g>
+<g text-anchor="middle" font-size="18"><text x="316" y="178">E</text><text x="639" y="178">E+</text><text x="480" y="249">E+E = I2</text></g>
+<rect x="28" y="287" width="904" height="243" rx="10" fill="#ffffff" stroke="#cddbd4"/>
+<text x="50" y="321" font-size="18" font-weight="700">2. Approximate an observation outside the column space</text>
+<g fill="#edf0f7" stroke="#b3bed0"><rect x="55" y="350" width="205" height="64" rx="8"/><rect x="376" y="350" width="205" height="64" rx="8"/><rect x="700" y="350" width="205" height="64" rx="8"/></g>
+<g text-anchor="middle" font-size="21"><text x="157" y="391">b = (3, 5, 100)</text><text x="479" y="391">x_hat = (3, 5)</text><text x="802" y="391">p = (3, 5, 0)</text></g>
+<g stroke="#397664" stroke-width="3" marker-end="url(#arrow)"><path d="M274 382 H359"/><path d="M597 382 H683"/></g>
+<g text-anchor="middle" font-size="18"><text x="316" y="368">E+</text><text x="639" y="368">E</text><text x="480" y="455">EE+b = p,   EE+ = diag(1, 1, 0),   EE+ is not I3</text><text x="480" y="494" fill="#92552c">Residual: b - p = (0, 0, 100), perpendicular to the xy-plane</text></g>
+</g></svg>

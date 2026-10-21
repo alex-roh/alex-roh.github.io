@@ -67,3 +67,7 @@ yarn-error.log
 .pnp.js
 # Yarn Integrity file
 .yarn-integrity
+
+# Astro static source assets (generated media/vendor excluded by astro-site/.gitignore)
+!/astro-site/public/
+!/astro-site/public/**

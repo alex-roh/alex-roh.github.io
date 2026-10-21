@@ -3,18 +3,11 @@ on:
   push:
     branches: [main]
     paths:
-      - .github/workflows/deploy-astro.yml
+      - 'astro-site/**'
+      - '.github/workflows/deploy-astro.yml'
   workflow_dispatch:
-    inputs:
-      source_ref:
-        description: Astro source branch, tag or commit in alex-roh-blog
-        default: main
-        required: true
-        type: string
 permissions:
   contents: read
-  pages: write
-  id-token: write
 concurrency:
   group: github-pages-production
   cancel-in-progress: false
@@ -25,17 +18,9 @@ jobs:
       run:
         working-directory: astro-site
     steps:
-      - name: Checkout Astro source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          repository: alex-roh/alex-roh-blog
-          ref: ${{ inputs.source_ref || 'main' }}
-          path: astro-site
           persist-credentials: false
-      - name: Verify archive migration and record source
-        run: |
-          test -f archive/README.md
-          echo "Astro source: $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/setup-node@v4
         with:
           node-version-file: astro-site/.nvmrc
@@ -48,14 +33,15 @@ jobs:
         env:
           SITE_BASE: /
           ASTRO_TELEMETRY_DISABLED: '1'
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: astro-site/dist
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

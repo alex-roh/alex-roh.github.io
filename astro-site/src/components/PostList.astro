@@ -1,0 +1,14 @@
+---
+import { postHref, tagHref, seriesHref, formatDate, excerpt, type Post } from '../lib/posts';
+import { formatPublicationTime } from '../lib/publication.mjs';
+interface Props { posts: Post[]; }
+const { posts } = Astro.props;
+---
+<div class="post-list">
+  {posts.map(post => <article class="post-card">
+    <div class="post-meta">{post.data.publishedAt ? <time datetime={post.data.publishedAt}>{formatPublicationTime(post.data.publishedAt)}</time> : post.data.date && <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>}{post.data.series && <a class="post-series" href={seriesHref(post.data.series)}>{post.data.series}</a>}</div>
+    <h2><a href={postHref(post)}>{post.data.title}</a></h2>
+    <p>{excerpt(post)}</p>
+    <div class="tags">{post.data.tags.map(tag => <a href={tagHref(tag)}>#{tag}</a>)}</div>
+  </article>)}
+</div>

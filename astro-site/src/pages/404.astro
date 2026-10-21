@@ -1,0 +1,5 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/posts';
+---
+<Base title="페이지를 찾을 수 없습니다" noindex><div class="container"><header class="page-heading"><p class="eyebrow">404</p><h1>페이지를 찾을 수 없습니다.</h1><p><a href={href()}>모든 글 보기 →</a></p></header></div></Base>
