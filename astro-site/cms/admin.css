@@ -15,7 +15,7 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 #nc-root [class*="ListCard"],#nc-root [class*="GridCard"],#nc-root [class*="SearchInput"],#nc-root [class*="Card"]{background:var(--paper)!important;color:var(--ink)!important;border-color:var(--line)!important;box-shadow:none!important}
 #nc-root a{color:var(--ink)}
 #nc-root a:hover{color:var(--accent)}
-#nc-root button,#nc-root [role=button]{background:var(--wash)!important;color:var(--ink)!important;border-color:var(--line)!important;box-shadow:none!important}
+#nc-root button,#nc-root [role=button]{background:transparent!important;color:var(--ink)!important;border-color:var(--line)!important;box-shadow:none!important}
 #nc-root button:hover,#nc-root [role=button]:hover{background:var(--hover)!important;color:var(--accent)!important}
 #nc-root button:disabled{opacity:.4}
 #nc-root [role=menu]>ul{width:max-content!important;min-width:260px!important;max-width:min(360px,calc(100vw - 24px))!important;max-height:70vh;overflow:auto;background:var(--paper)!important;border:1px solid var(--line);border-radius:8px;padding:6px!important;box-shadow:0 8px 24px #0002}
@@ -34,7 +34,7 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 @media(max-width:800px){#nc-root [class*="ControlPaneContainer"]{padding-left:10px;padding-right:10px}#nc-root [class*="BackCollection"]{max-width:38vw;white-space:normal!important;font-size:11px}#nc-root [class*="ToolbarContainer"]{padding-left:8px}#nc-root [class*="StyledDropdownButton"]{white-space:normal;height:auto;min-height:36px}#nc-root [class*="ControlHint"]{font-size:12px}}
 
 /* Decap's active navigation and collection header have their own surface rules. */
-#nc-root [class*="CollectionTopRow"]{background:var(--wash)!important;border:1px solid var(--line);box-shadow:none!important}
+#nc-root [class*="CollectionTopRow"]{background:transparent!important;box-shadow:none!important}
 #nc-root .sidebar-active{background:var(--hover)!important;color:var(--accent)!important;border-left-color:var(--accent)!important}
 #nc-root [class*="BackCollection"],#nc-root [class*="BackArrow"]{color:var(--ink)!important}
 #nc-root [class*="ControlPaneContainer"] [class*="Hint"]{color:var(--muted)!important}
@@ -46,5 +46,18 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 
 #nc-root [class*="FieldLabel"]::before,#nc-root [class*="FieldLabel"]::after{display:none}
 
-#nc-root [class*="CollectionTopContainer"]{background:var(--wash)!important;color:var(--ink)!important;border:1px solid var(--line)!important;box-shadow:none!important}
+#nc-root [class*="CollectionTopContainer"]{background:transparent!important;color:var(--ink)!important;border:0!important;box-shadow:none!important}
 #nc-root [class*="CollectionTopRow"]{border:0}
+
+/* Quiet chrome: keep actions available without gray tiles and vertical dividers. */
+#nc-root [class*="ToolbarSectionBackLink"],#nc-root [class*="ToolbarSectionMeta"]{border:0!important}
+#nc-root [class*="ToolbarContainer"]{box-shadow:none!important;border-bottom:1px solid var(--line)}
+#nc-root [class*="SidebarContainer"]{border:0!important;box-shadow:none!important}
+#nc-root [class*="CollectionTopNewButton"]{background:transparent!important;color:var(--accent)!important;border:1px solid var(--accent)!important;box-shadow:none!important;font-weight:700}
+#nc-root [class*="CollectionTopNewButton"]:hover{background:var(--hover)!important;color:var(--ink)!important}
+#nc-root [class*="AvatarDropdownButton"]{background:transparent!important;color:var(--muted)!important;box-shadow:none!important;padding:8px 10px}
+#nc-root [class*="AvatarDropdownButton"]>*{display:none}
+#nc-root [class*="AvatarDropdownButton"]::before{content:'계정';font-size:13px}
+#nc-root [class*="EditorControlBar"]{display:none!important}
+#nc-root [data-slate-editor]{margin-top:0!important;border-top:1px solid var(--line)!important;border-radius:4px!important}
+#nc-root .cave-scroll-sync[aria-pressed=true]{background:transparent!important;color:var(--accent)!important}
