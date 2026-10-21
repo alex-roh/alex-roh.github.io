@@ -91,3 +91,10 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
  #nc-root [class*="ToolbarSectionMain"] [class*="StyledDropdownButton"]{padding:6px 22px 6px 6px;font-size:11px;white-space:nowrap}
  #nc-root [class*="EditorControlBar"] [class*="ToolbarToggle"]{margin:0}
 }
+
+/* Rich Text's negative margin belongs to its outer surface, not Slate Editable. */
+#nc-root .cms-editor-visual [class*="EditorControlBar"]+div{margin-top:0!important;background:var(--paper)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:4px!important}
+#nc-root .cms-editor-visual [data-slate-editor]{border:0!important;color:var(--ink)!important;background:transparent!important}
+#nc-root .cms-editor-visual [data-slate-editor] *{color:inherit}
+#nc-root .cms-editor-visual [data-slate-editor] code{background:var(--wash)!important;color:var(--ink)!important}
+#nc-root .cms-editor-visual [data-slate-editor] a{color:var(--accent)!important}
