@@ -32,6 +32,7 @@ export const config = {
     name, label, folder: `${sourceRoot}/contents/posts/${category}`,
     create: true, delete: false, extension: 'md', format: 'yaml-frontmatter',
     path: '{{slug}}/index', slug: '{{slug}}', identifier_field: 'title',
+    preview_path: '{{dirname}}/',
     fields: fields.map(field => field.name === 'series' ? { ...field, default: label } : field),
   })),
 };
