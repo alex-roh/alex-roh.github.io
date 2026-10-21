@@ -1,0 +1,34 @@
+@font-face{font-family:Noto;src:url('/fonts/noto-sans-kr-v13-latin-regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Noto;src:url('/fonts/noto-sans-kr-v13-latin-700.woff2') format('woff2');font-weight:700;font-display:swap}
+:root{--paper:#fff;--ink:#25292d;--muted:#737b83;--line:#e7e9ec;--wash:#f3f4f6;--accent:#3f6757;--hover:#e6ede8;color-scheme:light}
+:root[data-theme=dark]{--paper:#161a1f;--ink:#e6e9ed;--muted:#a5aeb8;--line:#343c46;--wash:#232a33;--accent:#9ac7b1;--hover:#30453c;color-scheme:dark}
+html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,system-ui,sans-serif}
+#nc-root *{font-family:inherit}
+#nc-root [data-slate-editor],#nc-root [data-slate-editor] *{font-family:ui-monospace,Consolas,monospace}
+#nc-root [class*="AppHeader"],#nc-root [class*="ToolbarContainer"],#nc-root [class*="EditorContainer"],#nc-root [class*="CollectionMain"],#nc-root [class*="SidebarContainer"],#nc-root [class*="ControlPaneContainer"],#nc-root [class*="StyledSplitPane"],#nc-root [class*="EditorControlBar"],#nc-root [class*="ToolbarContainer"]{background:var(--paper)!important;color:var(--ink)!important;border-color:var(--line)!important}
+#nc-root [class*="EditorContainer"]{min-width:0!important}
+#nc-root [class*="ToolbarContainer"]{min-width:0!important;padding-right:60px}
+#nc-root [class*="ToolbarSection"]{min-width:0;flex-shrink:1}
+#nc-root [class*="EditorToolbar"] a{white-space:normal;overflow-wrap:anywhere}
+#nc-root input,#nc-root textarea,#nc-root [data-slate-editor]{background:var(--paper)!important;color:var(--ink)!important;border-color:var(--line)!important}
+#nc-root label,#nc-root h1,#nc-root h2,#nc-root [class*="ControlHint"],#nc-root [class*="ControlLabel"],#nc-root [class*="CollectionLabel"]{color:var(--ink)!important}
+#nc-root [class*="ListCard"],#nc-root [class*="GridCard"],#nc-root [class*="SearchInput"],#nc-root [class*="Card"]{background:var(--paper)!important;color:var(--ink)!important;border-color:var(--line)!important;box-shadow:none!important}
+#nc-root a{color:var(--ink)}
+#nc-root a:hover{color:var(--accent)}
+#nc-root button,#nc-root [role=button]{background:var(--wash)!important;color:var(--ink)!important;border-color:var(--line)!important;box-shadow:none!important}
+#nc-root button:hover,#nc-root [role=button]:hover{background:var(--hover)!important;color:var(--accent)!important}
+#nc-root button:disabled{opacity:.4}
+#nc-root [role=menu]>ul{width:max-content!important;min-width:260px!important;max-width:min(360px,calc(100vw - 24px))!important;max-height:70vh;overflow:auto;background:var(--paper)!important;border:1px solid var(--line);border-radius:8px;padding:6px!important;box-shadow:0 8px 24px #0002}
+#nc-root [role=menuitem]{width:100%!important;height:auto!important;min-height:40px;white-space:normal!important;overflow-wrap:anywhere;text-overflow:clip!important;line-height:1.6!important;background:var(--paper)!important;color:var(--ink)!important}
+#nc-root [role=menuitem]>span{white-space:normal!important}
+#nc-root [role=menuitem]:hover,#nc-root [role=menuitem]:focus{background:var(--hover)!important;color:var(--accent)!important}
+#nc-root [class*="ViewControls"]{display:flex;gap:8px;align-items:center;top:12px;right:12px}
+#nc-root [class*="EditorToggle"]{margin-bottom:0}
+#nc-root button[title="스크롤 동기화"]{display:none}
+#cave-editor-theme,.cave-scroll-sync{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:50%;background:var(--paper);color:var(--ink);font:22px/1 system-ui;cursor:pointer}
+#cave-editor-theme{position:fixed;top:15px;right:12px;z-index:999}
+#nc-root .cave-scroll-sync[aria-pressed=true]{color:var(--accent)!important;background:var(--hover)!important}
+#nc-root [class*="AppHeaderContent"],#nc-root [class*="ToolbarContainer"]{padding-right:60px!important}
+#publish-status{background:var(--hover)!important;color:var(--ink)!important;border-color:var(--accent)!important}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(max-width:800px){#nc-root [class*="ControlPaneContainer"]{padding-left:10px;padding-right:10px}#nc-root [class*="BackCollection"]{max-width:38vw;white-space:normal!important;font-size:11px}#nc-root [class*="ToolbarContainer"]{padding-left:8px}#nc-root [class*="StyledDropdownButton"]{white-space:normal;height:auto;min-height:36px}#nc-root [class*="ControlHint"]{font-size:12px}}

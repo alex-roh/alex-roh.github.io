@@ -7,7 +7,7 @@ const fields = [
   { label: '제목', name: 'title', widget: 'string' },
   { label: '요약', name: 'description', widget: 'text', required: false },
   { label: '태그', name: 'tags', widget: 'list', required: false },
-  { label: '시리즈', name: 'series', widget: 'string', required: false },
+  { label: '시리즈', name: 'series', widget: 'hidden' },
   { label: '시리즈 순서', name: 'seriesOrder', widget: 'number', value_type: 'int', required: false },
   { label: '기존 게시일', name: 'date', widget: 'hidden', required: false },
   { label: '기존 수정일', name: 'update', widget: 'hidden', required: false },
@@ -33,6 +33,8 @@ export const config = {
     create: true, delete: false, extension: 'md', format: 'yaml-frontmatter',
     path: '{{slug}}/index', slug: '{{slug}}', identifier_field: 'title',
     preview_path: '{{dirname}}/',
+    // Folder assets may include README.md; only real series articles are entries.
+    filter: { field: 'series', value: label },
     fields: fields.map(field => field.name === 'series' ? { ...field, default: label } : field),
   })),
 };

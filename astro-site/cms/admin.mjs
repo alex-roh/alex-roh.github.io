@@ -1,12 +1,19 @@
 import { renderPreview } from './preview.mjs';
+import ko from 'decap-cms-locales/dist/esm/ko/index.js';
+import { attachPreview, initializeEditor } from './editor-ui.mjs';
+import './admin.css';
 
 const CMS = window.CMS;
 const h = window.h;
+// Keep Decap's translations, changing only the vocabulary for this blog.
+const phrases = JSON.parse(JSON.stringify(ko).replace(/컬렉션|컬랙션/g, '시리즈'));
+CMS.registerLocale('ko', phrases);
+initializeEditor();
 let pendingPublication;
 let deploymentTimer;
 const Preview = ({ entry }) => {
   const data = entry.get('data');
-  return h('article', { className: 'cms-preview' },
+  return h('article', { className: 'cms-preview', ref: attachPreview },
     h('header', {}, h('p', { className: 'eyebrow' }, 'CAVE · ARTICLE PREVIEW'),
       h('h1', {}, data.get('title'))),
     h('div', { className: 'prose', dangerouslySetInnerHTML: {

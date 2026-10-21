@@ -54,3 +54,30 @@ test('GitHub App installation must be selected-repository only with minimal perm
   assert.equal(isRestrictedInstallation([installation, installation]), false);
   assert.equal(isRestrictedInstallation([]), false);
 });
+
+
+test('series collections exclude attachment READMEs without hiding published articles', async () => {
+  for (const collection of config.collections) {
+    const folder = collection.folder.replace(/^astro-site\//, '');
+    let articles = 0, excluded = 0;
+    for (const slug of await readdir(folder)) {
+      for (const name of (await readdir(folder + '/' + slug)).filter(name => name.endsWith('.md'))) {
+        const markdown = await readFile(folder + '/' + slug + '/' + name, 'utf8');
+        const metadata = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+        const series = metadata?.[1].match(/^series: *["']?([^"'\r\n]+)["']?$/m)?.[1];
+        const included = series === collection.filter.value;
+        assert.equal(included, name === 'index.md', slug + '/' + name);
+        included ? articles++ : excluded++;
+      }
+    }
+    assert.equal(articles, collection.name === 'python' ? 10 : 4);
+    if (collection.name === 'python') assert.equal(excluded, 2);
+  }
+});
+
+test('preview block anchors follow Markdown lines while unsafe HTML stays removed', () => {
+  const html = renderPreview('# Heading\n\nParagraph\n\n\`\`\`py\nx = 1\nprint(x)\n\`\`\`', 'sample');
+  assert.match(html, /data-source-line="1"/);
+  assert.match(html, /data-source-line="3"/);
+  assert.match(html, /data-source-line="5" data-source-end="8"/);
+});

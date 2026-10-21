@@ -11,3 +11,5 @@ dist/
 /public/admin/admin.js
 /public/admin/config.yml
 /public/admin/preview.css
+
+/public/admin/admin.css

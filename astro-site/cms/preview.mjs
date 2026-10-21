@@ -18,7 +18,16 @@ export function renderPreview(markdown, slug) {
       }
     }))
     .use(remarkRehype, { allowDangerousHtml: true }).use(rehypeRaw)
-    .use(rehypeSanitize).use(rehypeKatex, { strict: 'ignore', throwOnError: false })
+    .use(rehypeSanitize)
+    .use(() => tree => {
+      for (const node of tree.children) {
+        if (node.type === 'element' && node.position) {
+          node.properties ||= {};
+          node.properties['data-source-line'] = node.position.start.line;
+          node.properties['data-source-end'] = node.position.end.line;
+        }
+      }
+    }).use(rehypeKatex, { strict: 'ignore', throwOnError: false })
     .use(rehypeStringify);
   return String(processor.processSync(markdown));
 }

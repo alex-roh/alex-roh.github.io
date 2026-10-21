@@ -19,7 +19,7 @@ const category = sourceFiles[0].split('/')[3] === 'enai601' ? 'enai601' : 'pytho
 const cmsUrl = `${import.meta.env.BASE_URL}admin/#/collections/${category}/entries/${encodeURIComponent(post.id)}/index`;
 const editUrl = `https://github.com/${site.sourceRepository}/edit/${encodeURIComponent(site.sourceBranch)}/${sourcePath}`;
 ---
-<Base title={post.data.title} description={excerpt(post)}>
+<Base title={post.data.title} description={excerpt(post)} article>
   <div class="article-shell">
     <article class="article">
       <header class="article-header"><h1>{post.data.title}</h1><div class="article-meta"><b>@Alex</b>{post.data.publishedAt ? <span>게시 <time datetime={post.data.publishedAt}>{formatPublicationTime(post.data.publishedAt)}</time></span> : post.data.date && <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>}{post.data.updatedAt && <span>수정 <time datetime={post.data.updatedAt}>{formatPublicationTime(post.data.updatedAt)}</time></span>}</div><div class="tags">{post.data.tags.map(tag => <a href={tagHref(tag)}>#{tag}</a>)}</div><nav class="article-edit-links" aria-label="글 편집"><a href={cmsUrl} target="_blank" rel="noopener noreferrer" aria-label="Decap에서 이 글 수정하기 (새 탭)">수정 · 미리보기 <span aria-hidden="true">↗</span></a><a href={editUrl} target="_blank" rel="noopener noreferrer">GitHub 원문 <span aria-hidden="true">↗</span></a></nav></header>
