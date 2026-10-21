@@ -1,3 +1,11 @@
+# Current blog: Astro + Decap CMS
+
+The current blog source is in [astro-site](./astro-site/). Read [the editing and deployment guide](./astro-site/README.md).
+Posts published through [Decap](https://alex-roh.github.io/admin/) deploy automatically.
+The Gatsby files below are retained for recovery and are not used by the current deployment.
+
+---
+
 <h1 align="center">
     gatsby-starter-hoodie
 </h1>
