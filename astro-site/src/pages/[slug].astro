@@ -16,7 +16,7 @@ const sourceFiles = Object.keys(import.meta.glob('/contents/posts/**/index.md'))
 if (sourceFiles.length !== 1) throw new Error(`Expected one Markdown source for ${post.id}`);
 const sourcePath = [site.sourceRoot, sourceFiles[0].slice(1)].join('/').split('/').map(encodeURIComponent).join('/');
 const category = sourceFiles[0].split('/')[3] === 'enai601' ? 'enai601' : 'python';
-const cmsUrl = `${import.meta.env.BASE_URL}admin/#/collections/${category}/entries/${encodeURIComponent(post.id + '/index')}`;
+const cmsUrl = `${import.meta.env.BASE_URL}admin/#/collections/${category}/entries/${encodeURIComponent(post.id)}/index`;
 const editUrl = `https://github.com/${site.sourceRepository}/edit/${encodeURIComponent(site.sourceBranch)}/${sourcePath}`;
 ---
 <Base title={post.data.title} description={excerpt(post)}>
