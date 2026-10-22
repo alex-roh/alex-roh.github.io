@@ -8,7 +8,7 @@ const h = window.h;
 // Keep Decap's translations, changing only the vocabulary for this blog.
 const phrases = JSON.parse(JSON.stringify(ko).replace(/컬렉션|컬랙션/g, '시리즈'));
 phrases.app.header.content = 'POSTS';
-phrases.app.header.media = 'MEDIA';
+phrases.app.header.media = '미디어';
 phrases.app.header.quickAdd = 'NEW POST';
 phrases.collection.collectionTop.newButton = '새 글 쓰기';
 CMS.registerLocale('ko', phrases);

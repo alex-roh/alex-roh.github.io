@@ -36,12 +36,17 @@ export function initializeEditor() {
   updateLabel();
   const brand = document.createElement('a');
   brand.id = 'cave-editor-brand';
-  brand.href = '/';
-  brand.setAttribute('aria-label', 'Cave 블로그 홈');
-  brand.append('Cave');
+  brand.href = '/admin/#/';
+  brand.setAttribute('aria-label', 'Cave 관리자 메인');
+  const wordmark = document.createElement('strong');
+  wordmark.append('Cave');
   const dot = document.createElement('span');
   dot.textContent = '.';
-  brand.append(dot);
+  wordmark.append(dot);
+  const label = document.createElement('span');
+  label.className = 'cave-admin-label';
+  label.textContent = '관리자';
+  brand.append(wordmark, label);
   document.body.append(brand, themeButton);
 }
 

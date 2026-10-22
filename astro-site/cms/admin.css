@@ -1,8 +1,8 @@
 @font-face{font-family:Noto;src:url('/fonts/noto-sans-kr-v13-latin-regular.woff2') format('woff2');font-weight:400;font-display:swap}
 @font-face{font-family:Noto;src:url('/fonts/noto-sans-kr-v13-latin-700.woff2') format('woff2');font-weight:700;font-display:swap}
-:root{--paper:#fff;--ink:#25292d;--muted:#737b83;--line:#e7e9ec;--wash:#f3f4f6;--accent:#3f6757;--hover:#e6ede8;color-scheme:light}
-:root[data-theme=dark]{--paper:#161a1f;--ink:#e6e9ed;--muted:#a5aeb8;--line:#343c46;--wash:#232a33;--accent:#9ac7b1;--hover:#30453c;color-scheme:dark}
-html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,system-ui,sans-serif}
+:root{--paper:#fff;--ink:#25292d;--muted:#737b83;--line:#e7e9ec;--wash:#f3f4f6;--accent:#25292d;--hover:#f3f4f6;color-scheme:light}
+:root[data-theme=dark]{--paper:#161a1f;--ink:#e6e9ed;--muted:#a5aeb8;--line:#343c46;--wash:#232a33;--accent:#e6e9ed;--hover:#232a33;color-scheme:dark}
+html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 #nc-root *{font-family:inherit}
 #nc-root [class*="RawEditorContainer"] [data-slate-editor],#nc-root [class*="RawEditorContainer"] [data-slate-editor] *{font-family:ui-monospace,Consolas,monospace}
 #nc-root [class*="AppHeader"],#nc-root [class*="ToolbarContainer"],#nc-root [class*="EditorContainer"],#nc-root [class*="CollectionMain"],#nc-root [class*="SidebarContainer"],#nc-root [class*="ControlPaneContainer"],#nc-root [class*="StyledSplitPane"],#nc-root [class*="EditorControlBar"],#nc-root [class*="ToolbarContainer"]{background:var(--paper)!important;color:var(--ink)!important;border-color:var(--line)!important}
@@ -59,7 +59,7 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 #nc-root [class*="CollectionTopNewButton"]:hover{background:var(--hover)!important;color:var(--ink)!important}
 #nc-root [class*="AvatarDropdownButton"]{background:transparent!important;color:var(--muted)!important;box-shadow:none!important;padding:8px 10px}
 #nc-root [class*="AvatarDropdownButton"]>*{display:none}
-#nc-root [class*="AvatarDropdownButton"]::before{content:'ACCOUNT';font-size:12px}
+#nc-root [class*="AvatarDropdownButton"]::before{content:'ACCOUNT';font-size:14px;font-weight:400}
 #nc-root [class*="EditorControlBar"]{margin-bottom:0;background:var(--paper);padding-bottom:8px}
 #nc-root [class*="RawEditorContainer"] [class*="EditorControlBar"] [class*="ToolbarContainer"]>div:first-child{display:none}
 #nc-root [class*="EditorControlBar"] [class*="ToolbarContainer"]{padding:8px!important;flex-wrap:wrap;gap:8px;min-height:44px;border:0}
@@ -121,18 +121,31 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 #nc-root .cms-editor-visual .CodeMirror-cursor{border-left-color:#e6edf3}
 #nc-root .cms-editor-visual .CodeMirror-selected{background:#264f78}
 
-/* Cave masthead: identity and account stay in one shared top row. */
-#cave-editor-brand{position:fixed;top:12px;left:24px;z-index:999;color:var(--ink);font:700 30px/1.4 Noto,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;letter-spacing:-1.2px;text-decoration:none}
-#cave-editor-brand span{color:var(--accent)}
-#nc-root [class*="AppHeaderContent"]{padding-left:130px}
-#nc-root [class*="AppHeaderNavList"]{padding-left:0}
-#nc-root [class*="SettingsWrapper"]{position:fixed;top:15px;right:60px;height:36px;z-index:1001;gap:4px}
+/* Match the public blog's quiet text navigation and neutral palette. */
+#cave-editor-brand{position:fixed;top:12px;left:24px;z-index:999;display:flex;align-items:center;gap:12px;color:var(--ink);font-family:Noto,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-decoration:none}
+#cave-editor-brand strong{font-size:30px;line-height:1.4;font-weight:700;letter-spacing:-1.2px}
+#cave-editor-brand strong span{color:var(--muted)}
+#cave-editor-brand .cave-admin-label{font-size:14px;font-weight:400;letter-spacing:0;color:var(--muted)}
+#nc-root [class*="AppHeaderContent"]{padding-left:220px;justify-content:flex-end;gap:16px}
+#nc-root [class*="AppHeaderActions"]{margin-left:0}
+#nc-root [class*="AppHeaderNavList"]{padding:0;align-items:center}
+#nc-root [class*="AppHeaderNavList"] button{font-size:14px;font-weight:400;line-height:1.7;padding:8px 12px;color:var(--muted)!important}
+#nc-root [class*="AppHeaderNavList"] button:hover{color:var(--ink)!important;background:transparent!important}
+#nc-root [class*="AppHeaderNavList"] button svg{display:none}
+#nc-root [class*="SettingsWrapper"]{height:36px;gap:4px}
+#nc-root [class*="AppHeaderSiteLink"]{color:var(--muted);font-size:14px;font-weight:400}
+#nc-root [class*="AppHeaderSiteLink"]:hover{color:var(--ink)}
+#nc-root [class*="ToolbarSectionMeta"] [class*="SettingsWrapper"]{position:fixed;top:15px;right:60px;z-index:1001}
 #nc-root [class*="EditorContainer"]:has(>[class*="ToolbarContainer"]>[class*="ToolbarSectionBackLink"]){padding-top:132px}
 #nc-root [class*="ToolbarContainer"]:has(>[class*="ToolbarSectionBackLink"]){top:66px;padding-right:16px!important;border-top:1px solid var(--line)}
 #nc-root [class*="ToolbarSectionMeta"]{display:flex;width:0;padding:0}
 @media(max-width:800px){
- #cave-editor-brand{left:12px;top:16px;font-size:24px}
- #nc-root [class*="AppHeaderContent"]{padding-left:96px}
+ #cave-editor-brand{left:12px;top:16px;gap:8px}
+ #cave-editor-brand strong{font-size:24px}
+ #cave-editor-brand .cave-admin-label{font-size:12px}
+ #nc-root [class*="AppHeaderContent"]{padding-left:155px;gap:4px}
+ #nc-root [class*="AppHeaderNavList"] button{font-size:12px;padding:8px 6px}
  #nc-root [class*="AvatarDropdownButton"]{padding:8px 6px}
+ #nc-root [class*="AvatarDropdownButton"]::before{font-size:12px}
  #nc-root [class*="AppHeaderSiteLink"]{display:none}
 }
