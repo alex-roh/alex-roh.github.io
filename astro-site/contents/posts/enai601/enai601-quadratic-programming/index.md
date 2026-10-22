@@ -1,6 +1,6 @@
 ---
 title: "[ENAI601] 08 — Quadratic Programming, 곡률과 제약에서 최소제곱·거리 문제까지"
-description: "QP의 Gradient·Hessian과 PSD, 내부·경계 최적점, 제약 최소제곱의 계수 전개, 두 다면체 거리의 블록 행렬을 그림과 계산으로 연결한다."
+description: "LP와 QP의 차이를 작은 포물선에서 시작해 Quadratic Form, Eigenvalue, PSD, 제약 최적점, 최소제곱과 두 다면체의 최단거리 문제로 연결한다."
 series: ENAI601 Numerical Methods
 seriesOrder: 8
 tags:
@@ -9,39 +9,102 @@ tags:
   - optimization
 date: 2026-10-22
 publishedAt: "2026-10-22T03:45:55-04:00"
-updatedAt: "2026-10-22T15:48:58-04:00"
+updatedAt: "2026-10-22T16:26:00-04:00"
 ---
 
-[앞 글의 Linear Programming](/enai601-linear-programming/)에서는 목적함수가 affine이면 등고선이 평행하게 이동하고, 조건이 맞을 때 꼭짓점에서 최적값을 찾을 수 있다는 것을 보았다. 하지만 예측 오차의 제곱합이나 두 물체 사이 거리처럼 자연스러운 비용 함수에는 <strong>이차항</strong>이 등장한다.
+[앞 글의 Linear Programming](/enai601-linear-programming/)에서는 목적함수가 직선처럼 일정한 기울기를 가지고, 조건이 성립할 때 다면체의 꼭짓점에서 최적해를 찾을 수 있음을 살펴보았다. 그러나 AI 모델의 예측 오차처럼 <strong>차이를 제곱한 비용</strong>은 직선이 아니라 포물선으로 표현된다. 이때도 꼭짓점만 확인하면 최적해를 구할 수 있을까?
 
-<strong>Quadratic Programming(이차계획법, QP)</strong>은 affine 제약을 유지하면서 이런 비용을 다루는 단계다. 가능집합은 여전히 polyhedron이지만 목적함수의 곡률 때문에 최적점은 내부에도, 경계에도 놓일 수 있다. 따라서 꼭짓점만 검사하는 대신 <strong>Hessian의 PSD 조건과 제약을 고려한 최적성 조건</strong>을 함께 사용해야 한다.
+<strong>Quadratic Programming(이차계획법, QP)</strong>은 이런 질문에서 출발한다. 제약조건은 LP처럼 Affine으로 유지하되, 목적함수에 이차항을 허용하는 최적화 문제다. 이차항의 곡률을 이해하면 최적점이 내부에 있을 수도 있다는 사실, Hessian의 Positive Semidefinite(PSD) 조건이 필요한 이유, 제약조건 아래에서 Gradient가 0이 아닐 수도 있다는 사실이 서로 연결된다.
 
-작은 이차함수에서 시작해 왜 $P$가 곡률을 결정하는지 확인하고, 제약이 있는 최소제곱과 두 다면체 사이 거리를 QP로 표현해 보자.
+포물선의 모양에서 출발해 최적점의 위치를 이해한 뒤, 예측 오차와 거리 문제를 QP로 표현해 보자.
 
-## 1. LP에서 QP로
+1. <strong>Part A — 함수의 모양:</strong> 작은 포물선에서 시작해 Quadratic Form, Eigenvalue, PSD를 이해한다.
+2. <strong>Part B — 최적점의 위치:</strong> 무제약 문제와 제약 문제를 비교하고 Optimality Criterion을 적용한다.
+3. <strong>Part C — 실제 문제의 정식화:</strong> Constrained Least Squares와 두 Polyhedra 사이의 거리를 QP로 바꾼다.
 
-LP는 목적함수가 affine이다.
+처음 읽을 때에는 본문의 작은 예제와 굵게 표시한 결론을 따라가고, 특이행렬(Singular Matrix)이나 존재성·유일성의 예외는 글 끝의 <strong>Advanced Notes</strong>에서 확인해도 된다.
 
-$$
-f_{\mathrm{LP}}(x)=c^Tx+d
-$$
+---
 
-QP는 이차항을 허용한다.
+<p class="chapter-part"><strong>Part A. QP의 목적함수는 왜 다른 모양일까?</strong></p>
 
-$$
-f_{\mathrm{QP}}(x)=\frac12x^TPx+q^Tx+r
-$$
+## 1. LP에서 QP로: 직선과 포물선
 
-여기서 $P\in\mathbb R^{n\times n}$는 대칭행렬, $q\in\mathbb R^n$는 벡터, $r\in\mathbb R$는 상수다. 이 글의 $r$은 앞의 LP 글에서 쓴 공의 반지름과 달리 <strong>목적함수의 상수항</strong>이다. 제약은 <strong>Affine Inequality/Equality(아핀 부등식·등식)</strong>로 표현한다. $Gx\le h$는 각 행의 부등식을 모두 만족한다는 뜻이다.
+가장 작은 문제부터 보자. 선택할 변수가 하나이고, 그 값은 0에서 4 사이여야 한다.
 
-<strong>Quadratic Programming(이차계획법, QP)</strong>은 목적함수에 이차항이 있는 최적화 문제다. 일반적인 QP가 모두 convex인 것은 아니다. 이 수업에서 주로 다루는 것은 $P\succeq0$인 <strong>Convex QP(볼록 이차계획)</strong>다.
+먼저 LP를 생각한다.
 
 $$
 \begin{aligned}
-\operatorname{minimize}\quad&\frac12x^TPx+q^Tx+r\\
-\text{subject to}\quad&Gx\le h,\\
-&Ax=b.
+\operatorname{minimize}\quad &2x+1\\
+\text{subject to}\quad &0\le x\le4.
 \end{aligned}
+$$
+
+목적함수는 오른쪽으로 갈수록 증가하므로 가장 왼쪽에서 최솟값을 얻는다.
+
+$$
+x_{\mathrm{LP}}^*=0
+$$
+
+이번에는 같은 구간에서 <strong>어떤 목표값 2와의 차이를 제곱한 비용</strong>을 최소화한다.
+
+$$
+\begin{aligned}
+\operatorname{minimize}\quad &(x-2)^2\\
+\text{subject to}\quad &0\le x\le4.
+\end{aligned}
+$$
+
+이 경우에는 구간의 끝이 아니라 가운데에서 오차가 0이 된다.
+
+$$
+x_{\mathrm{QP}}^*=2
+$$
+
+![Affine objective and quadratic objective](01_lp_vs_qp.png)
+
+![Interior minimum of a convex quadratic function](06_interior_qp_optimum.png)
+
+첫 번째 그림은 직선과 포물선을 비교하고, 두 번째 그림은 동일한 구간에서 이차 목적함수가 내부 최적점을 갖는 상황을 보여준다.
+
+왼쪽 직선에서는 한 방향으로 움직일수록 값이 계속 감소하거나 증가한다. 오른쪽 포물선에서는 <strong>최저점의 왼편에서는 감소하고, 오른편에서는 증가</strong>한다. 이미 이 작은 예제만으로 LP의 꼭짓점 논리를 QP에 그대로 적용할 수 없다는 사실을 확인할 수 있다.
+
+<strong>핵심 직관:</strong> LP와 QP가 동일한 가능집합(Feasible Set)을 사용하더라도 목적함수의 모양이 달라지면 최적점의 위치가 달라진다. QP는 내부의 최저점을 가질 수 있다.
+
+### 일반적인 QP 표준형
+
+변수가 여러 개일 때 이차함수를 행렬로 표현한 것이 다음 형식이다.
+
+$$
+\boxed{
+\begin{aligned}
+\operatorname{minimize}_{x}\quad
+&\frac12x^TPx+q^Tx+r\\
+\text{subject to}\quad
+&Gx\le h,\\
+&Ax=b.
+\end{aligned}}
+$$
+
+여기서 각 항의 역할은 구분할 필요가 있다.
+
+| 표현 | 의미 |
+|---|---|
+| Optimization variable | 선택해야 할 벡터 x |
+| Quadratic term | 방향별 곡률을 정하는 항 |
+| Linear term | 목적함수를 한쪽으로 기울이는 항 |
+| Constant term | 모든 목적함수값에 똑같이 더해지는 항 |
+| Affine constraints | 선택할 수 있는 영역을 정하는 부등식·등식 |
+
+여기서 $x\in\mathbb R^n$은 선택할 변수 벡터, $P\in\mathbb R^{n\times n}$은 실수 대칭행렬(Symmetric Matrix), $q\in\mathbb R^n$은 계수 벡터, $r\in\mathbb R$은 상수다. $Gx\le h$는 각 행에 해당하는 부등식을 모두 만족한다는 뜻이다. 일반적인 QP가 모두 볼록한 것은 아니며, 이 수업에서는 주로 $P\succeq0$인 Convex QP(볼록 이차계획)를 다룬다. 이때 이차함수의 Gradient와 Hessian은 다음처럼 간단해진다.
+
+$$
+\nabla f_0(x)=Px+q
+$$
+
+$$
+\nabla^2f_0(x)=P
 $$
 
 <blockquote class="lecture-excerpt">
@@ -62,142 +125,220 @@ When $P=0$, reduces to a linear program
 
 </blockquote>
 
-$S_+^n$은 <strong>$n\times n$ 실수 대칭 PSD 행렬들의 집합</strong>이다. 이 기호의 $+$는 모든 원소가 양수라는 뜻이 아니다. 이차형식이 모든 방향에서 음수가 되지 않는다는 조건이다. $P=0$이면 이차항이 사라져 LP가 된다.
+교안의 $S_+^n$은 $n\times n$ 실수 대칭 PSD 행렬들의 집합이다. 원소가 모두 양수라는 뜻은 아니며, 그 조건은 4절에서 설명한다. $P=0$이면 이차항이 사라져 LP가 된다.
 
-![Affine and quadratic objectives](01_lp_vs_qp.png)
+P가 무엇을 의미하는지 이해하려면 먼저 Quadratic Form을 실제로 계산해 볼 필요가 있다.
 
-그림의 왼쪽은 $2x+1$, 오른쪽은 $(x-2)^2$다. 앞의 직선은 기울기가 항상 2지만, 뒤의 포물선은 $x=2$를 기준으로 감소하다 증가한다. 같은 $x$축 위에서도 목적함수의 모양이 달라지면 최적점을 찾는 관점이 달라진다.
+## 2. Quadratic Form: 행렬 안에 들어 있는 제곱항
 
-<strong>차이:</strong> LP의 gradient는 일정하지만 QP의 gradient는 위치에 따라 달라진다. 따라서 QP의 최적점은 feasible set의 내부에 있을 수도 있다.
-
-$$
-\nabla f_{\mathrm{LP}}(x)=c,\qquad
-\nabla f_{\mathrm{QP}}(x)=Px+q
-$$
-
-$$
-\nabla^2f_{\mathrm{QP}}(x)=P
-$$
-
-### 왜 앞에 1/2이 붙고, 대칭성을 가정할까?
-
-스칼라 $x^TPx$를 성분으로 쓰면 $\sum_i\sum_jp_{ij}x_ix_j$다. $x_k$로 미분할 때 $i=k$인 항과 $j=k$인 항이 모두 기여하므로
-
-$$
-\nabla(x^TPx)=(P+P^T)x.
-$$
-
-따라서 대칭 $P$에서는 $\nabla(x^TPx)=2Px$이고, 앞의 $1/2$ 덕분에 $\nabla f_0=Px+q$가 된다. $1/2$는 제약을 바꾸기 위한 장치가 아니라 미분 결과를 간단하게 만드는 관례다.
-
-대칭이 아닌 행렬 $B$가 주어져도
-
-$$
-x^TBx=x^T\left(\frac{B+B^T}{2}\right)x
-$$
-
-이므로 대칭 부분으로 같은 quadratic form을 나타낼 수 있다. 이때 Hessian은 $B$ 자체가 아니라 $(B+B^T)/2$다. 또 상수항 $r$은 gradient와 최적점에는 영향을 주지 않지만, 최적값에는 더해져야 한다.
-
-## 2. Quadratic Form과 고유값 복습
-
-<strong>Quadratic Form(이차형식)</strong>은 벡터를 입력받아 하나의 실수를 만드는 식이다.
+<strong>Quadratic Form(이차형식)</strong>은 다음 식이다.
 
 $$
 x^TPx
 $$
 
-작은 예제로 시작하자.
+처음부터 추상적인 기호로 받아들이기보다 작은 행렬을 곱해 보자.
 
 $$
-P=\begin{bmatrix}2&0\\0&4\end{bmatrix}
+P=\begin{bmatrix}2&0\\0&4\end{bmatrix},
+\qquad
+x=\begin{bmatrix}x_1\\x_2\end{bmatrix}
 $$
 
-$$
-x^TPx=2x_1^2+4x_2^2
-$$
-
-고유벡터와 고유값의 정의는 다음과 같다.
+첫 번째 행렬곱은 다음과 같다.
 
 $$
-Pv=\lambda v
+Px=
+\begin{bmatrix}2x_1\\4x_2\end{bmatrix}
 $$
 
-고유벡터는 행렬 작용을 받아도 같은 직선 위에 있는 방향이다. 고유값은 그 방향에 적용되는 부호 있는 배율이다. 특히 단위 고유벡터에서는:
-
-$$
-v^TPv=\lambda
-$$
-
-따라서 이차함수의 각 고유벡터 방향 곡률은 고유값의 부호로 판별할 수 있다.
-
-### 직관적 보충: 고유벡터 방향으로 잘라 보면 한 변수 포물선이다
-
-여기서는 먼저 $q=0$, $r=0$인 순수 이차 목적함수 $f(x)=\frac12x^TPx$를 보자. 단위 고유벡터 $v_i$ 방향으로 거리 $t$만큼 이동한 점은 $x=tv_i$다. $Pv_i=\lambda_iv_i$와 $v_i^Tv_i=1$을 대입하면
+여기에 왼쪽에서 전치벡터를 곱한다.
 
 $$
 \begin{aligned}
-f(tv_i)&=\frac12(tv_i)^TP(tv_i)\\
-&=\frac{t^2}{2}v_i^T(\lambda_iv_i)\\
-&=\frac12\lambda_it^2.
+x^TPx
+&=\begin{bmatrix}x_1&x_2\end{bmatrix}
+\begin{bmatrix}2x_1\\4x_2\end{bmatrix}\\
+&=2x_1^2+4x_2^2.
 \end{aligned}
 $$
 
-즉 그릇을 고유벡터 방향으로 잘라 얻는 단면은 이 포물선이다. 여기서 <strong>Curvature(곡률)</strong>는 방향을 따라간 함수의 2차 미분값을 뜻하며,
+QP 표준형에 들어가는 이차항은 여기에 절반을 곱한 것이다.
 
 $$
-\frac{d^2}{dt^2}f(tv_i)=\lambda_i
+\boxed{\frac12x^TPx=x_1^2+2x_2^2}
 $$
 
-다. <strong>Eigenvector(고유벡터)는 단면을 자르는 주축 방향이고, Eigenvalue(고유값)는 그 방향의 2차 미분값</strong>이다. $q,r$가 있어도 2차 미분값은 같지만, $f(tv_i)$에는 선형항과 상수항이 추가되므로 위의 순수 포물선 식을 그대로 쓰지는 않는다.
+즉 행렬이 특별한 종류의 함수를 새로 만들어 내는 것이 아니다. <strong>여러 변수의 제곱항과 교차항을 간결하게 기록하는 방법</strong>이다.
 
-![Contours of x1 squared plus 2 x2 squared, with unit eigenvector directions and costs 1 and 2](07_eigenvectors_curvature.png)
+이번 예제의 두 변수 방향을 비교해 보자.
 
-이 그림은 $P=\operatorname{diag}(2,4)$의 등고선이다. 같은 거리 $t$를 $v_1=(1,0)^T$ 방향으로 이동하면 비용은 $t^2$, $v_2=(0,1)^T$ 방향으로 이동하면 $2t^2$다. 그림의 두 끝점은 모두 원점에서 거리 1이지만 비용은 각각 1과 2다. 그래서 같은 비용에 도달하는 거리가 두 번째 방향에서 더 짧고, 타원의 그 방향 폭도 더 좁다.
+- 첫 번째 방향으로만 움직이면 비용은 이동거리의 제곱만큼 증가한다.
+- 두 번째 방향으로만 움직이면 같은 거리에서도 비용은 두 배 증가한다.
 
+그림에서는 두 번째 방향이 더 가파른 그릇을 만든다. 그렇다면 P에 대각선 밖의 값까지 있다면, 어느 방향으로 얼마나 가파른지 어떻게 찾을 수 있을까?
 
-- <strong>PD (positive definite):</strong> 모든 고유값이 양수. 이차 목적함수는 strictly convex.
-- <strong>PSD (positive semidefinite):</strong> 모든 고유값이 0 이상. 이차 목적함수는 convex이며, 반드시 strictly convex인 것은 아니다.
-- <strong>Indefinite:</strong> 양수와 음수 고유값이 공존. 이차함수는 convex하지 않다.
+이 질문이 <strong>Eigenvector(고유벡터)</strong>와 <strong>Eigenvalue(고유값)</strong>가 필요한 이유다.
+
+## 3. Eigenvector와 Eigenvalue가 '휘어지는 방향'을 알려주는 이유
+
+선형대수에서 고유벡터는 행렬을 곱해도 같은 직선 위에 남는 특별한 벡터다.
 
 $$
-P\succeq0\iff z^TPz\ge0\quad\forall z
+\boxed{Pv=\lambda v}
 $$
 
-![Convex bowl vs saddle](02_psd_vs_indefinite.png)
+고유벡터는 그 방향을, 고유값은 그 방향에서의 부호 있는 배율을 나타낸다.
 
-그림의 왼쪽은 $f=x_1^2+2x_2^2=\frac12x^T\operatorname{diag}(2,4)x$다. 위에서 계산한 $x^TPx$ 자체와는 $1/2$배 차이가 있다. 이 예의 $P$는 PSD인 동시에 PD여서 바닥이 한 점인 그릇 모양이다. <strong>모든 PSD 함수가 이런 그릇 모양은 아니다.</strong> 예를 들어 $f=x_1^2$는 $x_2$ 방향으로 평평하다.
+이제 그 정의를 QP에 연결해 보자. 이해를 위해 선형항과 상수항이 없는 이차함수를 사용한다.
 
-오른쪽은 $f=x_1^2-x_2^2$이며 Hessian은 $\operatorname{diag}(2,-2)$다. 한 방향으로는 위로 굽고 다른 방향으로는 아래로 굽는 <strong>Saddle(안장)</strong> 모양이다.
+$$
+f_0(x)=\frac12x^TPx
+$$
 
-이 경우 $v_2=(0,1)^T$ 방향에서는 $f(tv_2)=-t^2$여서 음수 고유값이 아래로 굽는 단면을 만든다. 새 등고선 그림은 양의 두 곡률을 비교하고, 기존 3차원 그림은 곡률 부호가 다른 안장과 대비하는 역할을 한다.
+길이가 1인 고유벡터를 하나 선택하고 그 방향의 좌표를 $t$로 나타내자. 원점에서의 실제 거리는 $|t|$이며, $t$의 부호는 이동 방향을 구별한다.
 
-평평한 경우도 같은 식으로 읽을 수 있다. $P=\operatorname{diag}(4,0)$이면 $f(x)=2x_1^2$다. 첫 방향에서는 $f(t,0)=2t^2$지만 둘째 방향에서는 $f(0,t)=0$이다. 둘째 고유값이 0이어서 그 방향으로는 휘어짐이 없다. 따라서 PSD이지만 PD는 아니다.
+$$
+x=tv_i,\qquad v_i^Tv_i=1
+$$
 
+함수에 대입하면
 
-### 직접 계산: Eigenvalues
+$$
+\begin{aligned}
+f_0(tv_i)
+&=\frac12(tv_i)^TP(tv_i)\\
+&=\frac12t^2v_i^TPv_i\\
+&=\frac12t^2v_i^T(\lambda_i v_i)\\
+&=\frac12\lambda_i t^2.
+\end{aligned}
+$$
+
+여기서 중요한 것은 결과가 <strong>한 변수 포물선</strong>으로 바뀌었다는 사실이다.
+
+$$
+\boxed{f_0(tv_i)=\frac12\lambda_i t^2}
+$$
+
+이 포물선의 두 번째 미분은 고유값과 같다. 여기서 말하는 방향별 곡률은 이 두 번째 미분을 뜻한다. 곡선의 기하학적 곡률과는 구별하며, 이차함수에서는 위치가 바뀌어도 같은 방향의 두 번째 미분은 일정하다.
+
+$$
+\frac{d^2}{dt^2}f_0(tv_i)=\lambda_i
+$$
+
+따라서 고유값의 부호로 해당 방향에서 함수가 어떻게 휘어지는지 판단할 수 있다.
+
+- <strong>양수:</strong> 위로 열리는 방향이다.
+- <strong>0:</strong> 그 방향으로 이차적인 휘어짐이 없다.
+- <strong>음수:</strong> 아래로 열리는 방향이다.
+
+이 설명에서 고유벡터 방향을 택한 이유는 행렬의 작용이 단순한 스칼라 곱으로 바뀌기 때문이다. 일반적인 방향을 다루려면 여러 고유벡터의 조합을 생각해야 한다.
+
+![Eigenvectors and directional curvature on quadratic contours](07_eigenvectors_curvature.png)
+
+그림은 앞 절에서 계산한 이차함수의 등고선(Contour Lines)을 위에서 본 것이다. 원점에서 같은 거리만큼 이동하더라도 두 고유벡터 방향의 비용이 다르다.
+
+$$
+f_0(1,0)=1
+$$
+
+$$
+f_0(0,1)=2
+$$
+
+같은 비용을 유지하려면 두 번째 방향으로는 덜 이동해야 한다. 등고선이 타원처럼 나타나는 이유다.
+
+<strong>핵심 직관:</strong> 고유벡터는 곡면을 이해하기 쉬운 주축 방향이고, 고유값은 그 방향의 곡률이다. QP에서 고유값은 단순히 행렬 계산 문제를 풀기 위한 숫자가 아니다.
+
+### 직접 계산하는 2×2 고유값 문제
+
+시험에서는 다음과 같은 작은 행렬의 고유값을 직접 구할 수 있어야 한다.
 
 $$
 P=\begin{bmatrix}3&1\\1&3\end{bmatrix}
 $$
 
+고유값은 특성방정식(Characteristic Equation)으로 계산한다.
+
 $$
-\det(P-\lambda I)=(3-\lambda)^2-1=0
+\det(P-\lambda I)=0
+$$
+
+$$
+\begin{aligned}
+\det\begin{bmatrix}3-\lambda&1\\1&3-\lambda\end{bmatrix}
+&=(3-\lambda)^2-1\\
+&=(2-\lambda)(4-\lambda).
+\end{aligned}
+$$
+
+따라서
+
+$$
+\boxed{\lambda_1=2,\qquad\lambda_2=4}
+$$
+
+이다. 이 행렬은 모든 고유값이 양수이므로 Positive Definite(PD)이다. 고유값으로 행렬의 성질을 판단하는 이유는 다음 절에서 분명해진다.
+
+## 4. PSD는 왜 Convexity의 조건인가?
+
+다음 두 이차함수를 비교해 보자.
+
+$$
+f_1(x_1,x_2)=x_1^2+2x_2^2
 $$
 
 $$
-\lambda_1=2,\qquad\lambda_2=4
+f_2(x_1,x_2)=x_1^2-x_2^2
 $$
 
-따라서 $P$는 PD다. $(1,1)^T/\sqrt2$ 방향의 고유값은 4, $(1,-1)^T/\sqrt2$ 방향의 고유값은 2다. 같은 거리만큼 움직여도 전자의 방향에서 목적함수가 더 가파르게 휜다.
+첫 번째 함수는 어느 좌표 방향으로 움직여도 위로 열린다. 반면 두 번째 함수는 첫 번째 방향으로는 위로, 두 번째 방향으로는 아래로 열린다.
 
-### Hessian의 PSD가 왜 convexity를 판별할까?
+![Positive definite bowl and indefinite saddle](02_psd_vs_indefinite.png)
 
-점 $x$에서 방향 $v$를 따라 움직이는 한 변수 함수 $g(t)=f_0(x+tv)$를 생각하면
+오른쪽 안장(Saddle) 모양은 아래로 휘어지는 방향이 있기 때문에 Convex Function이 아니다.
+
+실수 대칭행렬 P가 <strong>Positive Semidefinite(양의 준정부호, PSD)</strong>라는 것은 모든 벡터 v에 대해 다음이 성립한다는 뜻이다.
 
 $$
-g''(t)=v^TPv.
+\boxed{v^TPv\ge0\qquad\forall v}
 $$
 
-$P\succeq0$이면 모든 방향에서 이 값이 0 이상이다. 어떤 직선으로 잘라도 함수가 아래로 굽지 않으므로 이차 목적함수가 convex다. 반대로 $v^TPv<0$인 방향이 있으면 그 직선 위에서는 아래로 굽기 때문에 전체 $\mathbb R^n$에서 convex일 수 없다.
+대칭행렬에 대해서는 다음 두 조건이 동등하다.
+
+$$
+P\succeq0
+\quad\Longleftrightarrow\quad
+\lambda_i\ge0\quad\text{for all }i
+$$
+
+그렇다면 이것이 목적함수의 Convexity와 어떻게 연결될까?
+
+QP의 목적함수를 임의의 점에서 임의의 방향 v로 잘라 한 변수 함수로 생각한다.
+
+$$
+g(t)=f_0(x+tv)
+$$
+
+이 함수의 두 번째 미분은 다음과 같다.
+
+$$
+g''(t)=v^TPv
+$$
+
+P가 PSD라면 모든 방향에서 두 번째 미분이 0 이상이다. 따라서 어떤 직선 방향으로 잘라 보더라도 아래로 휘어지는 단면이 없고, 전체 이차함수는 Convex하다.
+
+결론적으로 대칭 P를 사용하는 QP에서는
+
+$$
+\boxed{
+P\succeq0
+\quad\Longleftrightarrow\quad
+f_0\text{ is convex on }\mathbb R^n
+}
+$$
+
+이다.
 
 <blockquote class="lecture-excerpt">
 <p class="lecture-excerpt-label">교안 발췌 · Module 6 — Quadratic Program, convexity</p>
@@ -208,133 +349,242 @@ $$
 
 </blockquote>
 
-따라서 <strong>$f_0$가 전체 $\mathbb R^n$에서 convex일 필요충분조건은 대칭 $P$가 PSD인 것</strong>이다. 실제 제약이 특정 방향을 제거하는 특수한 경우와, 목적함수 자체를 전체 공간에서 판별하는 기준은 구별한다.
+이 조건은 목적함수 자체를 전체 공간에서 판별하는 기준이다. 제약이 특정 방향을 제거해 제한된 영역에서만 볼록해지는 경우와 구별한다. 제약조건은 Affine이므로 Feasible Set도 Convex하다. 따라서 P가 PSD이면 전체 문제는 <strong>Convex QP</strong>가 된다.
 
-<strong>핵심 직관.</strong> $P$는 원소별 비용표라기보다 <strong>방향별 휘어짐</strong>을 정한다. 모든 방향의 이차 곡률이 음수가 아니면 PSD이고, 이차 목적함수는 convex다. 양수·0·음수 고유값을 각각 위로 굽는 방향·평평한 방향·아래로 굽는 방향과 연결하면 된다.
+| 고유값의 상태 | P의 성질 | 이차 목적함수의 성질 |
+|---|---|---|
+| 모두 양수 | Positive Definite (PD) | Strictly Convex |
+| 모두 0 이상 | Positive Semidefinite (PSD) | Convex |
+| 양수와 음수가 섞임 | Indefinite | Non-convex |
 
-
-> <strong>Convexity·존재·유일성은 다른 질문이다.</strong> $P\succeq0$은 곡률에 관한 조건이다. 제약이 모순이면 feasible point가 없고, 비용이 아래로 무한히 감소할 수도 있다. $P\succ0$이면 무제약 QP는 유일한 최적점을 갖는다. 제약이 있을 때도 가능집합이 비어 있지 않은 닫힌 polyhedron이면 유일한 최적점이 존재하지만, 먼저 가능집합의 비어 있지 않음을 확인해야 한다.
-
-## 3. QP 최적점은 꼭짓점이어야 할까?
-
-그렇지 않다. LP의 *affine objective* 때문에 성립했던 꼭짓점 관련 논리를 QP에 적용하면 안 된다.
-
-$$
-\min_{0\le x\le4}(x-2)^2
-$$
+0인 고유값이 하나 있더라도 PSD가 될 수 있다. 이때는 특정 방향으로 평평할 수 있으므로 반드시 Strictly Convex인 것은 아니다.
 
 $$
-x^*=2
+P=\begin{bmatrix}4&0\\0&0\end{bmatrix}
 $$
 
-$[0,4]$는 양 끝점 0과 4를 <strong>포함하는 구간</strong>, 즉 $0\le x\le4$다. 최적점 2는 두 끝점 사이의 내부에 있다. 양 끝점의 비용은 각각 4지만 $x=2$에서는 0이다. 따라서 꼭짓점 두 개만 검사하면 실제 해를 놓친다.
-
-![Interior optimum](06_interior_qp_optimum.png)
-
-주황색 구간은 허용되는 $x$의 범위를 표시한다. 목적함수값이 0이어야 한다는 제약이 아니라, 그 구간 위에서 포물선의 높이를 가장 낮게 만드는 $x$를 고르는 문제다.
-
-## 4. Unconstrained QP — Gradient = 0
-
 $$
-f_0(x)=\frac12x^TPx+q^Tx+r
+\frac12x^TPx=2x_1^2
 $$
 
-대칭 P에 대해:
+위 함수에서는 두 번째 변수 방향으로 움직여도 함수값이 변하지 않는다.
 
-$$
-\nabla f_0(x)=Px+q
-$$
+<strong>여기까지의 연결:</strong> Quadratic Form은 이차함수를 행렬로 기록한 식이다. 고유값은 방향별 곡률을 나타낸다. 모든 방향의 이차 곡률이 음수가 아니라는 조건이 PSD이며, 바로 그 조건이 Convex QP를 만든다.
 
-Stationary point는 다음 방정식을 만족한다.
+---
 
-$$
-Px=-q
-$$
+<p class="chapter-part"><strong>Part B. QP의 최적점은 어떻게 찾을까?</strong></p>
 
-P가 PD라면 유일한 해가 전역 최소점이다.
+## 5. 제약이 없을 때: Gradient가 0인 지점
 
-$$
-x^*=-P^{-1}q
-$$
-
-실전 계산에서는 역행렬을 직접 만들기보다 연립일차방정식을 푼다. 이 식을 쓰기 전에 $P$가 가역인지 확인해야 한다.
-
-### P가 PSD이지만 singular라면?
-
-<strong>Singular(특이)</strong>는 역행렬이 없다는 뜻이다. 이때 $P^{-1}$ 공식을 그대로 쓸 수 없다.
-
-- $f(x_1,x_2)=x_1^2$는 $P=\operatorname{diag}(2,0)$, $q=0$인 convex QP다. $x_1=0$이면 어느 $x_2$에서도 최솟값 0이므로 최적점이 여러 개다.
-- $f(x_1,x_2)=x_1^2-x_2$는 같은 $P$를 가지지만, $x_2$를 키우면 비용이 끝없이 줄어든다. PSD여도 최적점이 없다.
-
-차이는 평평한 방향에 있는 선형항이다. 무제약 convex QP에서는 <strong>$Px=-q$가 풀리면 그 해가 전역 최적점이고, 풀리지 않으면 유한한 최적값이 없다.</strong> 평평한 방향에 선형 감소 성분이 남으면 그쪽으로 계속 이동할 수 있기 때문이다.
-
-### 예제
+AI 모델이 가중치 하나를 선택해 예측 오차를 최소화한다고 가정하자. 예측 목표가 3이고, 오차에 일정한 비용 2가 더해진 상황을 단순화하면 다음과 같은 함수가 된다.
 
 $$
 f(w)=(w-3)^2+2
 $$
 
-$$
-f'(w)=2w-6=0\quad\Longrightarrow\quad w^*=3
-$$
-
-## 5. Constrained QP — Gradient가 0이 아닐 수 있다
+이를 전개하고 미분한다.
 
 $$
-\begin{aligned}
-\min_{x_1,x_2}\quad &(x_1-2)^2+(x_2-3)^2\\
-\text{subject to}\quad&x_1+x_2\le4
-\end{aligned}
+f(w)=w^2-6w+11
 $$
 
-무제약 최적점 (2,3)은 제약을 위반한다. 목적함수는 (2,3)까지의 제곱 Euclidean distance이므로, 허용된 반공간에 가장 가까운 점은 경계 위에 있다.
+$$
+f'(w)=2w-6
+$$
 
-경계에서:
+Gradient가 0인 지점을 찾으면
+
+$$
+2w-6=0
+$$
+
+$$
+\boxed{w^*=3}
+$$
+
+이다. 두 번째 미분이 양수이므로 유일한 전역 최솟값을 얻는다.
+
+$$
+f''(w)=2>0
+$$
+
+변수가 여러 개인 QP에서도 원리는 같다. 제약이 없고 P가 PD라면 Gradient를 0으로 놓아 유일한 최적점을 구한다.
+
+$$
+\nabla f_0(x)=Px+q=0
+$$
+
+$$
+\boxed{Px^*=-q}
+$$
+
+P가 PD이면 역행렬이 존재하므로 형식적으로 다음처럼 쓸 수 있다.
+
+$$
+x^*=-P^{-1}q
+$$
+
+다만 수치 계산에서는 역행렬을 명시적으로 만들기보다 선형방정식 시스템을 푼다.
+
+여기까지는 <strong>어디로든 이동할 수 있는 Unconstrained Problem</strong>의 이야기다. 이동할 수 있는 영역에 제한이 생기면 상황이 달라진다.
+
+## 6. 제약이 있을 때: 원래 최저점으로 갈 수 없다면?
+
+목적함수가 어떤 목표점에서의 거리 제곱이라고 하자.
+
+$$
+f_0(x_1,x_2)=(x_1-2)^2+(x_2-3)^2
+$$
+
+제약조건이 없다면 두 제곱항을 동시에 0으로 만드는 점이 최적점이다.
+
+$$
+x_{\mathrm{free}}^*=\begin{bmatrix}2\\3\end{bmatrix}
+$$
+
+하지만 다음과 같은 자원 제한이 추가되었다고 해 보자.
+
+$$
+x_1+x_2\le4
+$$
+
+원래 최적점은 이 조건을 위반한다.
+
+$$
+2+3=5>4
+$$
+
+<strong>이제 질문은 바뀐다.</strong> 목표점 자체에 도달할 수 없다면, 허용된 영역 안에서 그 목표점에 가장 가까운 곳은 어디인가?
+
+### 왜 최적점은 경계에서 찾아야 할까?
+
+Feasible Set이 반공간인 이 예제에서 내부의 임의의 점을 선택했다고 하자. 그 점에서 목표점 쪽으로 아주 조금 이동하면 목표점과의 거리가 줄어든다. 내부에서는 충분히 작은 이동으로도 제약을 계속 만족시킬 수 있다.
+
+따라서 내부의 그 점은 최적점일 수 없다. <strong>가장 가까운 점은 Feasible Set의 경계 위에 있어야 한다.</strong>
+
+이 논리는 이번처럼 목적함수가 <strong>고정된 점까지의 거리 제곱</strong>일 때 특히 직관적이다. 무제약 최적점이 유일하게 존재하고 그 점이 영역 밖에 있는 Convex QP라면, 제약 최적점이 존재할 경우 제약 경계가 최적해를 결정한다. 가장 가까운 Euclidean 점을 찾는 방식이 일반적인 QP에서 항상 통하는 것은 아니다.
+
+경계 방정식은
+
+$$
+x_1+x_2=4
+$$
+
+이므로
 
 $$
 x_2=4-x_1
 $$
 
+이다. 이제 변수 하나로 바꿔 계산할 수 있다.
+
 $$
 \begin{aligned}
-f_0(x_1)&=(x_1-2)^2+(1-x_1)^2\\
-&=2x_1^2-6x_1+5
+f_0(x_1)
+&=(x_1-2)^2+(4-x_1-3)^2\\
+&=(x_1-2)^2+(1-x_1)^2\\
+&=2x_1^2-6x_1+5.
 \end{aligned}
 $$
 
-$$
-4x_1-6=0\Longrightarrow x_1^*=1.5,\quad x_2^*=2.5
-$$
-
-![QP optimum on boundary](03_constrained_qp_optimum.png)
-
-두 축은 최적화 변수 $x_1,x_2$다. 원 모양의 등고선마다 목적함수값이 일정하고, 초록색 영역이 $x_1+x_2\le4$를 만족하는 반공간이다. 중심 $(2,3)$은 영역 밖에 있으며, 가장 작은 비용으로 영역에 닿는 점이 $(1.5,2.5)$다. 그 비용은 $0.5$다.
-
-### 직관적 보충: 감소 방향이 보여도 갈 수 없을 때
-
-![At the boundary optimum, the gradient points into the feasible halfspace while the negative gradient points outside](08_qp_feasible_gradient.png)
-
-화살표는 최적점 $(1.5,2.5)$에서 출발하며, 보기 좋게 실제 벡터 길이의 $0.6$배로 그렸다. 파란 gradient $(-1,-1)^T$ 방향은 반공간 안으로 들어가지만 비용을 증가시킨다. 붉은 negative gradient $(1,1)^T$ 방향은 비용을 줄이지만 곧바로 $x_1+x_2>4$인 영역으로 나간다.
-
-원 모양의 곡선은 2차원 입력 $(x_1,x_2)$에 대한 <strong>같은 함수값의 등고선</strong>이다. 원래 이차 목적함수의 3차원 그래프는 그릇 모양이지만, 여기서는 그 높이를 일정하게 고정한 원들을 위에서 본 것이다.
-
-### Optimality Criterion 검증
-
-먼저 후보점이 제약을 만족하는지 확인한다. 그다음 <strong>미분 가능한 convex 목적함수와 convex 가능집합 $D$</strong>에서는 다음이 최적성의 필요충분조건이다.
+이를 미분하면
 
 $$
-(\nabla f_0(x^*))^T(y-x^*)\ge0\qquad\forall y\in D
+\frac{df_0}{dx_1}=4x_1-6
 $$
 
-이번 예제에서는:
+이므로
+
+$$
+4x_1-6=0
+$$
+
+$$
+\boxed{x_1^*=1.5,\qquad x_2^*=2.5}
+$$
+
+이다.
+
+![Constrained quadratic optimum on a halfspace boundary](03_constrained_qp_optimum.png)
+
+원형 등고선은 목표점에서 같은 거리 제곱을 갖는 점들이다. 작은 원일수록 목적함수값이 작다. 허용된 반공간에 최초로 닿는 가장 작은 등고선의 접점이 최적점이다.
+
+이때 최솟값은 다음과 같다.
+
+$$
+f_0(x^*)=(-0.5)^2+(-0.5)^2=0.5
+$$
+
+### 그런데 최적점에서 Gradient가 0이 아니다
+
+미분한 Gradient를 최적점에 대입해 보자.
+
+$$
+\nabla f_0(x)=
+\begin{bmatrix}
+2(x_1-2)\\2(x_2-3)
+\end{bmatrix}
+$$
+
+$$
+\nabla f_0(x^*)=
+\begin{bmatrix}-1\\-1\end{bmatrix}
+\ne0
+$$
+
+그렇다고 최적점이 잘못된 것은 아니다. Gradient는 목적함수가 가장 가파르게 증가하는 방향이다. 반대로 Negative Gradient는 가장 가파르게 감소하는 방향이다.
+
+$$
+-\nabla f_0(x^*)=
+\begin{bmatrix}1\\1\end{bmatrix}
+$$
+
+그런데 최적점에서 이 방향으로 조금 이동하면 두 좌표의 합이 4보다 커져 제약을 위반한다.
+
+![Gradient and negative gradient at the constrained optimum](08_qp_feasible_gradient.png)
+
+즉 <strong>비용을 줄일 방향이 존재하더라도 그 방향으로 이동할 수 없다면</strong> 최적점이 될 수 있다.
+
+여기서 주의할 점은 “제약이 있으면 Gradient가 0이 아니다”가 아니라 <strong>“제약 최적점에서는 Gradient가 0이 아닐 수도 있다”</strong>는 것이다. 원래 최적점이 Feasible하다면 제약 문제에서도 Gradient가 0인 최적점을 가질 수 있다.
+
+## 7. Optimality Criterion으로 실제 최적성을 증명하기
+
+앞 절에서는 그림과 미분으로 최적점 후보를 찾았다. 이제 <strong>왜 다른 Feasible Point가 더 좋은 값을 만들 수 없는지</strong> 증명할 차례다.
+
+볼록한 가능집합 $D$와 그 집합을 포함하는 열린 영역에서 미분 가능한 볼록 목적함수 $f_0$를 생각하자. 후보점 $x^*\in D$가 전역 최소점일 필요충분조건은 다음과 같다.
+
+$$
+\boxed{
+\nabla f_0(x^*)^T(y-x^*)\ge0
+\qquad\forall y\in D
+}
+$$
+
+직관적으로는 <strong>현재 최적점에서 허용된 다른 점을 향해 이동하는 방향이 목적함수를 감소시키지 않는다</strong>는 뜻이다. 식의 내적은 Gradient와 이동 방향의 관계를 나타낸다.
+
+방금 구한 후보점에 이 조건을 적용한다.
+
+$$
+x^*=\begin{bmatrix}1.5\\2.5\end{bmatrix}
+$$
 
 $$
 \nabla f_0(x^*)=\begin{bmatrix}-1\\-1\end{bmatrix}
 $$
 
+임의의 Feasible Point를 다음처럼 놓는다.
+
+$$
+y=\begin{bmatrix}y_1\\y_2\end{bmatrix},
+\qquad y_1+y_2\le4
+$$
+
+그러면
+
 $$
 \begin{aligned}
-(\nabla f_0(x^*))^T(y-x^*)
+\nabla f_0(x^*)^T(y-x^*)
 &=\begin{bmatrix}-1&-1\end{bmatrix}
 \begin{bmatrix}y_1-1.5\\y_2-2.5\end{bmatrix}\\
 &=-(y_1-1.5)-(y_2-2.5)\\
@@ -343,24 +593,19 @@ $$
 \end{aligned}
 $$
 
-마지막 부등식은 모든 feasible $y$가 $y_1+y_2\le4$를 만족하기 때문에 성립한다. 따라서 $(1.5,2.5)$는 전역 최적점이다. 목적함수의 Hessian은 $2I\succ0$이므로 최적점도 유일하다.
+마지막 부등식은 모든 Feasible Point가 원래 제약을 만족하기 때문에 성립한다. 따라서 이 후보점은 전역 최적점이다. 이번 목적함수는 Strictly Convex이므로 최적점도 유일하다.
 
-여기서 gradient는 $(-1,-1)^T$로 0이 아니다. 감소 방향 $-\nabla f_0=(1,1)^T$로 움직이면 $x_1+x_2$가 커져 제약을 위반한다. 최적점은 “모든 방향에서 평평한 점”이 아니라 <strong>허용된 다른 점으로 이동해도 비용을 줄일 수 없는 점</strong>이다.
+LP에서 Supporting Hyperplane과 Gradient로 증명했던 원리가 그대로 작동한다. 달라진 것은 Gradient가 상수가 아니라 현재 위치에 따라 변한다는 점뿐이다.
 
-이 예에서 경계까지의 Euclidean projection(유클리드 정사영)을 쓸 수 있는 이유는 목적함수가 $(2,3)$까지의 거리 제곱이기 때문이다. 일반적인 $P\succ0$에서는 방향별 곡률이 달라지므로, 무제약 해를 임의로 잘라내거나 가장 가까운 Euclidean 점을 찾는 방식이 항상 해를 주지는 않는다.
+<strong>핵심 직관:</strong> 무제약 문제에서는 모든 방향으로 움직일 수 있으므로 Gradient가 0인 점을 찾는다. 제약 문제에서는 *허용된 방향*으로 개선할 수 있는지를 확인해야 한다. 이 구분이 이후 KKT Conditions와 Complementary Slackness를 배우는 출발점이 된다.
 
-### 제약이 있으면 gradient가 반드시 0이 아닐까?
+---
 
-그렇지는 않다. 같은 목적함수에서 제약을 $x_1+x_2\le6$으로 바꾸면 무제약 최적점 $(2,3)$이 $2+3<6$을 만족한다. 제약은 <strong>Inactive(비활성)</strong>이고 gradient는 0이다. 제약을 $x_1+x_2\le5$로 두면 그 점은 경계 위, 즉 <strong>Active(활성)</strong>이지만 gradient는 여전히 0이다.
+<p class="chapter-part"><strong>Part C. 현실 문제를 QP로 정식화하기</strong></p>
 
-따라서 정확한 표현은 <strong>“제약 최적점에서는 gradient가 0이 아닐 수도 있다”</strong>다. 제약의 존재나 활성 여부만으로 gradient가 0인지 아닌지를 단정할 수 없다.
+## 8. Constrained Least Squares: 예측 오차에서 QP까지
 
-<strong>핵심 직관.</strong> 제약 문제는 마음대로 움직일 수 없는 최적화다. Gradient가 0인지에만 매달리지 말고, 허용된 다른 점으로 이동했을 때 비용을 더 줄일 수 있는지를 최적성 조건으로 검사해야 한다.
-
-
-## 6. Constrained Least Squares — 데이터 문제를 QP로
-
-<strong>Constrained Least Squares(제약이 있는 최소제곱)</strong>는 예측 오차를 작게 만들면서 계수의 허용 범위를 지키는 문제다. 계수의 부호나 크기를 제한해야 하는 모델에서 나타난다.
+<strong>Constrained Least Squares(제약 최소제곱법)</strong>은 예측 오차를 줄이면서 모델 계수의 제한도 만족시키는 문제다. 교안에서는 주택가격 추정을 예로 든다.
 
 <blockquote class="lecture-excerpt">
 <p class="lecture-excerpt-label">교안 발췌 · Module 6 — Examples – Quadratic Program</p>
@@ -374,105 +619,353 @@ $$
 
 </blockquote>
 
-교안의 $x$는 추정할 계수 벡터다. 아래에서는 데이터의 feature(입력 특성)와 구별하기 위해 계수를 $w$로 쓴다. <strong>아래의 관측값 두 개는 설명용 예제이며 교안의 주택가격 데이터가 아니다.</strong>
+교안의 $x$는 추정할 계수 벡터다. 아래에서는 입력 특성과 구별하기 위해 계수를 $w$, 데이터 행렬을 $X$, 목표값을 $y$로 쓴다. 예를 들어 집의 크기와 가격 사이의 관계를 나타내는 간단한 모델을 학습할 수 있다.
 
-데이터:
+아래 데이터는 원리를 설명하기 위해 만든 예제다. 실제 주택시장 데이터나 교안에 제시된 관측값은 아니다.
 
-| Feature x | Target y |
+| House size (feature) | Actual price (target) |
 |---:|---:|
 | 1 | 2 |
 | 2 | 3 |
 
-Bias 없는 선형 모델은 다음과 같다.
+입력 크기에 가중치를 곱해 가격을 예측하는 모델을 생각한다. 계산을 단순하게 하기 위해 절편(Bias)은 생략한다.
 
 $$
 \hat y=wx
 $$
 
-<strong>SSE(Sum of Squared Errors, 오차 제곱합)</strong>는 각 관측값과 예측값의 차이를 제곱해 더한 값이다.
+첫 번째 집과 두 번째 집의 예측값은 각각 다음과 같다.
+
+$$
+\hat y_1=w,\qquad\hat y_2=2w
+$$
+
+실제값과 예측값의 차이, 즉 Residual(잔차)은
+
+$$
+e_1=w-2,\qquad e_2=2w-3
+$$
+
+이다.
+
+### 왜 잔차를 제곱해서 더할까?
+
+잔차를 그냥 더하면 양수 오차와 음수 오차가 상쇄될 수 있다. 따라서 각 잔차를 제곱해 더한 <strong>Sum of Squared Errors(SSE)</strong>를 사용한다.
+
+$$
+\boxed{f(w)=(w-2)^2+(2w-3)^2}
+$$
+
+이를 전개한다.
 
 $$
 \begin{aligned}
-f(w)&=(w-2)^2+(2w-3)^2\\
-&=5w^2-16w+13
+f(w)
+&=(w^2-4w+4)+(4w^2-12w+9)\\
+&=5w^2-16w+13.
 \end{aligned}
 $$
 
+미분하면
+
 $$
-f'(w)=10w-16=0\Longrightarrow w^*_{\mathrm{free}}=1.6
+f'(w)=10w-16
 $$
 
-이제 <strong>계수의 허용 범위</strong>를 다음과 같이 제한하자.
+이므로 무제약 최적 가중치는
+
+$$
+\boxed{w_{\mathrm{free}}^*=1.6}
+$$
+
+이다.
+
+그런데 가중치가 특정 범위를 벗어나면 안 된다는 추가 요구가 있다고 하자.
 
 $$
 0\le w\le1
 $$
 
-모든 허용 $w$에서 $f'(w)=10w-16\le-6<0$이므로 비용은 오른쪽으로 갈수록 감소한다. 더 이상 오른쪽으로 갈 수 없는 $w^*=1$이 제한된 최적점이다. 원래 오차 제곱합은 무제약 해 $w=1.6$에서 $0.2$, 제약 해 $w=1$에서 $2$다. 제약을 추가하면 가능한 선택이 줄기 때문에 최소 오차가 커질 수 있다.
-
-![Constrained least squares](04_constrained_least_squares.png)
-
-이 그림의 가로축은 최적화 변수 $w$가 아니라 입력 feature $x$다. 선택할 변수 $w$는 직선의 기울기이며, 파란 실선과 주황 점선이 서로 다른 모델을 나타낸다. 회색 세로선은 무제약 모델의 예측과 관측 사이 잔차를 표시한다. 최소화하는 것은 어느 점의 높이가 아니라 이 잔차들의 제곱합이다.
-
-### 행렬 전개: QP의 P, q, r을 직접 찾기
+무제약 최적해는 1.6이므로 범위를 벗어난다. 허용된 구간 전체에서 미분값은 음수다.
 
 $$
-f_0(w)=\frac12\|Xw-y\|_2^2
+f'(w)=10w-16\le-6<0
 $$
+
+따라서 구간 안에서는 오른쪽으로 갈수록 비용이 작아지고, 허용된 가장 큰 가중치가 최적해가 된다.
+
+$$
+\boxed{w^*=1}
+$$
+
+두 최적해의 SSE를 비교하면 제약이 왜 오차를 증가시킬 수 있는지도 확인할 수 있다.
+
+$$
+f(1.6)=0.2
+$$
+
+$$
+f(1)=2
+$$
+
+제약은 선택할 수 있는 가중치를 줄이므로, 제약이 없을 때보다 예측 오차의 최소값이 커질 수 있다.
+
+![Unconstrained and constrained least-squares regression](04_constrained_least_squares.png)
+
+이 그림의 가로축은 <strong>입력 데이터의 Feature</strong>이며, 최적화 변수인 w가 아니다. w는 직선의 기울기를 결정한다. 따라서 그래프의 두 예측 직선을 비교할 때에는 최적화 변수와 관측 데이터의 좌표를 혼동하지 않아야 한다.
+
+### 예측 데이터가 많아지면 행렬로 바꾼다
+
+지금까지는 가중치 하나와 관측값 두 개만 사용했다. 실제 회귀 모델에는 여러 관측값과 여러 Feature가 있으므로 <strong>Design Matrix(설계행렬)</strong>로 계산을 묶는다.
+
+$$
+\hat y=Xw
+$$
+
+여기서 X는 관측 데이터를 행별로 모은 행렬, w는 모델의 가중치 벡터, y는 실제 목표값 벡터다. 잔차 벡터는
+
+$$
+e=Xw-y
+$$
+
+이고, SSE는 잔차 벡터 길이의 제곱과 같다.
+
+$$
+\|Xw-y\|_2^2
+$$
+
+QP 표준형과 비교하기 쉽게 앞에 1/2을 붙인 함수를 먼저 다룬다. 이 양수 배율은 최적 가중치를 바꾸지 않는다.
+
+$$
+\boxed{f_0(w)=\frac12\|Xw-y\|_2^2}
+$$
+
+### Norm의 제곱을 Quadratic Form으로 전개하기
+
+이 부분은 QP 정식화의 핵심이다. 먼저 Euclidean Norm의 제곱은 벡터와 자기 자신의 내적이라는 사실을 사용한다.
+
+$$
+\|u\|_2^2=u^Tu
+$$
+
+따라서
 
 $$
 \begin{aligned}
-f_0(w)&=\frac12(Xw-y)^T(Xw-y)\\
-&=\frac12w^TX^TXw-w^TX^Ty+\frac12y^Ty
+f_0(w)
+&=\frac12\|Xw-y\|_2^2\\
+&=\frac12(Xw-y)^T(Xw-y).
 \end{aligned}
 $$
 
-QP 표준형과 비교:
+여기서 전치를 적용하면
 
 $$
+(Xw-y)^T=w^TX^T-y^T
+$$
+
+이다. 이제 괄호를 전개한다.
+
+$$
+\begin{aligned}
+&(w^TX^T-y^T)(Xw-y)\\
+&=w^TX^TXw-w^TX^Ty-y^TXw+y^Ty.
+\end{aligned}
+$$
+
+가운데 두 항은 둘 다 Scalar이고 서로의 전치이므로 같은 값이다.
+
+$$
+w^TX^Ty=y^TXw
+$$
+
+따라서
+
+$$
+\boxed{
+f_0(w)=\frac12w^TX^TXw-w^TX^Ty+\frac12y^Ty
+}
+$$
+
+를 얻는다.
+
+QP의 일반적인 목적함수와 비교한다.
+
+$$
+f_0(w)=\frac12w^TPw+q^Tw+r
+$$
+
+각 계수는 다음과 같다.
+
+$$
+\boxed{
 P=X^TX,\qquad q=-X^Ty,\qquad r=\frac12y^Ty
+}
 $$
 
-### 1/2 유무에 따른 계수 차이
+즉 Least Squares의 목적함수는 QP의 목적함수로 정확히 표현된다. 상수항 r은 최적점에는 영향을 주지 않으므로 해를 구할 때 생략할 수 있지만, <strong>원래 최적 목적함수값을 보고하려면 보존해야 한다.</strong>
 
-방금 전개한 것은 $\frac12\|Xw-y\|_2^2$다. 교안의 $\|Ax-b\|_2^2$에는 앞의 $1/2$가 없다. 데이터 행렬과 벡터 이름을 $X,y$로 통일하면 다음과 같다.
+### 왜 이 문제가 Convex QP인가?
 
-| 최소화하는 함수 | QP의 $P$ | QP의 $q$ | QP의 상수항 $r$ |
+이제 처음에 공부한 PSD가 다시 등장한다. Least Squares에서 Hessian은 다음 행렬이다.
+
+$$
+\nabla^2f_0(w)=X^TX
+$$
+
+임의의 벡터 v를 생각한다.
+
+$$
+\begin{aligned}
+v^TX^TXv
+&=(Xv)^T(Xv)\\
+&=\|Xv\|_2^2\\
+&\ge0.
+\end{aligned}
+$$
+
+Norm의 제곱은 언제나 0 이상이므로
+
+$$
+\boxed{X^TX\succeq0}
+$$
+
+이다. 따라서 <strong>Least Squares 목적함수는 Convex</strong>다. 가중치의 상·하한처럼 Affine Constraints를 추가하면 Convex QP가 된다.
+
+교안의 제약 최소제곱은 다음과 같은 형태로 나타난다.
+
+$$
+\begin{aligned}
+\operatorname{minimize}_{w}\quad&\|Xw-y\|_2^2\\
+\text{subject to}\quad&l\le w\le u.
+\end{aligned}
+$$
+
+이때 Box Constraints는 두 묶음의 Affine Inequalities로 표현할 수 있다.
+
+$$
+w\le u,\qquad-w\le-l
+$$
+
+<strong>계수의 1/2을 주의해야 한다.</strong> 앞서 계산한 P와 q는 절반의 SSE를 최소화하는 함수에 대한 것이다. 교안처럼 SSE 자체를 QP 표준형에 정확히 맞추면 전체 계수가 두 배가 된다.
+
+| Objective | Quadratic matrix P | Linear vector q | Constant r |
 |---|---|---|---|
-| $\frac12\|Xw-y\|_2^2$ | $X^TX$ | $-X^Ty$ | $\frac12y^Ty$ |
-| $\|Xw-y\|_2^2$ | $2X^TX$ | $-2X^Ty$ | $y^Ty$ |
+| Half SSE | XᵀX | −Xᵀy | ½ yᵀy |
+| SSE | 2XᵀX | −2Xᵀy | yᵀy |
 
-두 행 모두 <strong>QP 표준 목적함수는 $\frac12w^TPw+q^Tw+r$</strong>라는 관례에 맞춘 계수다. 목적함수 전체에 양수 2를 곱해도 최적점은 같지만 최적값은 2배가 된다.
+이 표에서 두 경우의 최적점은 동일하지만 최적 목적함수값은 두 배 차이가 난다.
 
-작은 예제에서 $X=(1,2)^T$, $y=(2,3)^T$이므로 $X^TX=5$, $X^Ty=8$, $y^Ty=13$이다. 따라서 원래 SSE는 $P=10$, $q=-16$, $r=13$으로 표현된다.
+<strong>핵심 직관:</strong> Least Squares를 QP로 바꾸기 위해 새로운 목적함수를 만드는 것이 아니다. 이미 사용하던 오차 제곱합을 행렬곱으로 <strong>다시 표현</strong>하는 것이다. 그러면 Hessian이 XᵀX라는 사실과 PSD 성질이 자연스럽게 드러난다.
 
-상자 제약 $l\le w\le u$는 $w\le u$, $-w\le-l$라는 affine inequalities로 바꾼다. $\hat y=wx+b$처럼 절편을 포함하려면 데이터 행렬에 1로 된 열을 붙여 같은 방식으로 다룰 수 있다.
+## 9. Distance Between Two Polyhedra: 가장 가까운 두 점 찾기
 
-### 왜 PSD인가?
+<strong>두 Polyhedra(다면체) 사이의 최단거리</strong>는 각 영역에서 가장 가까운 점을 고르는 문제다. 우선 두 집합이 모두 비어 있지 않다고 가정한다.
 
-임의의 v에 대해:
+여기서 선택할 변수는 물체의 모양이 아니다. <strong>첫 번째 영역에서 선택하는 점 하나와 두 번째 영역에서 선택하는 점 하나</strong>다.
 
-$$
-v^TX^TXv=(Xv)^T(Xv)=\|Xv\|_2^2\ge0
-$$
+### 먼저 1차원 구간으로 생각하기
 
-따라서:
+수직선 위에 다음 두 구간이 있다고 하자.
 
 $$
-X^TX\succeq0
+P_1=[0,1],\qquad P_2=[3,4]
 $$
 
-<strong>Full Column Rank(열이 선형독립)</strong>이면 $Xv=0$인 벡터는 $v=0$뿐이다. 따라서 $v\ne0$이면 위 제곱 노름이 양수여서 $X^TX\succ0$이다. 반대로 열이 선형종속이면 $v\ne0$인데도 $Xv=0$인 방향이 있고 그 방향에서는 계수를 움직여도 예측값이 변하지 않는다.
+$[0,1]$은 $0\le x\le1$인 모든 수를 모은 구간으로 양 끝점도 포함한다. $[3,4]$도 같은 방식으로 읽는다.
 
-그러므로 <strong>$X^TX$가 PD일 필요충분조건은 $X$가 full column rank인 것</strong>이다. 다만 $P$가 singular여도 제약이 평평한 방향의 움직임을 막으면 최적점이 유일할 수 있다. PSD 자체가 다중해를 강제하는 것은 아니다.
+첫 번째 구간에서 하나의 수를 고르고, 두 번째 구간에서도 하나의 수를 고른다. 가장 가까운 조합은 첫 구간의 오른쪽 끝 1과 둘째 구간의 왼쪽 끝 3이다.
 
-<strong>핵심 직관.</strong> 최소제곱은 예측 오차 벡터 $Xw-y$의 길이를 제곱해 줄이는 문제다. 그 제곱을 행렬곱으로 전개하면 $X^TX$가 자연스럽게 나타나고, $v^TX^TXv=\|Xv\|_2^2$가 음수가 될 수 없다는 사실이 convexity를 설명한다.
+$$
+|1-3|=2
+$$
 
-## 7. Distance Between Two Polyhedra — 두 번째 대표 QP 응용
+이것이 집합 사이 거리의 기본 생각이다. 다만 2차원이나 100차원에서는 단순히 구간의 양 끝을 비교하는 방법으로는 해결할 수 없다.
 
-두 <strong>Polyhedra(다면체)</strong> 사이 거리는 각각에서 점을 하나씩 골라 얻는 가장 작은 거리다. 두 집합을 고정해 두고 <strong>어느 두 점을 고를지</strong>를 최적화한다. 아래에서는 두 다면체가 비어 있지 않다고 가정한다.
+### 2차원 정사각형 두 개로 확장하기
 
-교안도 이를 다음과 같이 QP의 응용으로 제시한다.
+설명용 예제로 다음 영역을 사용한다.
+
+$$
+P_1=[0,1]\times[0,1]
+$$
+
+$$
+P_2=[3,4]\times[2,3]
+$$
+
+$\times$는 두 구간에서 좌표를 하나씩 고른다는 뜻이다. 예를 들어 $[0,1]\times[0,1]$은 $0\le x_1\le1$, $0\le x_2\le1$을 동시에 만족하는 정사각형이다.
+
+첫 번째 영역에서 선택한 점을 x, 두 번째에서 선택한 점을 y라 하자. 두 점 사이의 제곱거리는
+
+$$
+\|x-y\|_2^2
+=(x_1-y_1)^2+(x_2-y_2)^2
+$$
+
+이다.
+
+첫 번째 좌표에서는 두 점 사이 차이가 적어도 2이고, 두 번째 좌표에서는 적어도 1이다. 따라서 두 차이를 동시에 최소화하는 점들이 최단거리 쌍이 된다.
+
+$$
+x^*=\begin{bmatrix}1\\1\end{bmatrix},
+\qquad
+y^*=\begin{bmatrix}3\\2\end{bmatrix}
+$$
+
+$$
+\|x^*-y^*\|_2^2=2^2+1^2=5
+$$
+
+따라서 실제 최단거리는
+
+$$
+\boxed{\operatorname{dist}(P_1,P_2)=\sqrt5}
+$$
+
+이다.
+
+![Minimum distance between two polyhedra](05_polyhedra_distance.png)
+
+이 예제의 최단거리 쌍은 모두 꼭짓점이지만, <strong>일반적인 두 다면체의 최단거리 문제에서 양 끝점이 꼭짓점일 필요는 없다.</strong> 마주 보는 평행한 변의 중간에서도 최단거리가 달성될 수 있다.
+
+### 각 점이 제약을 만족해야 한다
+
+고차원에서는 두 Polyhedra를 각각 여러 Halfspaces의 교집합으로 나타낸다.
+
+$$
+P_1=\{x\in\mathbb R^n:A_1x\le b_1\}
+$$
+
+$$
+P_2=\{y\in\mathbb R^n:A_2y\le b_2\}
+$$
+
+선택한 점은 자신이 속한 집합의 제약을 만족해야 한다. 그래서 원래 문제는 다음과 같다.
+
+$$
+\begin{aligned}
+\operatorname{minimize}_{x,y}\quad&\|x-y\|_2\\
+\text{subject to}\quad&A_1x\le b_1,\\
+&A_2y\le b_2.
+\end{aligned}
+$$
+
+여기까지는 거리를 최소화하는 Convex Optimization이지만, <strong>QP의 이차형식</strong>은 직접 드러나지 않는다.
+
+### 왜 거리를 제곱할까?
+
+거리는 항상 0 이상이다. 음수가 아닌 수에서는 제곱이 크기 순서를 유지한다.
+
+$$
+0\le a<b\quad\Longrightarrow\quad a^2<b^2
+$$
+
+따라서 거리 자체를 최소화하거나 <strong>거리의 제곱</strong>을 최소화해도 같은 점의 조합이 선택된다.
+
+$$
+\boxed{\operatorname{minimize}_{x,y}\ \|x-y\|_2^2}
+$$
 
 <blockquote class="lecture-excerpt">
 <p class="lecture-excerpt-label">교안 발췌 · Module 6 — Examples – Quadratic Program, Distance between two polyhedra</p>
@@ -484,241 +977,439 @@ $$
 
 </blockquote>
 
-교안의 두 점 $x_1,x_2$를 아래에서는 $x,y$로 쓴다. 각 점의 좌표와 “첫 번째 점·두 번째 점”을 혼동하지 않기 위한 표기다.
+교안의 두 점 $x_1,x_2$를 여기서는 $x,y$로 쓴다. 아래첨자를 좌표 번호와 혼동하지 않기 위한 표기다.
 
-두 집합:
+다만 이차형식을 사용해 계산한 최적 목적함수값은 <strong>제곱거리</strong>다. 실제 거리가 필요하면 마지막에 제곱근을 취해야 한다.
 
-$$
-\begin{aligned}
-P_1&=\{x\in\mathbb R^n:A_1x\le b_1\}\\
-P_2&=\{y\in\mathbb R^n:A_2y\le b_2\}
-\end{aligned}
-$$
+### 거리의 제곱을 행렬곱으로 바꾸기
 
-최적화 변수는 각각의 집합에서 고른 <strong>두 점 x, y</strong>다.
-
-$$
-\begin{aligned}
-\min_{x,y}\quad&\|x-y\|_2\\
-\text{subject to}\quad&A_1x\le b_1,\\
-&A_2y\le b_2.
-\end{aligned}
-$$
-
-거리는 항상 0 이상이므로 거리를 제곱해도 최적점의 집합은 변하지 않는다. 그러나 최적 목적함수값은 제곱된 값이므로 마지막에 제곱근을 취한다.
-
-$$
-\boxed{\min_{x,y}\ \|x-y\|_2^2}
-$$
-
-![Two polyhedra shortest distance](05_polyhedra_distance.png)
-
-### 작은 숫자 예제
-
-$$
-P_1=[0,1]\times[0,1],\qquad
-P_2=[3,4]\times[2,3]
-$$
-
-$[a,b]$는 양 끝점을 포함하는 구간이고, $\times$는 두 좌표의 조건을 함께 만족한다는 <strong>Cartesian Product(직접곱)</strong> 기호다. 예를 들어 $P_1$은 $0\le x_1\le1$, $0\le x_2\le1$인 정사각형이다.
-
-어떤 두 점을 골라도 첫 좌표 차이는 최소 2, 둘째 좌표 차이는 최소 1이다. 따라서 제곱 거리의 하한은 $2^2+1^2=5$다. 다음 쌍이 두 차이를 동시에 달성한다.
-
-$$
-x^*=(1,1),\qquad y^*=(3,2)
-$$
-
-$$
-\|x^*-y^*\|_2^2=2^2+1^2=5
-$$
-
-$$
-\operatorname{dist}(P_1,P_2)=\sqrt5
-$$
-
-<strong>꼭짓점 주의:</strong> 이 예제에서는 우연히 꼭짓점 쌍이 최적인 것이며, 일반적인 QP 최단거리 쌍이 꼭짓점일 필요는 없다.
-
-### 두 벡터를 하나로 쌓는 Block Quadratic Form
-
-두 점을 하나의 <strong>Optimization Variable(최적화 변수)</strong>로 합친다. 세로로 쌓는 것이므로 각 점이 $n$차원일 때 새 변수는 $2n$차원이다.
-
-$$
-z=\begin{bmatrix}x\\y\end{bmatrix}\in\mathbb R^{2n}
-$$
-
-거리 제곱을 전개하면:
+우선 Norm의 제곱을 전개한다.
 
 $$
 \begin{aligned}
 \|x-y\|_2^2
 &=(x-y)^T(x-y)\\
-&=x^Tx-2x^Ty+y^Ty\\
-&=z^T\begin{bmatrix}I&-I\\-I&I\end{bmatrix}z
+&=x^Tx-x^Ty-y^Tx+y^Ty\\
+&=x^Tx-2x^Ty+y^Ty.
 \end{aligned}
 $$
 
-QP 표준 목적함수의 1/2에 맞추면:
+이제 첫 번째 점과 두 번째 점을 <strong>하나의 큰 Optimization Variable Vector</strong>로 묶는다.
 
 $$
-P=2\begin{bmatrix}I&-I\\-I&I\end{bmatrix},\qquad q=0
+\boxed{z=\begin{bmatrix}x\\y\end{bmatrix}\in\mathbb R^{2n}}
 $$
 
-여기서 $I$는 $n\times n$ <strong>Identity Matrix(단위행렬)</strong>다. 대각선은 각 점의 자기 제곱 $x^Tx,y^Ty$를 만들고, 두 비대각 블록 $-I$는 각각 $-x^Ty,-y^Tx$를 만들어 교차항 $-2x^Ty$가 된다.
+여기서 z는 두 점의 좌표를 위아래로 쌓아 만든 벡터다. 새로운 물리적 의미를 가진 점이 아니라 계산을 편리하게 하기 위한 표기다.
 
-제약조건은 <strong>Block Diagonal Matrix(블록 대각행렬)</strong>로 합친다. 첫 블록 행은 $x$에 대한 제약만, 둘째는 $y$에 대한 제약만 계산하도록 나머지 부분을 0으로 채운 것이다.
+다음 블록 행렬을 사용해 보자. $I$는 $n\times n$ 단위행렬이며 $Ix=x$다. $-I$는 부호를 반대로 바꾸므로 $(-I)y=-y$다.
 
 $$
+M=\begin{bmatrix}I&-I\\-I&I\end{bmatrix}
+$$
+
+먼저 곱하면
+
+$$
+Mz=
+\begin{bmatrix}I&-I\\-I&I\end{bmatrix}
+\begin{bmatrix}x\\y\end{bmatrix}
+=
+\begin{bmatrix}x-y\\-x+y\end{bmatrix}
+$$
+
+이다. 왼쪽에서 z의 전치를 곱하면
+
+$$
+\begin{aligned}
+z^TMz
+&=\begin{bmatrix}x^T&y^T\end{bmatrix}
+\begin{bmatrix}x-y\\-x+y\end{bmatrix}\\
+&=x^Tx-2x^Ty+y^Ty\\
+&=\|x-y\|_2^2.
+\end{aligned}
+$$
+
+즉 원래 거리의 제곱과 정확히 같다.
+
+QP 표준형에는 1/2이 붙어 있으므로, 원래 제곱거리 값을 그대로 얻으려면 P를 두 배로 정한다.
+
+$$
+\boxed{
+P=2\begin{bmatrix}I&-I\\-I&I\end{bmatrix},
+\qquad q=0
+}
+$$
+
+제약조건도 블록 행렬로 하나로 묶을 수 있다.
+
+$$
+\boxed{
 \begin{bmatrix}A_1&0\\0&A_2\end{bmatrix}z
 \le
 \begin{bmatrix}b_1\\b_2\end{bmatrix}
+}
 $$
 
-### PSD를 증명하자
+따라서 두 다면체 사이의 최단거리 문제가 QP 표준형으로 정리되었다.
 
-임의의 z에 대해:
+### 이 QP도 Convex인지 증명하기
+
+앞에서 배운 PSD의 정의를 사용한다. 이 검사는 제약을 만족하는 점만이 아니라 모든 $z\in\mathbb R^{2n}$에 대해 해야 한다. 임의의 z에 대해
 
 $$
-z^TPz=2\|x-y\|_2^2\ge0
+\begin{aligned}
+z^TPz
+&=2z^TMz\\
+&=2\|x-y\|_2^2\\
+&\ge0.
+\end{aligned}
 $$
 
-따라서 $P$는 PSD이며 전체 문제는 convex QP다. 단, $x=y\ne0$인 벡터를 대입하면 $z\ne0$인데 이차형식이 0이므로 <strong>$P$는 PD가 아니다</strong>. 행렬의 PD 여부는 모든 벡터에서 판별하므로, 이 검사용 벡터가 실제 두 집합의 제약을 만족할 필요는 없다.
+따라서
 
-이유를 기하학적으로도 볼 수 있다. 두 점을 같은 벡터 $t$만큼 평행이동하면 $(x+t)-(y+t)=x-y$여서 거리 목적함수는 변하지 않는다. 이 공통 이동이 이차형식의 평평한 방향이다. 그러나 실제 제약은 그런 이동을 막을 수 있다. 위 두 정사각형 예제에서는 $P$가 singular여도 최단거리 쌍은 $(1,1),(3,2)$로 유일하다.
+$$
+\boxed{P\succeq0}
+$$
 
-제곱 거리 QP의 최적값을 $p^*$라고 기록했다면 실제 거리는 $\sqrt{p^*}$다. 두 집합이 겹치면 공통점에서 $x=y$를 골라 거리 0을 얻는다. 공통점이 여러 개라면 최적 쌍도 여러 개일 수 있다.
+이다. 제약조건도 Affine이므로 전체 문제는 Convex QP다.
 
-<strong>핵심 직관.</strong> 거리 자체와 거리의 제곱은 같은 최단거리 쌍을 고르지만 숫자로 기록되는 최적값은 다르다. 제곱 거리를 블록 행렬로 옮겨 QP로 푼 뒤, 원래 거리를 보고할 때는 제곱근을 취한다. 이때 표준형 앞의 $1/2$에 맞춘 $P=2\begin{bmatrix}I&-I\\-I&I\end{bmatrix}$를 유지해야 한다.
+여기서 P는 PD가 아니다. 두 점을 같은 방향으로 함께 이동하면 두 점 사이의 차이가 그대로 유지되므로 목적함수가 변하지 않는 방향이 있기 때문이다. 실제 가능집합의 제약이 그런 이동을 막을 수 있으므로, <strong>P가 PSD이지만 PD가 아니라고 해서 최단거리 쌍이 반드시 여러 개 존재하는 것은 아니다.</strong>
 
-## 8. LP ↔ QP 대비
+<strong>핵심 직관:</strong> 두 점 사이의 거리 최소화는 두 점의 좌표를 함께 선택하는 최적화다. 거리의 제곱으로 바꾸면 목표점의 조합은 그대로 유지되면서 목적함수를 Quadratic Form으로 쓸 수 있다.
 
-| 주제 | LP | QP |
+---
+
+<p class="chapter-part"><strong>Part D. 전체 연결과 시험 대비</strong></p>
+
+## 10. LP와 QP의 공통점, 차이점
+
+| 비교 항목 | Linear Programming | Convex Quadratic Programming |
 |---|---|---|
-| Objective | $c^Tx+d$ | $\frac12x^TPx+q^Tx+r$ |
-| Gradient | 일정한 $c$ | $Px+q$ |
-| Hessian | Zero matrix | P |
-| Convex 여부 | Affine objective라 항상 convex | 대칭 P의 PSD 확인 필요 |
-| Feasible set | Polyhedron | Polyhedron |
-| 최적점 위치 | 최적점이 존재하고 극점이 있는 경우 극점 해 존재 | 내부 혹은 경계; 꼭짓점에 한정하지 않음 |
-| 증명 도구 | Optimality Criterion | Optimality Criterion, PSD, 이후 KKT |
+| 목적함수 | Affine | Quadratic |
+| Gradient | 위치와 무관하게 일정 | 위치에 따라 달라짐 |
+| Hessian | Zero Matrix | PSD인 행렬 P |
+| 가능집합 | Affine 제약으로 만든 Polyhedron | Affine 제약으로 만든 Polyhedron |
+| 최적점 위치 | 조건이 맞으면 꼭짓점 해 존재 | 내부·변·꼭짓점 모두 가능 |
+| 핵심 증명 도구 | Optimality Criterion | PSD와 Optimality Criterion |
 
-## 9. 혼자 풀어 보는 확인 문제
+여기까지의 학습 흐름은 다음 네 문장으로 요약할 수 있다.
 
-### 1. 행렬의 교차항과 곡률 구분하기
+1. <strong>목적함수가 Quadratic이면</strong> 위치와 방향에 따라 Gradient가 달라진다.
+2. <strong>Hessian이 PSD이면</strong> 전체 이차 목적함수는 Convex하다.
+3. <strong>제약조건이 있으면</strong> Gradient가 0인지만 볼 것이 아니라 가능한 이동 방향을 확인해야 한다.
+4. <strong>실제 문제를 QP로 정식화하려면</strong> 오차 제곱합이나 거리 제곱을 Quadratic Form으로 전개해야 한다.
 
-$P=\begin{bmatrix}3&1\\1&3\end{bmatrix}$, $q=0$, $r=0$일 때 $\frac12x^TPx$를 성분으로 전개하고 convexity를 판별해 보자.
-
-<details class="review-answer">
-<summary>정답과 해설 펼치기</summary>
-
-<div class="review-answer-body">
-
-<strong>정답:</strong> $f(x)=\frac32x_1^2+x_1x_2+\frac32x_2^2$이고 strictly convex다.
-
-행렬곱의 비대각 항은 $x_1x_2$와 $x_2x_1$ 두 개다. 따라서 $x^TPx=3x_1^2+2x_1x_2+3x_2^2$이며 마지막에 전체를 $1/2$배 한다. $P$의 고유값은 2, 4로 모두 양수여서 $P\succ0$다. 이차 목적함수의 Hessian은 $P$이므로 strict convexity를 얻는다.
-
-</div>
-</details>
-
-### 2. PSD와 최적점 존재는 같은 말일까?
-
-$f(x_1,x_2)=x_1^2-x_2$를 전체 $\mathbb R^2$에서 최소화한다. 이 함수는 convex일까? 최적점도 있을까?
-
-<details class="review-answer">
-<summary>정답과 해설 펼치기</summary>
-
-<div class="review-answer-body">
-
-<strong>정답:</strong> Convex이지만 최적점은 없다.
-
-Hessian은 $\operatorname{diag}(2,0)\succeq0$다. 하지만 $x_1=0$, $x_2=t$로 두면 $f(0,t)=-t\to-\infty$다. Gradient 방정식은 $(2x_1,-1)^T=0$인데 두 번째 성분을 0으로 만들 수 없다. 평평한 $x_2$ 방향의 선형항이 비용을 끝없이 감소시킨다.
-
-</div>
-</details>
-
-### 3. 경계 최적점에서 Gradient가 0이어야 할까?
-
-5절 문제의 후보점 $x^*=(1.5,2.5)$에서 gradient와 최적성 조건을 계산해 보자.
-
-<details class="review-answer">
-<summary>정답과 해설 펼치기</summary>
-
-<div class="review-answer-body">
-
-<strong>정답:</strong> Gradient는 $(-1,-1)^T\ne0$이지만 전역 최적점이다.
-
-먼저 $1.5+2.5=4$이므로 feasible하다. 모든 feasible $y$는 $y_1+y_2\le4$를 만족하므로
+### 시험장에서 사용할 기본 공식
 
 $$
-(\nabla f_0(x^*))^T(y-x^*)=-(y_1-1.5)-(y_2-2.5)=4-y_1-y_2\ge0.
+\begin{aligned}
+f_0(x)&=\frac12x^TPx+q^Tx+r\\
+\nabla f_0(x)&=Px+q\\
+\nabla^2f_0(x)&=P
+\end{aligned}
 $$
 
-목적함수와 가능집합이 convex이므로 이 조건이 전역 최적성을 보장한다. 무제약 최소점의 gradient 조건을 제약 문제에 그대로 강요하면 이 답을 잘못 배제하게 된다.
+$$
+P\succeq0
+\quad\Longleftrightarrow\quad
+f_0\text{ is convex on }\mathbb R^n
+$$
 
-</div>
-</details>
+$$
+\nabla f_0(x^*)^T(y-x^*)\ge0
+\qquad\forall y\in D
+$$
 
-### 4. 최소제곱 앞의 1/2을 없애면?
+$$
+\frac12\|Xw-y\|_2^2
+=\frac12w^TX^TXw-w^TX^Ty+\frac12y^Ty
+$$
 
-$f(w)=\frac12\|Xw-y\|_2^2$를 $g(w)=\|Xw-y\|_2^2$로 바꿀 때, QP의 $P,q,r$와 최적점·최적값은 각각 어떻게 달라질까?
+$$
+\|x-y\|_2^2=
+\begin{bmatrix}x^T&y^T\end{bmatrix}
+\begin{bmatrix}I&-I\\-I&I\end{bmatrix}
+\begin{bmatrix}x\\y\end{bmatrix}
+$$
+
+## 11. 직접 풀어 보는 확인 문제
+
+### 문제 1. 교차항을 전개하고 Convexity 판단하기
+
+다음 행렬로 정의된 이차함수를 성분으로 전개하고 Convexity를 판별한다.
+
+$$
+P=\begin{bmatrix}3&1\\1&3\end{bmatrix},
+\qquad
+f_0(x)=\frac12x^TPx
+$$
 
 <details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
-
 <div class="review-answer-body">
 
-<strong>정답:</strong> $P,q,r$는 모두 2배가 되고, 가능집합이 같으면 최적점은 같고 최적값은 2배다.
+행렬의 비대각원소 두 개가 모두 교차항에 기여한다.
 
-$P=X^TX$, $q=-X^Ty$, $r=\frac12y^Ty$에서 $P=2X^TX$, $q=-2X^Ty$, $r=y^Ty$로 바뀐다. 목적함수 전체에 양수를 곱했으므로 두 점의 비용 대소관계는 변하지 않는다. 6절의 $0\le w\le1$ 예에서는 두 함수 모두 $w^*=1$이고, 최적값은 각각 1과 2다. 최적점과 최적값을 구분해야 이 계수 차이를 놓치지 않는다.
+$$
+x^TPx=3x_1^2+2x_1x_2+3x_2^2
+$$
+
+따라서
+
+$$
+f_0(x)=\frac32x_1^2+x_1x_2+\frac32x_2^2
+$$
+
+앞에서 계산한 고유값은 2와 4이며 모두 양수다. 따라서 P는 PD이고 이차함수는 Strictly Convex다.
 
 </div>
 </details>
 
-### 5. 거리 문제의 P는 왜 2M일까?
+### 문제 2. PSD이면 최적해가 반드시 존재할까?
 
-$M=\begin{bmatrix}I&-I\\-I&I\end{bmatrix}$라 하자. 목적함수 $\|x-y\|_2^2$를 QP 표준형으로 쓸 때 $P=M$이라고 적으면 무엇이 달라질까?
+다음 함수를 전체 2차원 공간에서 최소화한다.
+
+$$
+f_0(x_1,x_2)=x_1^2-x_2
+$$
+
+이 함수는 Convex인가? 최적점이 존재하는가?
 
 <details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
-
 <div class="review-answer-body">
 
-<strong>정답:</strong> 표준형에 앞의 $1/2$가 있으므로 $P=M$은 원래 거리 제곱의 절반을 최소화하는 식이다. 원래 목적값을 보존하려면 $P=2M$이어야 한다.
+Hessian은 PSD이므로 Convex하다.
 
-$z^TMz=\|x-y\|_2^2$이므로 $\frac12z^T(2M)z$가 원래 식과 같다. $P=M$이어도 최단거리 쌍은 같지만, 정사각형 예제의 최적값은 5가 아니라 $5/2$로 기록된다. 그 값을 그대로 제곱근 취하면 실제 거리를 잘못 계산한다.
+$$
+\nabla^2f_0=\begin{bmatrix}2&0\\0&0\end{bmatrix}\succeq0
+$$
+
+그러나 첫 번째 변수를 0으로 고정하고 두 번째 변수를 계속 증가시키면 목적함수값이 아래로 무한히 감소한다.
+
+$$
+f_0(0,t)=-t\longrightarrow-\infty
+$$
+
+따라서 최적점은 존재하지 않는다. Convexity와 최적해의 존재성은 다른 문제다.
 
 </div>
 </details>
 
-## 10. 풀이 전후에 확인할 것
+### 문제 3. 경계 최적점을 Optimality Criterion으로 검증하기
 
-- Quadratic form의 행렬곱을 성분으로 전개할 수 있다.
-- $\det(P-\lambda I)=0$으로 작은 행렬의 eigenvalues를 구한다.
-- PSD와 PD를 구분한다.
-- QP objective의 gradient / Hessian을 계산한다.
-- Convexity를 Hessian=PSD로 판별한다.
-- 제약조건 안의 최적해를 계산하고 Optimality Criterion으로 검증한다.
-- Least Squares의 $(Xw-y)^T(Xw-y)$를 전개한다.
-- $X^TX$가 PSD라는 증명을 재현한다.
-- 두 Polyhedra의 squared distance를 block matrix로 변환한다.
-- Polyhedra 거리 문제에서 P가 PSD이지만 PD는 아님을 설명한다.
-
-## 11. QP가 다음 최적화 방법의 도구가 되는 이유
-
-QP는 이차 비용을 가진 모델을 푸는 데 직접 쓰인다. 더 나아가 복잡한 비선형 목적함수도 현재 점 근처에서 2차 Taylor 모형으로 근사할 수 있다.
+다음 후보가 실제 최적점인지 증명한다.
 
 $$
-f(x+\Delta)\approx f(x)+\nabla f(x)^T\Delta+\frac12\Delta^T\nabla^2f(x)\Delta.
+\begin{aligned}
+\operatorname{minimize}\quad&(x_1-2)^2+(x_2-3)^2\\
+\text{subject to}\quad&x_1+x_2\le4
+\end{aligned}
 $$
 
-여기서 현재 점 $x$를 고정하고 이동량 $\Delta$를 변수로 보면 이차 목적함수가 된다. 수업에서는 이런 작은 이차 문제를 풀고 현재 점을 갱신하는 방식이 이후 수치 최적화 방법의 기반이 된다고 설명한다. 다만 일반 비선형 함수의 Hessian이 항상 PSD인 것은 아니므로, <strong>이차 근사라는 사실만으로 convex QP가 되는 것은 아니다.</strong>
+$$
+x^*=\begin{bmatrix}1.5\\2.5\end{bmatrix}
+$$
 
-지금 단계에서는 세 가지를 구별하면 된다. $P$는 곡률을, $Px+q$는 현재 위치의 gradient를, affine 제약은 이동 가능한 영역을 결정한다. 이 셋을 함께 봐야 내부·경계의 최적점과 최소제곱·거리 모델을 같은 원리로 해석할 수 있다.
+<details class="review-answer">
+<summary>정답과 해설 펼치기</summary>
+<div class="review-answer-body">
 
-## 출처와 보충 범위
+후보는 제약을 만족한다. 이 점에서 Gradient는 다음과 같다.
 
-- <strong>ENAI601 Module 6 — Examples 교안</strong>, Quadratic Program 및 Examples – Quadratic Program 절. 교안 발췌는 원래의 표현·수식을 별도 블록에 표시했다.
-- <strong>2026년 10월 7일 수업</strong>: QP의 Hessian과 PSD, 곡선 등고선, 제약 최소제곱, 두 다면체 사이 거리와 이차 근사를 활용한 후속 최적화 설명을 참고했다.
-- 제공된 <strong>QP 스터디 노트와 그림 6개</strong>를 바탕으로 정리했다. 그림의 구체적인 함수와 데이터 두 개, 반공간 제약의 최적점, 두 정사각형의 거리는 설명용 예제이며 교안의 원래 수치가 아니다.
-- 고유벡터 방향의 단면과 곡률, 경계의 gradient 방향과 활성·비활성 제약 대비, 대칭 부분과 미분의 유도, singular PSD의 반례, 존재·유일성의 구분, $1/2$ 유무의 계수 비교와 확인 문제 해설은 개념을 연결하기 위한 보충 설명이다.
+$$
+\nabla f_0(x^*)=\begin{bmatrix}-1\\-1\end{bmatrix}
+$$
 
-추가한 등고선·gradient 방향 그림 2개는 본문의 수식과 좌표로 계산한 직관적 보충 자료다.
+모든 Feasible Point에서
+
+$$
+\nabla f_0(x^*)^T(y-x^*)=4-y_1-y_2\ge0
+$$
+
+이다. 따라서 전역 최적점이다. Gradient가 0이 아니어도 제약조건 때문에 더 나은 Feasible Point로 이동할 수 없다.
+
+</div>
+</details>
+
+### 문제 4. Least Squares 앞의 1/2을 없애면?
+
+목적함수가 절반의 SSE일 때와 SSE 전체일 때, QP 표준형의 P와 q는 각각 어떻게 달라지는가?
+
+<details class="review-answer">
+<summary>정답과 해설 펼치기</summary>
+<div class="review-answer-body">
+
+표준형의 이차항 앞에는 항상 1/2이 있으므로 다음과 같다.
+
+$$
+\begin{aligned}
+\frac12\|Xw-y\|_2^2
+&:\quad P=X^TX,\quad q=-X^Ty\\
+\|Xw-y\|_2^2
+&:\quad P=2X^TX,\quad q=-2X^Ty.
+\end{aligned}
+$$
+
+상수항도 두 배다. 목적함수 전체를 양수 2배로 바꾼 것이므로 최적점은 동일하지만 최적값은 두 배다.
+
+</div>
+</details>
+
+### 문제 5. 거리 문제에서 P를 두 배로 만드는 이유
+
+다음 행렬 M이 주어져 있다고 하자.
+
+$$
+M=\begin{bmatrix}I&-I\\-I&I\end{bmatrix}
+$$
+
+왜 제곱거리의 QP 표준형에서는 P를 M이 아니라 2M으로 선택하는가?
+
+<details class="review-answer">
+<summary>정답과 해설 펼치기</summary>
+<div class="review-answer-body">
+
+행렬곱 자체는 이미 제곱거리다.
+
+$$
+z^TMz=\|x-y\|_2^2
+$$
+
+반면 QP 표준형은 다음과 같다.
+
+$$
+\frac12z^TPz
+$$
+
+따라서 원래의 목적함수값을 보존하려면
+
+$$
+P=2M
+$$
+
+이어야 한다. P를 M으로 두어도 최적점은 같지만, 계산된 최적값이 제곱거리의 절반이 된다.
+
+</div>
+</details>
+
+---
+
+## Advanced Notes — 첫 독해에서는 건너뛰어도 되는 보충
+
+여기까지의 본문만으로 Module 6의 기본 QP 정식화와 Convexity, 최적점 검증을 따라갈 수 있다. 아래 내용은 본문에서 사용한 조건이 언제 성립하지 않는지, 혹은 어떻게 확장되는지를 정리한 것이다.
+
+### A1. PSD, PD, 최적점의 존재성과 유일성
+
+P가 PSD라는 것은 목적함수의 곡률에 관한 조건이다. <strong>최적점이 반드시 존재한다거나 유일하다는 뜻은 아니다.</strong>
+
+예를 들어 다음 함수는 두 번째 변수 방향으로 평평하다.
+
+$$
+f_0(x_1,x_2)=x_1^2
+$$
+
+첫 번째 변수가 0이면 두 번째 변수의 값과 상관없이 최솟값 0을 달성한다. 반면 다음 함수에서는 같은 PSD Hessian을 사용하지만 최솟값이 존재하지 않는다.
+
+$$
+f_0(x_1,x_2)=x_1^2-x_2
+$$
+
+특이행렬(Singular Matrix)은 역행렬이 없으므로 무제약 QP에서 다음 표현을 기계적으로 사용할 수 없다.
+
+$$
+x^*=-P^{-1}q
+$$
+
+PSD인 무제약 QP에서는 선형방정식이 풀리면 그 해가 전역 최소점이며, 풀리지 않으면 목적함수가 아래로 무한히 감소한다.
+
+$$
+Px=-q
+$$
+
+P가 PD이면 이차함수는 Strictly Convex이고 무제약 최적점은 유일하다. 여기서 사용하는 비엄격 Affine 부등식·등식이 만드는 가능집합은 닫힌 다면체다. 이 집합이 비어 있지 않다면 제약 QP에서도 유일한 최소점이 존재한다. PD인 목적함수는 멀리 갈수록 비용이 무한히 커지므로 최소화하는 점이 끝없이 멀어질 수 없고, 닫힌 집합에서는 그 극한점도 허용되기 때문이다. 제약끼리 모순이면 가능집합이 비어 있어 최적점도 없다. PSD이면서 PD가 아닌 경우에도 제약이 평평한 방향을 제한하면 유일한 최적점이 가능하다.
+
+### A2. 왜 P를 대칭행렬로 놓고 앞에 1/2을 붙이는가?
+
+일반적인 행렬 B에 대해서는 다음 미분 공식이 성립한다.
+
+$$
+\nabla(x^TBx)=(B+B^T)x
+$$
+
+그런데 이차형식은 대칭 부분만으로도 같은 값을 표현할 수 있다.
+
+$$
+x^TBx=x^T\left(\frac{B+B^T}{2}\right)x
+$$
+
+따라서 QP에서는 P를 대칭행렬로 두어도 일반성을 잃지 않는다. 대칭 P에 대해서는
+
+$$
+\nabla\left(\frac12x^TPx\right)=Px
+$$
+
+가 되므로 앞의 1/2은 미분 결과를 간결하게 만드는 표준적인 선택이다.
+
+### A3. 제약조건이 활성(Active)인 경우에도 Gradient가 0일 수 있다
+
+다음 목적함수는 제약이 없다면 점 (2,3)에서 최솟값을 갖는다.
+
+$$
+f_0(x_1,x_2)=(x_1-2)^2+(x_2-3)^2
+$$
+
+제약을 다음처럼 바꾸면 무제약 최적점이 경계 위에 있지만 Gradient는 여전히 0이다.
+
+$$
+x_1+x_2\le5
+$$
+
+반면 제약을 더 느슨하게 하면 최적점에서 제약은 비활성(Inactive)이 된다.
+
+$$
+x_1+x_2\le6
+$$
+
+따라서 <strong>Active Constraint의 존재만으로 Gradient가 0이 아니라고 단정할 수 없다.</strong> 중요한 것은 허용된 이동 방향에 대한 Optimality Criterion이다.
+
+### A4. 왜 Full Column Rank가 PD와 연결되는가?
+
+Least Squares에서 Hessian은 다음 행렬이다.
+
+$$
+P=X^TX
+$$
+
+이 행렬은 언제나 PSD이지만 항상 PD는 아니다. PD이려면 영벡터가 아닌 모든 방향에서 다음 값이 양수여야 한다.
+
+$$
+v^TX^TXv=\|Xv\|_2^2>0
+\qquad\forall v\ne0
+$$
+
+이는 영벡터가 아닌 v가 데이터 행렬의 Null Space에 존재하지 않는다는 뜻이며, 곧 X의 열들이 선형독립이라는 조건(Full Column Rank)과 동등하다.
+
+### A5. QP와 2차 Taylor Approximation
+
+일반적인 비선형함수도 어떤 점 근처에서는 2차 Taylor Approximation으로 근사할 수 있다.
+
+$$
+f(x+\Delta)\approx
+f(x)+\nabla f(x)^T\Delta+
+\frac12\Delta^T\nabla^2f(x)\Delta
+$$
+
+현재 위치를 고정하고 이동량을 Optimization Variable로 보면 오른쪽은 이차함수다. 다만 일반적인 비선형함수의 Hessian이 PSD라는 보장은 없으므로 <strong>2차 근사라는 사실만으로 Convex QP가 되는 것은 아니다.</strong>
+
+---
+
+## 출처와 예제 구분
+
+- <strong>강의 기반:</strong> ENAI601 Module 6 — Linear Program, Quadratic Program 및 Examples – Quadratic Program. 특히 QP 표준형, Constrained Least Squares, Distance Between Two Polyhedra의 정식화를 따른다.
+- <strong>수업 맥락:</strong> 2026년 10월 7일 강의에서 QP의 Convexity와 PSD, 두 응용 문제의 정식화를 다룬 흐름을 참고했다.
+- <strong>학습용 수치 예제:</strong> 단일 가중치 회귀 데이터, 정사각형 두 개의 거리, 반공간으로 제한된 최적점, 2×2 Eigenvalue 계산은 이해를 위해 사용한 숫자 예제이며 교안의 원래 관측 데이터가 아니다.
+- <strong>보충 설명:</strong> 고유벡터와 곡률의 연결, Singular PSD 반례, 정지점·경계 최적점의 차이, Full Column Rank 및 Taylor Approximation은 학습 흐름을 연결하기 위한 설명이다.
+
+이 글은 QP의 모델링과 기초 최적성 판단을 다룬다. 보다 일반적인 제약 문제의 최적성 조건인 <strong>KKT Conditions와 Complementary Slackness</strong>는 Duality를 다룰 때 본격적으로 연결한다.
