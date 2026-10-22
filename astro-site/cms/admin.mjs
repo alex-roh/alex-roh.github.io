@@ -35,12 +35,18 @@ const Preview = ({ entry }) => {
 };
 CMS.registerPreviewTemplate('enai601', Preview);
 CMS.registerPreviewTemplate('python', Preview);
+CMS.registerPreviewTemplate('enai601-guide', ({ entry }) => h('article', { className: 'cms-preview' },
+  h('div', { className: 'prose', dangerouslySetInnerHTML: {
+    __html: renderPreview(entry.get('data').get('body') || '', 'editorial-guide'),
+  } })));
+
 CMS.registerPreviewStyle('/admin/preview.css');
 CMS.registerPreviewStyle('/admin/katex/katex.min.css');
 CMS.registerEventListener({
   name: 'preSave',
   handler: ({ entry }) => {
     const data = entry.get('data');
+    if (entry.get('slug') === 'enai601-guide') { pendingPublication = undefined; return data; }
     const now = new Date().toISOString();
     pendingPublication = { slug: entry.get('slug').replace(/\/index$/, ''), timestamp: now,
       field: entry.get('newRecord') ? 'publishedAt' : 'updatedAt' };
@@ -53,6 +59,11 @@ CMS.registerEventListener({
 CMS.registerEventListener({
   name: 'postSave',
   handler: () => {
+    if (!pendingPublication) {
+      clearInterval(deploymentTimer);
+      showPublicationStatus('편집 지침을 GitHub에 저장했습니다. 이후 작업은 수정된 지침 파일을 기준으로 진행합니다.', true);
+      return;
+    }
     showPublicationStatus('GitHub에 저장했습니다. 자동 배포가 진행됩니다. <a href="https://github.com/alex-roh/alex-roh.github.io/actions/workflows/deploy-astro.yml" target="_blank" rel="noopener noreferrer">배포 상태 확인 ↗</a>');
     clearInterval(deploymentTimer);
     const expected = pendingPublication;

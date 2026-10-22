@@ -68,7 +68,7 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 
 /* Shared page gutters, short actions and a compact mobile header. */
 #nc-root [class*="CollectionContainer"]{width:calc(100% - 48px);max-width:1200px;margin:32px auto!important}
-#nc-root [class*="AppHeaderContent"]{max-width:1248px;min-height:66px;align-items:center;flex-direction:row}
+#nc-root [class*="AppHeaderContent"]{max-width:none;min-height:66px;align-items:center;flex-direction:row}
 #nc-root [class*="CollectionTopRow"]{gap:20px;flex-wrap:nowrap}
 #nc-root [class*="CollectionTopHeading"]{min-width:0;overflow-wrap:anywhere}
 #nc-root [class*="CollectionTopNewButton"]{flex-shrink:0;padding:0 20px;white-space:nowrap}
@@ -103,13 +103,36 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 /* Only per-series creation remains; MEDIA stays in the header. */
 #nc-root [class*="AppHeaderNavList"]>li:has(>a[href="#/"]),
 #nc-root [class*="AppHeaderQuickNewButton"]{display:none}
-.cave-guide-button{display:block;margin:0 0 16px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;cursor:pointer}
-#cave-editorial-guide{width:min(760px,calc(100vw - 32px));max-height:80vh;box-sizing:border-box;overflow:auto;padding:24px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;font-family:Noto,system-ui,sans-serif}
-#cave-editorial-guide::backdrop{background:#0006}
-#cave-editorial-guide header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
-#cave-editorial-guide header h2{font-size:18px;margin:0;overflow-wrap:anywhere}
-#cave-editorial-guide button{flex-shrink:0;background:var(--wash);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer;font:inherit}
-.cave-guide-content{font-size:15px;line-height:1.8;overflow-wrap:anywhere}
-.cave-guide-content h1{font-size:23px}.cave-guide-content h2{font-size:18px;margin-top:24px}
-.cave-guide-content ul{padding-left:24px}.cave-guide-content li{margin-bottom:8px}
-.cave-guide-content a{color:var(--accent)}
+
+/* Both screens share the same right gutter and account layout. */
+#nc-root [class*="AppHeaderContent"]{width:100%;justify-content:space-between}
+#nc-root [class*="AppHeaderActions"]{margin-left:auto}
+#nc-root [class*="ToolbarSectionMeta"]{padding:0}
+#nc-root [class*="SettingsWrapper"]{gap:4px}
+#nc-root [class*="AppHeaderSiteLink"]{padding:10px 12px}
+
+/* The embedded code widget keeps a dark, readable surface in either theme. */
+#nc-root .cms-editor-visual .CodeMirror{background:#0d1117;color:#e6edf3}
+#nc-root .cms-editor-visual .CodeMirror pre,
+#nc-root .cms-editor-visual .CodeMirror-line,
+#nc-root .cms-editor-visual .CodeMirror-line span{color:#e6edf3}
+#nc-root .cms-editor-visual .CodeMirror-gutters{background:#0d1117;border-color:#30363d}
+#nc-root .cms-editor-visual .CodeMirror-linenumber{color:#8b949e}
+#nc-root .cms-editor-visual .CodeMirror-cursor{border-left-color:#e6edf3}
+#nc-root .cms-editor-visual .CodeMirror-selected{background:#264f78}
+
+/* Cave masthead: identity and account stay in one shared top row. */
+#cave-editor-brand{position:fixed;top:12px;left:24px;z-index:999;color:var(--ink);font:700 30px/1.4 Noto,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;letter-spacing:-1.2px;text-decoration:none}
+#cave-editor-brand span{color:var(--accent)}
+#nc-root [class*="AppHeaderContent"]{padding-left:130px}
+#nc-root [class*="AppHeaderNavList"]{padding-left:0}
+#nc-root [class*="SettingsWrapper"]{position:fixed;top:15px;right:60px;height:36px;z-index:1001;gap:4px}
+#nc-root [class*="EditorContainer"]:has(>[class*="ToolbarContainer"]>[class*="ToolbarSectionBackLink"]){padding-top:132px}
+#nc-root [class*="ToolbarContainer"]:has(>[class*="ToolbarSectionBackLink"]){top:66px;padding-right:16px!important;border-top:1px solid var(--line)}
+#nc-root [class*="ToolbarSectionMeta"]{display:flex;width:0;padding:0}
+@media(max-width:800px){
+ #cave-editor-brand{left:12px;top:16px;font-size:24px}
+ #nc-root [class*="AppHeaderContent"]{padding-left:96px}
+ #nc-root [class*="AvatarDropdownButton"]{padding:8px 6px}
+ #nc-root [class*="AppHeaderSiteLink"]{display:none}
+}

@@ -1,4 +1,3 @@
-import { installEditorialGuides } from './editorial-guides.mjs';
 import { mapScroll } from './scroll-map.mjs';
 
 let disposePreview;
@@ -15,7 +14,6 @@ function applyTheme() { document.documentElement.dataset.theme = theme(); }
 
 export function initializeEditor() {
   applyTheme();
-  installEditorialGuides();
   if (!stored('cms.md-mode')) save('cms.md-mode', 'raw');
   // The built-in ratio sync misses iframe document scroll events in this layout.
   // Use one source-aware synchronizer, avoiding two controllers fighting each other.
@@ -36,7 +34,15 @@ export function initializeEditor() {
   });
   new MutationObserver(updateLabel).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   updateLabel();
-  document.body.append(themeButton);
+  const brand = document.createElement('a');
+  brand.id = 'cave-editor-brand';
+  brand.href = '/';
+  brand.setAttribute('aria-label', 'Cave 블로그 홈');
+  brand.append('Cave');
+  const dot = document.createElement('span');
+  dot.textContent = '.';
+  brand.append(dot);
+  document.body.append(brand, themeButton);
 }
 
 export function attachPreview(article) {

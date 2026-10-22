@@ -8,7 +8,7 @@ await cp('node_modules/decap-cms/dist', 'public/admin/vendor', {
   recursive: true, filter: source => !source.endsWith('.map') && !/[/\\](?:\d+\.)?cms\.js/.test(source),
 });
 await cp('node_modules/katex/dist', 'public/admin/katex', { recursive: true });
-await build({ entryPoints: ['cms/admin.mjs'], bundle: true, loader: { '.md': 'text' }, format: 'esm', external: ['/fonts/*'], outfile: 'public/admin/admin.js', minify: true });
+await build({ entryPoints: ['cms/admin.mjs'], bundle: true, format: 'esm', external: ['/fonts/*'], outfile: 'public/admin/admin.js', minify: true });
 // JSON is a YAML subset accepted by Decap. Keep one typed config for tests and build.
 await writeFile('public/admin/config.yml', JSON.stringify(config, null, 2));
 const styles = await readFile('src/styles/global.css', 'utf8');

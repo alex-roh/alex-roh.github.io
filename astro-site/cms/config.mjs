@@ -36,5 +36,14 @@ export const config = {
     // Folder assets may include README.md; only real series articles are entries.
     filter: { field: 'series', value: label },
     fields: fields.map(field => field.name === 'series' ? { ...field, default: label } : field),
-  })),
+  })).concat([{
+    name: 'editorial', label: '편집 지침', label_singular: '편집 지침',
+    description: '시리즈별 작성 원칙을 읽고 수정합니다. 저장하면 저장소의 지침 파일에 반영됩니다.',
+    create: false, delete: false,
+    files: [{
+      name: 'enai601-guide', label: 'ENAI601 Numerical Methods',
+      file: `${sourceRoot}/editorial/enai601.md`, format: 'yaml-frontmatter',
+      fields: [{ label: '편집 지침', name: 'body', widget: 'markdown', modes: ['raw', 'rich_text'] }],
+    }],
+  }]),
 };

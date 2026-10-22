@@ -29,7 +29,7 @@ test('all current articles preview math without losing subscripts or executing H
 test('CMS writes only to canonical production repo and preserves raw math source', () => {
   assert.equal(config.backend.repo, 'alex-roh/alex-roh.github.io');
   assert.equal(config.backend.branch, 'main');
-  for (const collection of config.collections) {
+  for (const collection of config.collections.filter(collection => collection.folder)) {
     assert.equal(collection.delete, false);
     assert.ok(collection.folder.startsWith('astro-site/contents/posts/'));
     assert.deepEqual(collection.fields.find(field => field.name === 'body').modes, ['raw', 'rich_text']);
@@ -59,7 +59,7 @@ test('GitHub App installation must be selected-repository only with minimal perm
 
 
 test('series collections exclude attachment READMEs without hiding published articles', async () => {
-  for (const collection of config.collections) {
+  for (const collection of config.collections.filter(collection => collection.folder)) {
     const folder = collection.folder.replace(/^astro-site\//, '');
     let articles = 0, excluded = 0;
     for (const entry of await readdir(folder, { withFileTypes: true })) {
@@ -84,4 +84,15 @@ test('preview block anchors follow Markdown lines while unsafe HTML stays remove
   assert.match(html, /data-source-line="1"/);
   assert.match(html, /data-source-line="3"/);
   assert.match(html, /data-source-line="5" data-source-end="8"/);
+});
+
+test('editorial guidelines edit the source file without creating a blog article', async () => {
+  const guide = config.collections.find(collection => collection.name === 'editorial');
+  assert.equal(guide.create, false);
+  assert.equal(guide.delete, false);
+  assert.equal(guide.folder, undefined);
+  assert.equal(guide.files[0].file, 'astro-site/editorial/enai601.md');
+  assert.deepEqual(guide.files[0].fields.map(field => field.name), ['body']);
+  const source = await readFile(guide.files[0].file.replace(/^astro-site\//, ''), 'utf8');
+  assert.match(renderPreview(source, 'editorial-guide'), /ENAI601/);
 });
