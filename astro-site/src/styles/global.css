@@ -57,3 +57,7 @@
 .pagination a:hover{background:var(--wash)}
 .pagination a[aria-current="page"]{background:var(--accent);color:var(--on-accent);font-weight:700}
 .pagination [aria-disabled="true"]{color:var(--muted);opacity:.5}
+
+/* Reading-spacing trial for the convex sets article only. */
+.prose[data-reading-spacing="compact"]{letter-spacing:-0.030em}
+.prose[data-reading-spacing="compact"] :is(pre,code,.katex){letter-spacing:normal}
