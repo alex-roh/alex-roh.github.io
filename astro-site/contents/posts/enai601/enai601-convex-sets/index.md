@@ -3,7 +3,7 @@ title: "[ENAI601] 03 — Convex Set, 제약조건을 공간의 모양으로 읽�
 description: "열린집합·닫힌집합·compact부터 affine/convex/conic combination과 hull, hyperplane·halfspace·polyhedron, affine image·preimage, supporting hyperplane까지 예제와 증명으로 복습한다."
 date: 2026-10-21
 publishedAt: "2026-10-21T01:28:45-04:00"
-updatedAt: "2026-10-22T05:02:15+00:00"
+updatedAt: "2026-10-22T05:14:51+00:00"
 tags:
   - ENAI601
   - convex-sets
@@ -16,11 +16,11 @@ seriesOrder: 3
 
 [앞 글의 행렬](/enai601-matrices-and-psd/)이 벡터를 변환하는 규칙이었다면, 이번에는 조건을 만족하는 벡터들을 모아 <strong>공간의 모양</strong>으로 읽는다. 여러 제약조건이 만드는 영역은 어떤 집합이고, 그 안의 두 점을 섞어도 여전히 조건을 만족할까? 이것이 convex set을 공부하는 출발점이다.
 
-이 글은 개인 손글씨 노트 <strong>「3 Convex Set」의 내용이 있는 1–6페이지</strong>, <strong>ENAI601 Module 2 — Convex Sets 교안</strong>, <strong>2026년 9월 16일 수업</strong>을 대조해 작성했다. 원본을 펼치지 않고도 복습할 수 있도록 정의·예제·반례·짧은 증명을 본문에 담았다. Supporting hyperplane은 교안과 수업에서 보충했고, 최소값 존재 조건과 거리 공식의 유도 등은 개념을 연결하기 위한 보충 설명이다.
+ENAI601에서 최적화 문제를 풀려면 먼저 제약조건이 허용하는 영역을 읽을 수 있어야 한다. 두 허용점 사이로 움직여도 되는지, 경계에 접근했을 때 그 점이 실제로 허용되는지, 변환 후에 어떤 영역이 남는지는 해를 찾고 해석하는 데 필요한 정보다. 이 단원은 그 공간의 성질을 설명하는 언어를 준비하고, 다음 단원의 convex function과 최적성 조건으로 연결한다.
 
 처음 읽을 때는 용어를 한꺼번에 외우기보다 세 가지 동작을 구별하면 좋다. <strong>제약조건의 교집합</strong>은 허용되는 점만 남기는 일, <strong>hull</strong>은 주어진 점들을 일정한 규칙으로 섞어 만들 수 있는 점을 모두 모으는 일, <strong>image·preimage</strong>는 변환을 통해 입력과 출력을 연결하는 일이다. 그림에서 점·선·색칠된 영역 중 무엇을 집합에 포함하는지 먼저 보고, 그다음 식을 읽는다.
 
-새 그림의 <strong>채운 점은 포함, 빈 점은 제외</strong>를 뜻한다. 화살표가 달린 직선은 그 방향으로 계속 이어지고, 무한한 영역의 색칠은 화면 안에 보이는 일부만 나타낸다. 그림은 개념을 보여 주는 예제이며, 모든 경우에 성립하는 주장은 이어지는 정의와 증명으로 확인한다.
+그림의 <strong>채운 점은 포함, 빈 점은 제외</strong>를 뜻한다. 화살표가 달린 직선은 그 방향으로 계속 이어지고, 무한한 영역의 색칠은 화면 안에 보이는 일부만 나타낸다. 그림은 개념을 보여 주는 예제이며, 모든 경우에 성립하는 주장은 이어지는 정의와 증명으로 확인한다.
 
 이 글의 공간은 유한차원 실수 공간 $\mathbb{R}^{n}$이다. interior·boundary·open·closed는 별도로 말하지 않으면 <strong>주변 공간 $\mathbb{R}^{n}$을 기준</strong>으로 한다. 내적과 거리는 표준 내적과 유클리드 노름을 사용한다.
 
@@ -961,8 +961,10 @@ closed이고 bounded이므로 compact다. 하지만 (1,0),(−1,0)의 중간점�
 
 <strong>문제 1.</strong> $C=[0,1)$에서 interior, closure, boundary는 각각 무엇인가? C는 convex인가?
 
-<details>
+<details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
+
+<div class="review-answer-body">
 
 <strong>답:</strong> 내부는 `(0,1)`, 폐포는 `[0,1]`, 경계는 `{0,1}`이다. C는 convex다.
 
@@ -977,12 +979,16 @@ $$
 
 끝점 하나를 제외했다고 convex가 아닌 것은 아니다. 볼록성은 <strong>실제로 집합에 속하는 두 점 사이</strong>가 빠지는지를 확인한다.
 
+</div>
+
 </details>
 
 <strong>문제 2.</strong> $x_1=(1,1)$, $x_2=(3,2)$일 때 $t=-1$로 만든 affine combination은 무엇인가? 두 점의 convex combination인가?
 
-<details>
+<details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
+
+<div class="review-answer-body">
 
 <strong>답:</strong> `(-1,0)`이며 affine combination이지만 두 점의 convex combination은 아니다.
 
@@ -996,12 +1002,16 @@ $$
 
 계수 2와 −1의 <strong>합은 1</strong>이므로 affine 조건은 만족한다. 그러나 음수 계수가 있으므로 convex의 계수 조건은 만족하지 않는다. 기하학적으로도 첫 좌표가 −1인 이 점은 첫 좌표가 1부터 3 사이인 원래 선분 밖에 있다. 음수 계수가 어떤 역할을 하는지 확인하는 문제다.
 
+</div>
+
 </details>
 
 <strong>문제 3.</strong> 세 점 (0,0), (2,0), (0,2)의 affine hull과 convex hull은 무엇인가?
 
-<details>
+<details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
+
+<div class="review-answer-body">
 
 <strong>답:</strong> Affine hull은 2차원 평면 전체이고, convex hull은 세 점을 꼭짓점으로 하는 채워진 삼각형이다.
 
@@ -1020,12 +1030,16 @@ $$
 
 이 조건의 공통 해가 채워진 삼각형이다. 세 점의 가중평균으로 내부의 점도 만들 수 있으므로, 꼭짓점 세 개나 테두리만 남는 것이 아니다.
 
+</div>
+
 </details>
 
 <strong>문제 4.</strong> $2x_1+2x_2=12$의 법선, 원점에서 가장 가까운 점, 원점까지의 거리는?
 
-<details>
+<details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
+
+<div class="review-answer-body">
 
 <strong>답:</strong> 법선의 한 선택은 `(2,2)`, 가장 가까운 점은 `(3,3)`, 거리는 `3√2`다.
 
@@ -1054,12 +1068,16 @@ $$
 
 오른쪽 상수 12를 그대로 거리로 읽으면 안 된다. 법선벡터의 길이로 나누어야 한다.
 
+</div>
+
 </details>
 
 <strong>문제 5.</strong> $x_1+x_2\leq6$이 원점을 포함하는지 어떻게 판단하는가?
 
-<details>
+<details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
+
+<div class="review-answer-body">
 
 <strong>답:</strong> 원점 `(0,0)`을 부등식에 직접 넣으면 된다.
 
@@ -1069,12 +1087,16 @@ $$
 
 참이므로 이 halfspace는 원점을 포함한다. 법선이 어느 방향을 향하는지 추측하기보다, 확인할 점의 좌표를 대입하는 방법이 확실하다. 반대로 같은 경계에 `x₁+x₂≥6`을 쓰면 원점에서는 `0≥6`이 거짓이므로 원점을 포함하지 않는다. <strong>경계선이 같아도 부등호 방향이 허용 영역을 바꾼다.</strong>
 
+</div>
+
 </details>
 
 <strong>문제 6.</strong> 단위 정사각형을 $g(x)=\begin{bmatrix}1&2\\2&4\end{bmatrix}x+\begin{bmatrix}1\\2\end{bmatrix}$로 변환한 image의 차원과 양 끝점은?
 
-<details>
+<details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
+
+<div class="review-answer-body">
 
 <strong>답:</strong> Image는 1차원 선분이며 양 끝점은 `(1,2)`와 `(4,8)`이다.
 
@@ -1095,12 +1117,16 @@ $$
 
 결과는 점 하나가 아니라 길이가 있는 선분이므로 차원은 1이다. 입력 좌표를 두 개 쓴다는 이유로 image도 2차원인 것은 아니다.
 
+</div>
+
 </details>
 
 <strong>문제 7.</strong> $f(x)=x_1+x_2$일 때 $f^{-1}(\{3\})$는 무엇인가? 역함수가 필요할까?
 
-<details>
+<details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
+
+<div class="review-answer-body">
 
 <strong>답:</strong> 두 입력의 합이 3인 직선 전체다. 역함수는 필요하지 않다.
 
@@ -1113,12 +1139,16 @@ $$
 
 이다. `(0,3)`, `(1,2)`, `(4,-1)` 모두 합이 3이므로 포함된다. 같은 출력에 서로 다른 입력이 대응해 입력을 유일하게 되찾는 역함수가 없어도, 그 입력들을 모은 집합은 문제없이 정의할 수 있다. <strong>역상과 역함수를 구별</strong>하는 문제다.
 
+</div>
+
 </details>
 
 <strong>문제 8.</strong> $[0,1]^2$의 모든 점 중 $x_1+x_2$를 최대화하는 점은? 그 점을 지나는 지지선 하나는?
 
-<details>
+<details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
+
+<div class="review-answer-body">
 
 <strong>답:</strong> `(1,1)`에서 최대값 2를 얻는다. 지지선의 한 예는 `x₁+x₂=2`다.
 
@@ -1130,12 +1160,16 @@ $$
 
 등호가 성립하려면 두 좌표 모두 1이어야 하므로 최적점은 `(1,1)` 하나다. 직선 `x₁+x₂=2`는 그 점을 지나고 정사각형 전체를 `x₁+x₂≤2` 쪽에 둔다. 이것이 지지선의 조건이다. 목적함수가 같은 점들을 잇는 선을 밀어 갔을 때 마지막으로 닿는 위치라고도 볼 수 있다.
 
+</div>
+
 </details>
 
 <strong>문제 9.</strong> 단위 열린 원판에서 $x_1$을 최대화하는 점이 존재하는가? $x_1=1$은 지지선인가?
 
-<details>
+<details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
+
+<div class="review-answer-body">
 
 <strong>답:</strong> 최대값을 달성하는 점은 없고 supremum(최소상한)은 1이다. `x₁=1`은 지지선이다.
 
@@ -1149,12 +1183,16 @@ $$
 
 그렇지만 `(1,0)`은 원판의 경계점이고 원판 전체는 `x₁<1` 쪽에 있으므로, `x₁=1`은 그 경계점에서의 지지선이다. 이 경우 지지선이 만나는 것은 원래 열린 원판이 아니라 그 폐포다. 지지선의 존재가 최적점의 존재를 보장하지 않는 이유다.
 
+</div>
+
 </details>
 
 <strong>문제 10.</strong> 볼록결합을 몇 개 계산해 모두 집합 안에 있음을 확인하면 convexity의 증명이 될까?
 
-<details>
+<details class="review-answer">
 <summary>정답과 해설 펼치기</summary>
+
+<div class="review-answer-body">
 
 <strong>답:</strong> 아니다. 그런 계산은 예시 확인이며 일반적인 증명이 아니다.
 
@@ -1163,6 +1201,8 @@ $$
 예를 들어 두 구간 `[-2,-1]`과 `[1,2]`의 합집합에서, 같은 구간 안의 점끼리 평균을 내는 검사는 계속 성공한다. 하지만 왼쪽에서 −1, 오른쪽에서 1을 고르면 중간점은 0이고 이 집합에 없다. 따라서 nonconvex다.
 
 증명할 때는 임의의 두 점과 임의의 허용 가중치를 놓고 조건이 항상 유지됨을 보이거나, 이미 증명된 볼록성 보존 정리를 적용한다. 반증할 때는 반대로 <strong>실패하는 조합 하나만</strong> 찾으면 충분하다.
+
+</div>
 
 </details>
 

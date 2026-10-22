@@ -61,3 +61,9 @@
 /* Reading-spacing trial for the convex sets article only. */
 .prose[data-reading-spacing="compact"]{letter-spacing:-0.020em}
 .prose[data-reading-spacing="compact"] :is(pre,code,.katex){letter-spacing:normal}
+
+/* Reveal worked answers on a separate, theme-aware reading surface. */
+.prose .review-answer{margin:12px 0 30px}
+.prose .review-answer>summary{cursor:pointer;color:var(--accent)}
+.prose .review-answer-body{margin-top:12px;padding:20px 22px;background:var(--wash);color:var(--ink);border:1px solid var(--line);border-radius:6px}
+.prose .review-answer-body>:last-child{margin-bottom:0}

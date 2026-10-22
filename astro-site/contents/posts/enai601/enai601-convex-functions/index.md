@@ -9,21 +9,21 @@ series: ENAI601 Numerical Methods
 seriesOrder: 4
 date: 2026-10-21
 publishedAt: 2026-10-21T02:52:02-04:00
-updatedAt: 2026-10-21T22:28:17.259Z
+updatedAt: "2026-10-22T05:14:51+00:00"
 ---
 
 Convex function을 이해할 때 출발점은, 부등식보다 미분이었다. <strong>$f$는 높이, $f'$는 기울기, $f''$는 기울기의 변화</strong>다. 이 세 가지를 구분하고 나면, 왜 그래프가 chord 아래에 놓이는지, 왜 접선은 함수 전체의 하한이 되는지, 왜 다변수에서는 Hessian을 보는지가 하나의 흐름으로 이어진다.
 
-이 글은 직접 작성한 <strong>「4 Convex Function」 손글씨 노트 4페이지</strong>와 <strong>ENAI601 Module 3 — Convex Functions 교안</strong>을 바탕으로 작성했다. 필기에서 이해를 쌓아 간 순서를 본문의 중심에 두었다. 미분식과 예제 수치는 직접 검산했고, 원본에 삽입되어 있던 그래프는 함수식으로 새로 그렸다.
+최적화에서는 목적함수의 값이 줄어드는 방향을 찾는 것뿐 아니라, 멈춘 지점이 전체에서도 가장 좋은 점인지 판단해야 한다. Convex function의 정의와 미분 조건은 이 판단을 연결한다. 특히 Hessian의 PSD 조건은 앞서 배운 행렬의 성질이 함수의 모양을 설명하는 지점이다.
 
-[앞 글의 convex set](/enai601-convex-sets/)은 두 점 사이의 선분이 <strong>집합 안에 있는가</strong>를 물었다. 이번에는 그 선분 위에서 <strong>함수값이 두 끝의 값에 비해 얼마나 높은가</strong>를 묻는다. 마지막의 extended value·sublevel set·볼록성 보존 연산은 교안에서 이어지는 내용을 보충한 부분이다.
+[앞 글의 convex set](/enai601-convex-sets/)은 두 점 사이의 선분이 <strong>집합 안에 있는가</strong>를 물었다. 이번에는 그 선분 위에서 <strong>함수값이 두 끝의 값에 비해 얼마나 높은가</strong>를 묻는다.
 
-| 필기의 흐름 | 이 글에서 연결할 질문 |
+| 학습의 흐름 | 이 글에서 연결할 질문 |
 | --- | --- |
-| 1쪽: $f$, $f'$, $f''$ | 높이·증감·휘어짐은 왜 서로 다른가? |
-| 2쪽: convexity와 직선 제한 | 다변수 함수를 한 방향의 1차원 함수로 보면 무엇이 쉬워지는가? |
-| 3쪽: first-order / second-order condition | chord 아래라는 정의가 접선과 곡률의 조건으로 어떻게 바뀌는가? |
-| 4쪽: gradient와 Hessian | 여러 방향의 기울기 변화와 교차항을 어떻게 묶어 판단하는가? |
+| $f$, $f'$, $f''$ | 높이·증감·휘어짐은 왜 서로 다른가? |
+| convexity와 직선 제한 | 다변수 함수를 한 방향의 1차원 함수로 보면 무엇이 쉬워지는가? |
+| first-order / second-order condition | chord 아래라는 정의가 접선과 곡률의 조건으로 어떻게 바뀌는가? |
+| gradient와 Hessian | 여러 방향의 기울기 변화와 교차항을 어떻게 묶어 판단하는가? |
 
 ## 1. f, f′, f″는 같은 x에서 서로 다른 것을 말한다
 

@@ -9,11 +9,12 @@ series: ENAI601 Numerical Methods
 seriesOrder: 6
 date: 2026-10-21
 publishedAt: "2026-10-21T23:04:15-04:00"
+updatedAt: "2026-10-22T05:14:51+00:00"
 ---
 
-[앞 글의 Basic Optimization](/enai601-basic-optimization/)에서는 무엇을 최소화하고 어디에서 선택하는지 구분했다. 이번에는 <strong>ENAI601 Module 5 — Convex Optimization</strong>에서 LP·QP·GP 직전까지의 개념을 공부한다. [Convex Set](/enai601-convex-sets/)과 [Convex Function](/enai601-convex-functions/)의 기초 정의는 알고 있다는 전제다.
+[앞 글의 Basic Optimization](/enai601-basic-optimization/)에서는 무엇을 최소화하고 어디에서 선택하는지 구분했다. 이제 그 문제에 볼록성이 있으면 무엇이 달라지는지 살펴본다. 일반적인 문제에서는 주변에서 좋은 점을 찾아도 전체에서 가장 좋다고 할 수 없지만, Convex Optimization에서는 Local Minimum이 Global Minimum이다. [Convex Set](/enai601-convex-sets/)과 [Convex Function](/enai601-convex-functions/)의 기초 정의는 알고 있다는 전제다.
 
-이 글의 중심은 별도로 공부하면서 붙잡았던 질문들이다. <strong>왜 등식은 Affine이어야 할까? 왜 Local Minimum이 Global Minimum일까? Gradient에 음수 성분이 있는데도 증가 방향이라고 할 수 있을까?</strong> 그 답을 따라 최적성 조건까지 연결한다. 교안·수업의 재정식화와 SVM 예제는 판별법과 증명 사이에, 특수한 최적성 조건은 직접 계산 예제 뒤에 보충했다.
+<strong>왜 등식은 Affine이어야 할까? 왜 Local Minimum이 Global Minimum일까? Gradient에 음수 성분이 있는데도 증가 방향이라고 할 수 있을까?</strong> 그 답을 따라 최적성 조건까지 연결한다.
 
 ## 1. Convex Optimization은 무엇을 더 요구할까?
 

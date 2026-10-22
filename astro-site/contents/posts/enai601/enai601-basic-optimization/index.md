@@ -9,11 +9,12 @@ series: ENAI601 Numerical Methods
 seriesOrder: 5
 date: 2026-10-21
 publishedAt: "2026-10-21T23:04:15-04:00"
+updatedAt: "2026-10-22T05:14:51+00:00"
 ---
 
 [앞 글의 Convex Function](/enai601-convex-functions/)까지 함수의 모양과 미분 조건을 공부했다. 이제는 그 함수를 목적함수와 제약조건으로 사용해, 가장 좋은 선택을 찾는 문제를 구성한다.
 
-이번 글은 <strong>ENAI601 Module 4 — Basic Optimization</strong>을 별도로 공부하며 정리한 노트를 중심으로, 교안·수업의 예제와 용어를 연결한 복습 글이다. 핵심은 <strong>Domain, Feasible Set, Optimal Value, Optimal Point를 구별하는 것</strong>이다. 다음 글에서는 이 언어 위에 Convexity를 더한다.
+모델의 파라미터를 고르기 전에 무엇을 최소화할지, 어떤 값까지 허용할지 정해야 한다. 이때 <strong>Domain, Feasible Set, Optimal Value, Optimal Point를 구별</strong>해야 문제의 조건과 답의 의미를 정확히 읽을 수 있다. 다음 글에서는 이 언어 위에 Convexity를 더한다.
 
 ## 1. 왜 최적화 문제를 수학으로 표현할까?
 

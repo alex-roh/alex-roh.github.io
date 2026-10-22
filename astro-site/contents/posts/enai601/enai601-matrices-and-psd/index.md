@@ -3,7 +3,7 @@ title: "[ENAI601] 02 — 행렬에서 PSD까지, 사라지는 방향과 복원�
 description: "행·열 관점부터 pivot·rank·null space, 역행렬과 최소제곱, 고유값·고유기저, PSD·PD까지. 손필기와 수업을 바탕으로 영어 용어, 계산 과정, 조건과 반례를 함께 복습한다."
 date: 2026-10-21
 publishedAt: "2026-10-21T00:25:14-04:00"
-updatedAt: "2026-10-22T00:01:56.371Z"
+updatedAt: "2026-10-22T05:14:51+00:00"
 update: 2026-10-21
 tags:
   - ENAI601
@@ -15,17 +15,15 @@ seriesOrder: 2
 
 행렬에 벡터를 곱하면 새로운 벡터가 나온다. 계산은 행과 열을 곱해서 더하면 되지만, 그 결과를 이해하려면 다른 질문이 필요하다. <strong>입력의 어떤 방향이 출력에 남고, 어떤 방향이 사라질까? 출력만 보고 입력을 되찾을 수 있을까?</strong>
 
-이번 글은 직접 작성한 <strong>「2 Matrix」 손글씨 노트 8페이지</strong>를 중심으로, <strong>ENAI601 Module 1 — Linear Algebra 교안</strong>, <strong>9월 9일 수업</strong>, <strong>9월 16일 도입부 복습</strong>을 대조해 정리했다. [앞 글의 벡터·정사영](/enai601-vectors-and-projection/)에서 출발해, 행렬을 선형변환으로 읽고 복원·근사·이차형식으로 이어 간다. 이 글에서는 실수 벡터와 실수 행렬을 사용한다.
+[앞 글의 벡터·정사영](/enai601-vectors-and-projection/)에서 다룬 표현과 거리는 행렬을 통해 여러 입력과 출력의 관계로 확장된다. 선형방정식의 해가 존재하는지, 유일한지, 정확한 해가 없을 때 무엇을 근사할지 알아야 이후 학습 문제를 수식으로 세우고 풀 수 있다. 이 글에서는 실수 벡터와 실수 행렬을 사용한다.
 
-왼쪽 역행렬과 Moore–Penrose 의사역행렬, PSD의 대칭성에 관한 설명은 필기에 적어 둔 질문을 풀어 쓴 <strong>보충 학습</strong>이다. 교안에서 직접 다룬 범위와 구분해 표시했다.
-
-| 필기의 출발점 | 이 글에서 확인할 것 |
+| 학습의 출발점 | 이 글에서 확인할 것 |
 | --- | --- |
-| 1쪽: 행과 열의 관점 | 출력 하나를 계산하는 방법과 가능한 출력 전체의 관계 |
-| 2–3쪽: rank·null space·inverse | pivot, 자유변수, 복원 가능성의 연결 |
-| 4쪽: left inverse·least squares | 정확한 복원과 가장 가까운 근사의 차이 |
-| 5–6쪽: eigenvector·spectral theorem | 고유방향을 검사하는 것으로 모든 방향을 설명하는 이유 |
-| 7–8쪽: PSD·PD·outer product·각도 | 대칭성, 영벡터 예외, 행렬식 판정의 한계 |
+| 행과 열의 관점 | 출력 하나를 계산하는 방법과 가능한 출력 전체의 관계 |
+| rank·null space·inverse | pivot, 자유변수, 복원 가능성의 연결 |
+| left inverse·least squares | 정확한 복원과 가장 가까운 근사의 차이 |
+| eigenvector·spectral theorem | 고유방향을 검사하는 것으로 모든 방향을 설명하는 이유 |
+| PSD·PD·outer product·각도 | 대칭성, 영벡터 예외, 행렬식 판정의 한계 |
 
 이번 복습의 흐름은 세 단계다. 먼저 <strong>어떤 출력을 만들 수 있는지</strong>를 range와 rank로 보고, 다음으로 <strong>출력에서 입력을 얼마나 되찾을 수 있는지</strong>를 null space와 inverse로 본다. 마지막에는 <strong>입력 방향마다 변환이 어떻게 작용하는지</strong>를 eigenvalue와 quadratic form으로 읽는다. 기호를 계산하는 법과 그 기호가 설명하는 공간을 함께 확인한다.
 
