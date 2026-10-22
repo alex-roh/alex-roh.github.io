@@ -9,6 +9,7 @@ tags:
   - numpy
   - matplotlib
 series: "ENAI607 Python Programming"
+seriesOrder: 6
 ---
 
 500개의 x 좌표에서 함수를 한 번에 계산하고, 그중 최댓값의 위치를 찾고, 일부 값을 행렬로 바꾸고, 복소 난수 10,000개의 크기를 히스토그램으로 그리고 싶다. NumPy는 이런 계산을 **배열 전체에 적용하는 식**으로 표현하게 해 준다. Matplotlib은 그 결과를 그림으로 보여 준다.

@@ -19,9 +19,8 @@ export async function allPosts() {
 }
 export function seriesPosts(posts: Post[], name: string) {
   return posts.filter(p => p.data.series === name).sort((a,b) =>
-    (a.data.seriesOrder ?? Infinity)-(b.data.seriesOrder ?? Infinity) ||
-    (publicationDate(a)?.getTime() ?? Infinity)-(publicationDate(b)?.getTime() ?? Infinity) ||
-    a.data.title.localeCompare(b.data.title, 'ko', { numeric: true }));
+    (b.data.seriesOrder ?? -Infinity)-(a.data.seriesOrder ?? -Infinity) ||
+    b.data.title.localeCompare(a.data.title, 'ko', { numeric: true }));
 }
 export function formatDate(date?: Date) {
   return date ? new Intl.DateTimeFormat('ko-KR', { year:'numeric', month:'long', day:'numeric', timeZone:'UTC' }).format(date) : '';

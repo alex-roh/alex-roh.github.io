@@ -1,0 +1,16 @@
+---
+import { href } from '../lib/urls';
+interface Props { currentPage: number; totalPages: number; basePath?: string; }
+const { currentPage, totalPages, basePath = '' } = Astro.props;
+const pageUrl = (number: number) => href(number === 1 ? basePath : `${basePath || 'page/'}${number}/`);
+const numbers = [...new Set([1, currentPage - 1, currentPage, currentPage + 1, totalPages])]
+  .filter(number => number > 0 && number <= totalPages).sort((a,b) => a-b);
+---
+{totalPages > 1 && <nav class="pagination" aria-label="글 목록 페이지">
+  {currentPage > 1 ? <a href={pageUrl(currentPage - 1)} rel="prev">← 이전</a> : <span aria-disabled="true">← 이전</span>}
+  <div class="pagination-numbers">{numbers.map((number,index) => <>
+    {index > 0 && number - numbers[index-1] > 1 && <span aria-hidden="true">…</span>}
+    <a href={pageUrl(number)} aria-label={`${number}페이지`} aria-current={number === currentPage ? 'page' : undefined}>{number}</a>
+  </>)}</div>
+  {currentPage < totalPages ? <a href={pageUrl(currentPage + 1)} rel="next">다음 →</a> : <span aria-disabled="true">다음 →</span>}
+</nav>}

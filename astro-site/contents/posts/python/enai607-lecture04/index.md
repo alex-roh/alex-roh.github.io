@@ -7,6 +7,7 @@ tags:
   - python
   - ENAI607
 series: "ENAI607 Python Programming"
+seriesOrder: 4
 ---
 
 파일을 읽다가 숫자가 아닌 값을 만나면 어떻게 할까? 오류를 처리하고 다음 줄로 넘어가려면 어떻게 해야 할까? 여러 파일에 함수를 나누면 어떻게 가져다 쓸까?

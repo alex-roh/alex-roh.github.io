@@ -9,6 +9,7 @@ tags:
   - numpy
   - matplotlib
 series: "ENAI607 Python Programming"
+seriesOrder: 8
 ---
 
 이 글은 비공식 연습문제 **Set B의 문제 4·5·6**을 푼다. 코드를 먼저 읽으며 “이 요구사항을 이렇게 구현했구나” 하고 이해할 수 있도록, **코드 주석에 문제 번호를 붙이고 그 번호별로 의미를 풀었다.**

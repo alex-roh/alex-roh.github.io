@@ -7,6 +7,7 @@ tags:
   - python
   - ENAI607
 series: "ENAI607 Python Programming"
+seriesOrder: 3
 ---
 
 센서 이름마다 측정값을 모으고, 평균을 계산한 다음, 높은 순서대로 정렬하려면 어떤 문법이 필요할까?

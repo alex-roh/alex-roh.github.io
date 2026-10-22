@@ -7,6 +7,7 @@ tags:
   - python
   - ENAI607
 series: "ENAI607 Python Programming"
+seriesOrder: 5
 ---
 
 센서 이름과 측정값을 묶어서 보관하고, 평균을 구하고, 새 측정값을 추가하고 싶다. 보정 기능이 있는 센서도 필요하지만 같은 코드를 두 번 작성하고 싶지는 않다. 이때 사용할 도구가 **클래스와 상속**이다.

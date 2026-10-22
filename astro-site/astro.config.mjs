@@ -16,6 +16,6 @@ export default defineConfig({
       remarkPlugins: [remarkMath, localAssets],
       rehypePlugins: [[rehypeKatex, { strict: 'ignore' }]],
     }),
-    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' }, wrap: false },
+    shikiConfig: { theme: 'github-dark', wrap: false },
   },
 });

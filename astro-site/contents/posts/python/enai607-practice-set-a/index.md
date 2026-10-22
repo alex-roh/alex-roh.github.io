@@ -9,6 +9,7 @@ tags:
   - numpy
   - matplotlib
 series: "ENAI607 Python Programming"
+seriesOrder: 7
 ---
 
 파일에서 값을 읽고 보고서를 만드는 문제, 센서 클래스를 상속하는 문제, NumPy로 계산하고 그래프를 그리는 문제. 세 문제는 소재가 같아도 **입력 검증 규칙과 반드시 써야 하는 문법이 서로 다르다.** 코드를 가져다 쓸 때는 숫자나 이름만 바꾸기 전에 요구조건부터 맞춰야 한다.

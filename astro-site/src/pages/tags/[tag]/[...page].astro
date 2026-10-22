@@ -1,0 +1,20 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PostList from '../../../components/PostList.astro';
+import Pagination from '../../../components/Pagination.astro';
+import { allPosts } from '../../../lib/posts';
+import { postPages } from '../../../lib/pagination';
+export async function getStaticPaths() {
+  const posts = await allPosts();
+  return [...new Set(posts.flatMap(p => p.data.tags))].flatMap(tag =>
+    postPages(posts.filter(p => p.data.tags.includes(tag))).map(page => ({
+      params: { tag, page: page.currentPage === 1 ? undefined : String(page.currentPage) }, props: { tag, page },
+    })));
+}
+const { tag, page } = Astro.props;
+---
+<Base title={`#${tag}`}><div class="container">
+  <header class="page-heading"><p class="eyebrow">TAG · {page.total} POSTS</p><h1>#{tag}</h1></header>
+  <PostList posts={page.posts} />
+  <Pagination currentPage={page.currentPage} totalPages={page.totalPages} basePath={`tags/${encodeURIComponent(tag)}/`} />
+</div></Base>
