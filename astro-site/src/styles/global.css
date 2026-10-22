@@ -59,7 +59,7 @@
 .pagination [aria-disabled="true"]{color:var(--muted);opacity:.5}
 
 /* Shared reading spacing for all articles and CMS previews. */
-.prose{letter-spacing:-0.020em}
+.article-header h1,.prose,.prose :is(h1,h2,h3,h4,h5,h6,p,li,table,th,td,blockquote,summary){letter-spacing:-0.020em}
 .prose :is(pre,code,.katex){letter-spacing:normal}
 
 /* Reveal worked answers on a separate, theme-aware reading surface. */
