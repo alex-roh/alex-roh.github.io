@@ -11,7 +11,7 @@ tags:
   - convex-optimization
 date: 2026-10-22
 publishedAt: "2026-10-22T16:58:32-04:00"
-updatedAt: "2026-10-22T16:58:32-04:00"
+updatedAt: "2026-10-22T18:21:42-04:00"
 ---
 
 [앞 글의 Quadratic Programming](/enai601-quadratic-programming/)에서는 제약조건이 있는 이차함수의 최적점을 찾고, Gradient와 PSD를 이용해 답을 검증했다. 그러나 현실의 최적화 문제가 항상 쉽게 풀리는 것은 아니다. 특히 Nonconvex Optimization에서는 알고리즘이 찾아낸 해가 전체에서 가장 좋은 해인지 확인하기 어렵다.
@@ -20,7 +20,9 @@ updatedAt: "2026-10-22T16:58:32-04:00"
 
 <strong>최적해를 아직 모르더라도, 현재 찾은 해가 최적해와 얼마나 가까운지 알 수 있을까?</strong>
 
-LP 글에서는 제약식에 가중치를 곱해 더하면 모든 가능한 비용의 하한을 얻을 수 있었다. 이제 그 방법을 일반적인 함수로 확장한다. <strong>하한이 필요한 이유→Lagrangian으로 하한 만들기→가장 좋은 하한 선택하기</strong>를 1변수 예제로 따라간 뒤 LP·QP에 적용해 보자. 목적함수가 복잡해져도 “후보의 비용과 보장된 하한이 만나면 최적성이 증명된다”는 생각은 같다.
+LP 글에서는 제약식에 가중치를 곱해 더하면 모든 가능한 비용의 하한을 얻을 수 있었다. 이제 그 방법을 일반적인 함수로 확장한다. <strong>하한이 필요한 이유→Lagrangian으로 하한 만들기→가장 좋은 하한 선택하기</strong>를 1변수 예제로 따라간 뒤 LP의 dual을 직접 유도해 보자. 목적함수가 복잡해져도 “후보의 비용과 보장된 하한이 만나면 최적성이 증명된다”는 생각은 같다.
+
+<strong>Part A~C는 기본 개념, Part D는 LP와 Sample Midterm 적용이다.</strong> Part E의 Least-Norm·QP·SDP는 같은 방법을 행렬 문제로 확장하는 심화 예제이므로, 먼저 Part D까지 읽고 Part F의 확인 문제로 이어가도 된다.
 
 
 ---
@@ -435,9 +437,18 @@ $$
 
 #### Dual Function은 왜 Concave일까?
 
-교안에서 강조한 결과 하나를 더 확인하자. <strong>Primal이 Nonconvex여도 Dual Function은 Concave</strong>하다.
+중요한 사실은 <strong>Primal이 Nonconvex여도 Dual Function은 승수에 대해 Concave(오목)</strong>하다는 것이다. 원래 문제의 볼록성과, 하한을 나타내는 함수의 오목성은 별개의 성질이다.
 
-처음에는 이상해 보일 수 있다. 하지만 x를 하나 고정하고 Lagrangian을 Multiplier의 함수로 보면, 목적함수값과 제약 잔차가 상수이므로 <strong>Affine Function</strong>이 된다.
+앞의 $L(x,\lambda)=x^2+\lambda(1-x)$에서 이번에는 $x$를 고정해 보자. $x=0$이면 $L=\lambda$, $x=1$이면 $L=1$, $x=2$이면 $L=4-\lambda$다. <strong>가로축을 원래 변수 $x$가 아니라 승수 $\lambda$로 바꾸면 각각 직선</strong>이 된다.
+
+![승수를 가로축으로 놓으면 고정된 x마다 직선이 생기고, 그중 가장 낮은 값들이 dual function을 만든다.](07_dual_concavity.png)
+
+얇은 직선들은 고정한 $x$ 몇 개만 보여 준다. 파란 곡선은 모든 실수 $x$에서 가장 낮은 값을 골라 만든 $g(\lambda)=\lambda-\lambda^2/4$다. 예를 들어 $\lambda=1$에서 $x=0.5$를 고르면 최저값 0.75를 얻는다. $\lambda$마다 가장 낮은 값을 고르는 것이 dual function 계산이었다.
+
+파란 곡선의 두 점을 잇는 점선보다 그 사이의 곡선이 위에 있다. 이것이 오목함수의 모양이다. 일반적인 Lagrangian도 $x$를 고정하면 승수에 대해 affine이므로 같은 오목성이 성립한다. 다음 증명은 이 사실을 일반식으로 확인한다.
+
+<details class="review-answer"><summary>심화: Dual Function의 Concavity 증명</summary>
+<div class="review-answer-body">
 
 Dual Function은 이 affine 함수들을 x에 대해 가능한 만큼 아래로 내려서 만든 <strong>Pointwise Infimum</strong>이다. Affine 함수족의 Pointwise Infimum은 Concave이다.
 
@@ -452,11 +463,17 @@ g(\theta z_1+(1-\theta)z_2)
 \end{aligned}
 $$
 
-가운데 부등식은 두 항을 따로 가장 작게 만들면 같은 $x$를 골라야 하는 제한이 더 느슨해지기 때문에 성립한다. 이것이 concavity의 정의다. 따라서 Dual Problem은 Concave Maximization이라는 의미에서 Convex Optimization Problem이다. 물론 이 사실만으로 모든 Dual Problem을 항상 쉽게 계산할 수 있다는 뜻은 아니다.
+가운데 부등식은 두 항을 따로 가장 작게 만들면 같은 $x$를 골라야 하는 제한이 더 느슨해지기 때문에 성립한다. 이것이 concavity의 정의다.
+
+</div></details>
+
+Dual Problem은 이 오목함수를 최대화하는 문제여서 Convex Optimization Problem에 속한다. 다만 이 성질이 dual function의 계산이나 최대화를 언제나 쉽게 만들어 주는 것은 아니다.
 
 ---
 
-## Part D. LP·QP와 교안 예제로 확장하기
+<span id="part-d-lpqp와-교안-예제로-확장하기"></span>
+
+## Part D. 시험 적용 — LP Dual을 직접 유도하기
 
 ### 10. 먼저 1변수 LP에서 Dual을 직접 구하자
 
@@ -620,7 +637,57 @@ $\min(x_1+2x_2)$ subject to $x_1+x_2=1$, $x\ge0$이면 $x_1=1-x_2$에서 비용�
 
 교안의 부호로 dual을 쓰면 $\max(-\nu)$ subject to $1+\nu\ge0$, $2+\nu\ge0$다. 두 제약은 $\nu\ge-1$로 합쳐지고, $-\nu$를 가장 크게 만드는 값은 $\nu^*=-1$이다. 따라서 $d^*=1$이다. <strong>등식 승수가 음수여도 정상이며</strong>, 목적함수의 마이너스 부호를 빠뜨리면 다른 문제가 된다.
 
-### 12. Module 7 Example 1 — Equality-Constrained Least-Norm Problem
+<span id="15-sample-midterm-2c-lp-글의-하한을-lagrangian으로-다시-얻기"></span>
+
+### 12. Sample Midterm 2(c): LP 글의 하한을 Lagrangian으로 다시 얻기
+
+[LP 글](/enai601-linear-programming/)에서 푼 문제는 $3x_1+2x_2$를 최소화하면서 다음 세 부등식을 만족하는 것이다.
+
+$$
+4x_1+x_2\ge4,\quad x_1+4x_2\ge4,\quad x_1+x_2\le4.
+$$
+
+이번에는 모든 잔차를 $\le0$으로 바꿔 직접 Lagrangian을 만든다.
+
+$$
+\begin{aligned}
+L(x,\lambda)
+&=3x_1+2x_2+\lambda_1(4-4x_1-x_2)\\
+&\quad+\lambda_2(4-x_1-4x_2)+\lambda_3(x_1+x_2-4)\\
+&=(3-4\lambda_1-\lambda_2+\lambda_3)x_1\\
+&\quad+(2-\lambda_1-4\lambda_2+\lambda_3)x_2
++4\lambda_1+4\lambda_2-4\lambda_3.
+\end{aligned}
+$$
+
+원문에는 $x\ge0$가 독립된 제약으로 없고, 공통 정의역은 $\mathbb R^2$다. 이 예제에서 비음수성이 원래 제약들로부터 따라오더라도, 그 제약들을 Lagrangian에 옮긴 뒤 $x$를 최소화할 때에는 원래 가능 삼각형에 묶어 두지 않는다. 따라서 유한한 infimum을 얻으려면 두 선형 계수가 모두 0이어야 한다.
+
+$$
+\boxed{\begin{aligned}
+\operatorname{maximize}_{\lambda}\quad&4\lambda_1+4\lambda_2-4\lambda_3\\
+\text{subject to}\quad&4\lambda_1+\lambda_2-\lambda_3=3,\\
+&\lambda_1+4\lambda_2-\lambda_3=2,\\
+&\lambda\ge0.
+\end{aligned}}
+$$
+
+$\lambda^*=(2/3,1/3,0)^T$는 두 등식과 비음수 조건을 만족하며 $g(\lambda^*)=4$다. 원문제의 후보 $x^*=(4/5,4/5)^T$는 원래 세 제약을 만족하고 비용이 4다. 따라서
+
+$$
+4=g(\lambda^*)\le d^*\le p^*\le f_0(x^*)=4.
+$$
+
+모든 값이 4라서 primal·dual 후보가 모두 최적이다. <strong>LP 글에서 제약식에 곱했던 $2/3$, $1/3$이 바로 이 dual의 최적 승수였다.</strong> 이전의 가중합 증명과 Lagrangian의 하한 계산은 같은 구조를 표현한다.
+
+---
+
+## Part E. 심화 예제 — 같은 하한 계산을 행렬 문제로 확장하기
+
+이제 하한을 만드는 절차는 그대로 두고 원래 변수와 제약의 형태를 바꾼다. 각 예제에서도 <strong>승수를 고정한다 → 원래 변수로 최소화한다 → 얻은 하한을 승수로 최대화한다</strong>는 순서는 같다.
+
+<span id="12-module-7-example-1--equality-constrained-least-norm-problem"></span>
+
+### 13. Module 7 Example 1 — Equality-Constrained Least-Norm Problem
 
 교안의 첫 번째 응용 예제는 <strong>등식 제약을 만족하면서 벡터 길이의 제곱을 최소화하는 문제</strong>이다.
 
@@ -694,7 +761,9 @@ $$
 
 최대는 $\nu^*=-2$에서 2다. 그 승수에서 Lagrangian의 최소점은 $x=-\frac12A^T\nu^*=(1,1)^T$다. 실제로 $Ax=2$이며 $x^Tx=2$라서 하한을 달성한다. 원래 식으로도 $x_1=t$, $x_2=2-t$를 대입하면 $t^2+(2-t)^2=2(t-1)^2+2$여서 같은 답을 얻는다.
 
-### 13. Module 7 Example 3 — Inequality-Constrained QP의 Dual
+<span id="13-module-7-example-3--inequality-constrained-qp의-dual"></span>
+
+### 14. Module 7 Example 3 — Inequality-Constrained QP의 Dual
 
 이번에는 QP의 목적함수에 부등식 제약을 결합한다. 교안에서는 이 예제에서 <strong>P를 Positive Definite</strong>로 두어 역행렬을 사용할 수 있게 한다.
 
@@ -704,6 +773,8 @@ $$
 \text{subject to}\quad&Gx\le h.
 \end{aligned}}
 $$
+
+앞에서 반복한 $\min x^2$ subject to $x\ge1$도 이 형태다. 변수가 하나라면 $P=2$, $q=0$, $G=-1$, $h=-1$로 두어 $\frac12(2)x^2=x^2$, $-x\le-1$로 읽을 수 있다. 여러 변수에서도 같은 계산을 행렬로 묶는다.
 
 Lagrangian은
 
@@ -736,7 +807,16 @@ g(\lambda)
 }
 $$
 
-이다. 위 표현을 전개하면 교안의 Dual Quadratic Function 형태가 된다.
+이다. 이 복잡해 보이는 식에 방금의 1변수 계수를 넣으면 $P^{-1}=1/2$, $q+G^T\lambda=-\lambda$이므로
+
+$$
+g(\lambda)=-\frac12(-\lambda)\frac12(-\lambda)-(-1)\lambda
+=\lambda-\frac{\lambda^2}{4}.
+$$
+
+Part B에서 직접 구한 포물선이 그대로 나온다. 일반식도 새로운 종류의 하한이 아니라, 같은 이차함수 최소화를 여러 변수에 대해 쓴 결과다.
+
+위 표현을 전개하면 교안의 Dual Quadratic Function 형태가 된다.
 
 $$
 \begin{aligned}
@@ -771,7 +851,23 @@ $$
 
 $S_{++}^n$은 실수 대칭 <strong>양의 정부호(PD)</strong> 행렬들의 집합이다. PSD만으로는 역행렬을 보장할 수 없다. 원래 목적함수에 상수 $r$가 있다면 dual function에도 $r$가 그대로 더해진다. 최적 승수는 바뀌지 않지만 비용값은 달라지므로, 수치 검증에서 상수를 빼먹지 않는다.
 
-### 14. Module 7 Example 4 — Nonconvex 문제에도 하한을 만들 수 있다
+#### QP 글의 Midterm 3번도 같은 방식으로 인증된다
+
+Fall 2025 Sample Midterm 3번은 위 삼각형 제약에 $\frac12x^TPx+q^Tx+3$을 둔다. 여기서 $P=\begin{bmatrix}3.5&-1.5\\-1.5&3.5\end{bmatrix}$, $q=(-1.2,-0.8)^T$다. [QP 글 13절](/enai601-quadratic-programming/)에서는 후보 $(0.8,0.8)^T$에서 Gradient가 $(0.4,0.8)^T$임을 확인했다.
+
+세 잔차는 $Gx-h$이며, $G=\begin{bmatrix}-4&-1\\-1&-4\\1&1\end{bmatrix}$, $h=(-4,-4,4)^T$다. $\lambda=(4/75,14/75,0)^T\ge0$를 대입하면
+
+$$
+\nabla_xL(x^*,\lambda)=Px^*+q+G^T\lambda=0.
+$$
+
+$P$가 PD이므로 $x^*$는 이 Lagrangian의 전역 최소점이다. 앞의 두 잔차는 $x^*$에서 0이고, 세 번째 승수는 0이므로 $L(x^*,\lambda)=f_0(x^*)=2.68$이다. 따라서 $g(\lambda)=2.68$이라는 하한과 가능한 비용 2.68이 만나 최적성이 증명된다. <strong>원래 목적함수의 Gradient가 0이 아니어도, 제약항을 더한 Lagrangian의 Gradient는 0이 될 수 있다.</strong>
+
+이 계산도 가능한 비용과 dual 하한을 일치시켜 최적성을 증명한다. LP에서는 선형 계수를 0으로 만들었고, 이 QP에서는 Lagrangian의 기울기가 0인 최소점을 구했다.
+
+<span id="14-module-7-example-4--nonconvex-문제에도-하한을-만들-수-있다"></span>
+
+### 15. Module 7 Example 4 — Nonconvex 문제에도 하한을 만들 수 있다
 
 교안의 마지막 Part 1 예제는 <strong>Two-Way Partitioning(두 그룹 분할)</strong>이다. 각 원소를 +1 또는 −1로 배정한다고 생각하면 된다.
 
@@ -837,140 +933,11 @@ Semidefinite program (SDP).
 
 ---
 
-### 15. Sample Midterm 2(c): LP 글의 하한을 Lagrangian으로 다시 얻기
-
-<strong>출처: Fall 2025 Sample Midterm 2번, 2페이지.</strong> [LP 글](/enai601-linear-programming/)에서 푼 문제는 $3x_1+2x_2$를 최소화하면서 다음 세 부등식을 만족하는 것이다.
-
-$$
-4x_1+x_2\ge4,\quad x_1+4x_2\ge4,\quad x_1+x_2\le4.
-$$
-
-이번에는 모든 잔차를 $\le0$으로 바꿔 직접 Lagrangian을 만든다.
-
-$$
-\begin{aligned}
-L(x,\lambda)
-&=3x_1+2x_2+\lambda_1(4-4x_1-x_2)\\
-&\quad+\lambda_2(4-x_1-4x_2)+\lambda_3(x_1+x_2-4)\\
-&=(3-4\lambda_1-\lambda_2+\lambda_3)x_1\\
-&\quad+(2-\lambda_1-4\lambda_2+\lambda_3)x_2
-+4\lambda_1+4\lambda_2-4\lambda_3.
-\end{aligned}
-$$
-
-원문에는 $x\ge0$가 독립된 제약으로 없고, 공통 정의역은 $\mathbb R^2$다. 이 예제에서 비음수성이 원래 제약들로부터 따라오더라도, 그 제약들을 Lagrangian에 옮긴 뒤 $x$를 최소화할 때에는 원래 가능 삼각형에 묶어 두지 않는다. 따라서 유한한 infimum을 얻으려면 두 선형 계수가 모두 0이어야 한다.
-
-$$
-\boxed{\begin{aligned}
-\operatorname{maximize}_{\lambda}\quad&4\lambda_1+4\lambda_2-4\lambda_3\\
-\text{subject to}\quad&4\lambda_1+\lambda_2-\lambda_3=3,\\
-&\lambda_1+4\lambda_2-\lambda_3=2,\\
-&\lambda\ge0.
-\end{aligned}}
-$$
-
-$\lambda^*=(2/3,1/3,0)^T$는 두 등식과 비음수 조건을 만족하며 $g(\lambda^*)=4$다. 원문제의 후보 $x^*=(4/5,4/5)^T$는 원래 세 제약을 만족하고 비용이 4다. 따라서
-
-$$
-4=g(\lambda^*)\le d^*\le p^*\le f_0(x^*)=4.
-$$
-
-모든 값이 4라서 primal·dual 후보가 모두 최적이다. <strong>LP 글에서 제약식에 곱했던 $2/3$, $1/3$이 바로 이 dual의 최적 승수였다.</strong> 이전의 가중합 증명과 Lagrangian의 하한 계산은 같은 구조를 표현한다.
-
-#### QP 글의 Midterm 3번도 같은 방식으로 인증된다
-
-같은 시험 3번은 위 삼각형 제약에 $\frac12x^TPx+q^Tx+3$을 둔다. 여기서 $P=\begin{bmatrix}3.5&-1.5\\-1.5&3.5\end{bmatrix}$, $q=(-1.2,-0.8)^T$다. [QP 글 13절](/enai601-quadratic-programming/)에서는 후보 $(0.8,0.8)^T$에서 Gradient가 $(0.4,0.8)^T$임을 확인했다.
-
-세 잔차는 $Gx-h$이며, $G=\begin{bmatrix}-4&-1\\-1&-4\\1&1\end{bmatrix}$, $h=(-4,-4,4)^T$다. $\lambda=(4/75,14/75,0)^T\ge0$를 대입하면
-
-$$
-\nabla_xL(x^*,\lambda)=Px^*+q+G^T\lambda=0.
-$$
-
-$P$가 PD이므로 $x^*$는 이 Lagrangian의 전역 최소점이다. 앞의 두 잔차는 $x^*$에서 0이고, 세 번째 승수는 0이므로 $L(x^*,\lambda)=f_0(x^*)=2.68$이다. 따라서 $g(\lambda)=2.68$이라는 하한과 가능한 비용 2.68이 만나 최적성이 증명된다. <strong>원래 목적함수의 Gradient가 0이 아니어도, 제약항을 더한 Lagrangian의 Gradient는 0이 될 수 있다.</strong>
-
-이 두 문제를 비교하면 새 공식을 외우는 대신 이미 했던 최적성 증명을 dual 변수의 관점으로 읽을 수 있다.
-
----
-
-
-
-## Part E. Part 2로 이어지는 한 가지 질문
-
-### 16. Complementary Slackness는 어디에서 등장할까?
-
-Part 1의 최종 결론은 Lower Bound와 Weak Duality였다. 그렇다면 <strong>Dual의 하한이 Primal의 최적값과 정확히 같아졌을 때는 무엇이 달라질까?</strong>
-
-앞에서 본 일반적인 Weak Duality 증명을 다시 생각해 보자.
-
-$$
-g(\lambda,\nu)\le L(x,\lambda,\nu)\le f_0(x)
-$$
-
-양 끝이 같아지면 두 부등식 사이에 더는 차이가 남을 수 없다. 이를 두 개의 비음수 차이로 분리하면
-
-$$
-\begin{aligned}
-f_0(x)-g(\lambda,\nu)
-&=\big[f_0(x)-L(x,\lambda,\nu)\big]\\
-&\quad+\big[L(x,\lambda,\nu)-g(\lambda,\nu)\big].
-\end{aligned}
-$$
-
-Feasible Point에서는 첫 번째 차이가
-
-$$
-f_0(x)-L(x,\lambda,\nu)=-\sum_i\lambda_i f_i(x)\ge0
-$$
-
-이고, 두 번째 차이도 Infimum의 정의 때문에 0 이상이다.
-
-만약 <strong>Primal과 Dual에서 최적점이 실제로 존재하고 Strong Duality가 성립</strong>하여 양 끝의 차이가 0이라면, 이 두 비음수 차이도 각각 0이어야 한다.
-
-그 결과 각 부등식 제약에 대해
-
-$$
-\boxed{\lambda_i^* f_i(x^*)=0}
-$$
-
-가 나타난다. 이것이 바로 Part 2에서 증명하고 활용할 <strong>Complementary Slackness(상보적 느슨함)</strong>의 형태다.
-
-앞의 1변수 예제에서는
-
-$$
-\lambda^*=2,\qquad f_1(x^*)=1-1=0
-$$
-
-이어서 곱이 0이다. 제약이 실제 최적점에서 딱 맞게 걸린 경우다.
-
-반대로 다음 문제를 생각하면
-
-$$
-\min_x(x-2)^2\quad\text{subject to}\quad x\ge1
-$$
-
-최적점은 2이며 제약에 여유가 남는다. 최적 승수는 0으로 둘 수 있다.
-
-$$
-x^*=2,\qquad 1-x^*=-1,\qquad\lambda^*=0
-$$
-
-이 경우에도 곱은 0이다.
-
-![Active versus slack constraints](06_active_slack_preview.png)
-
-- <strong>Active Constraint:</strong> 제약식이 경계에서 0이다. 이때 Multiplier는 양수일 수도 0일 수도 있다.
-- <strong>Slack / Inactive Constraint:</strong> 제약식이 0보다 작다. Strong Duality 등 적절한 조건 아래 최적 승수는 반드시 0이다.
-
-이 관계를 '활성 제약이면 반드시 양의 승수'라고 외우면 안 된다. <strong>양의 승수라면 해당 제약은 반드시 Active</strong>이고, <strong>Slack인 제약의 승수는 0</strong>이라는 방향이 정확하다.
-
-Complementary Slackness의 자세한 유도와 Slater's Condition, KKT Conditions, 경제적 해석은 모두 <strong>Module 7 Part 2</strong>의 본문 주제다.
-
----
-
 ## Part F. 시험 대비와 확인 문제
 
-### 17. 직접 할 수 있어야 할 계산
+<span id="17-직접-할-수-있어야-할-계산"></span>
+
+### 16. 직접 할 수 있어야 할 계산
 
 1. Feasible Point가 최소화 문제의 Upper Bound를 주는 이유를 설명할 수 있다.
 2. Lower Bound가 유용한 이유와 Weak Duality의 의미를 설명할 수 있다.
@@ -979,15 +946,19 @@ Complementary Slackness의 자세한 유도와 Slater's Condition, KKT Condition
 5. Dual Function에서 Primal Variable이 사라졌는지 점검할 수 있다.
 6. Dual Problem을 작성하고, 최적 Duality Gap을 계산할 수 있다.
 
-#### 강의 예제 응용
-
 7. <strong>1변수 LP</strong>에서 x의 계수가 0이 아니면 Infimum이 음의 무한대임을 설명할 수 있다.
 8. <strong>Standard-Form LP</strong>에서 비음수 제약을 반영한 Dual을 직접 유도할 수 있다.
+<span id="강의-예제-응용"></span>
+
+#### 심화 예제까지 복습할 때
+
 9. <strong>Equality-Constrained Least-Norm</strong>에서 Gradient를 이용해 Dual Quadratic Function을 얻을 수 있다.
 10. <strong>Inequality-Constrained QP</strong>에서 PD 행렬의 역행렬을 이용해 Dual Function을 구할 수 있다.
 11. <strong>Two-Way Partitioning</strong>에서 PSD 행렬 부등식이 Dual 제약으로 나타나는 이유를 설명할 수 있다.
 
-### 18. 혼자 풀어 보는 확인 문제
+<span id="18-혼자-풀어-보는-확인-문제"></span>
+
+### 17. 혼자 풀어 보는 확인 문제
 
 #### 문제 1. 상한·하한과 실제 오차
 
@@ -1046,10 +1017,32 @@ $L=3x+\lambda(2-x)=(3-\lambda)x+2\lambda$다. $x$를 전체 실수에서 움직�
 
 ---
 
-## 출처와 보충 범위
+<span id="part-e-part-2로-이어지는-한-가지-질문"></span>
 
-- <strong>ENAI601 Module 7 — Duality (part 1) 교안:</strong> Lagrangian, dual function, dual problem, weak duality, optimal duality gap 및 Example 1–4. 발췌 블록은 원문의 수식·표현을 옮겼다. 예제의 순서는 1변수 LP에서 표준형 LP로 넘어가기 위해 조정했다.
-- <strong>2026년 10월 14일 수업:</strong> 하한을 이용한 해의 품질 평가, Lagrangian의 변수와 정의역, dual function과 LP·QP 예제의 연결을 참고했다. 10월 21일 수업의 Part 1 복습도 표기 확인에 참고했다.
-- <strong>Fall 2025 Sample Midterm 2(c)와 3번:</strong> 실제 제약·계수에 따라 Lagrangian과 dual 하한을 계산했다. 일반 HW5의 LP·QP 문제는 앞의 두 글에서 풀이했으며, 이 글에서는 새 개념과 직접 연결되는 시험 문제를 사용했다.
-- <strong>설명용 예제·그림:</strong> 제공된 초안과 수치 그래프 6개를 바탕으로 1변수 예제·승수 비교표를 정리했다. 표준형 LP의 작은 수치 예, 최소 노름의 수치 풀이, 두 원소 분할 및 확인 문제는 이해를 위한 보충이다. 교안의 원래 수치 데이터와 구별한다.
-- <strong>다음 범위:</strong> Complementary Slackness는 연결을 위한 예고다. Slater 조건, KKT와 강한 쌍대성의 일반적인 성립 조건은 Part 2에서 이어서 다룬다.
+## Part G. Part 2로 이어지는 한 가지 질문
+
+<span id="16-complementary-slackness는-어디에서-등장할까"></span>
+
+### 18. 가장 좋은 하한이 실제 비용과 같아진다면?
+
+Part 1에서는 원래 문제를 푸는 대신, 승수를 골라 보장된 하한을 만들고 그 하한을 최대화했다. 가능한 선택 $x$와 $\lambda\ge0$인 승수에 대해 남겨 둘 관계는 다음과 같다.
+
+$$
+\boxed{g(\lambda,\nu)\le L(x,\lambda,\nu)\le f_0(x)}.
+$$
+
+Dual 하한은 가능한 비용을 넘을 수 없다. 그런데 <strong>하한과 가능한 비용이 정확히 같다면, 그 비용보다 더 낮은 답은 없으므로 최적성이 증명된다.</strong> 첫 예제에서 $g(2)=f_0(1)=1$이었고, Sample Midterm LP에서도 하한과 비용이 모두 4였다.
+
+그렇다면 이 사슬의 양 끝이 같아질 때, 그 사이의 <strong>선택 $x$와 승수는 어떤 관계</strong>를 만족해야 할까? 어떤 제약에는 여유가 남고 다른 제약에는 경계에 닿는다는 사실이 승수와 어떻게 연결될까?
+
+[Duality Part 2](/enai601-duality-part2/)에서는 작은 제약 문제에서 출발해 이 질문을 Complementary Slackness와 KKT 네 조건으로 연결하고, 그 조건으로 최적점을 직접 계산한다.
+
+---
+
+<span id="출처와-보충-범위"></span>
+
+## 참고 자료
+
+- <strong>ENAI601 Module 7 — Duality (part 1)</strong>: Lagrangian, dual function, dual problem, weak duality, optimal duality gap, Example 1–4.
+- <strong>2026년 10월 14일·10월 21일 수업</strong>.
+- <strong>Fall 2025 Sample Midterm 2(c)·3번</strong>.
