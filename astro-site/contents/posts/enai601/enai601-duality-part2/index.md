@@ -12,7 +12,7 @@ tags:
   - convex-optimization
 date: 2026-10-22
 publishedAt: "2026-10-22T17:26:38-04:00"
-updatedAt: "2026-10-22T17:26:38-04:00"
+updatedAt: "2026-10-22T17:44:41-04:00"
 ---
 
 [앞 글의 Duality Part 1](/enai601-duality-part1/)에서는 제약을 Lagrangian에 포함해 <strong>원래 최소화 문제의 하한(lower bound)</strong>을 구했다. Dual Function을 최대화하면 가장 좋은 하한을 얻지만, 그 하한이 실제 최소 비용에 도달하는지는 별개의 질문이다.
@@ -536,11 +536,15 @@ $$
 
 ---
 
-## Part D. 10월 21일 수업의 KKT 종합 연습문제
+<span id="part-d-10월-21일-수업의-kkt-종합-연습문제"></span>
 
-### 12. 이 문제는 무엇을 시험하려는가?
+## Part D. 자원 배분 문제를 KKT로 끝까지 풀기
 
-2026년 10월 21일 수업에서 수업에서는 중간고사에 출제할 수도 있었던 예제를 실제로 풀었다. 이 문제는 이전 연도 시험지의 문제가 아니라, 수업 중 제시한 <strong>KKT 종합 연습문제</strong>다. 주어진 Hint를 활용하면 경우를 나누지 않고 풀이할 수 있다.
+<span id="12-이-문제는-무엇을-시험하려는가"></span>
+
+### 12. 세 작업에 자원을 나누어 주기
+
+총 4단위의 자원을 세 작업에 나누어 준다고 하자. 각 작업은 자원을 더 받을수록 효용이 늘지만, 증가 폭은 점점 작아진다. 중요도가 서로 다른 세 작업에 자원을 어떻게 배분해야 전체 효용이 가장 클까?
 
 $$
 \boxed{\begin{aligned}
@@ -552,7 +556,7 @@ $$
 \end{aligned}}
 $$
 
-문제가 요구하는 세 가지를 순서대로 풀이한다.
+다음 세 단계로 풀어 보자.
 
 1. Convex Optimization Problem인지 확인한다.
 2. Strong Duality가 성립하는지 확인한다.
@@ -804,9 +808,9 @@ $$
 x_1:x_2:x_3=16:4:1
 $$
 
-이는 KKT 풀이와 독립적으로 최적값을 확인해 주는 방법이다. 수업에서 요구한 풀이는 <strong>KKT 네 조건의 적용</strong>이므로, 이 부등식은 그 풀이를 대체하기보다 독립적인 검산으로 활용한다.
+이는 KKT 풀이와 독립적으로 최적값을 확인해 주는 방법이다. Cauchy–Schwarz의 등호 조건에서도 같은 배분 비율이 나온다.
 
-<strong>미분 가능성 주의:</strong> 제곱근은 0에서 도함수가 유한하지 않다. 수업에서 제공한 “최적점의 모든 성분이 양수”라는 Hint는 이 문제에서 직접적인 미분과 Lambda 제거를 정당화해 준다. Hint가 없다면 0인 성분이 있는 경우까지 검토해야 한다. 그 경계에서는 제곱근의 보통 도함수를 대입할 수 없으므로 극한·직접 비교 등의 별도 논리가 필요하다. 위 Cauchy–Schwarz 검산은 모든 비음수 점에서 유효하고 등호 조건이 양의 후보만 남기므로, 이 사례에서는 그 경계까지 포함해 최적성을 확인해 준다.
+<strong>미분 가능성 주의:</strong> 제곱근은 0에서 도함수가 유한하지 않다. “최적점의 모든 성분이 양수”라는 조건은 이 문제에서 직접적인 미분과 Lambda 제거를 정당화해 준다. Hint가 없다면 0인 성분이 있는 경우까지 검토해야 한다. 그 경계에서는 제곱근의 보통 도함수를 대입할 수 없으므로 극한·직접 비교 등의 별도 논리가 필요하다. 위 Cauchy–Schwarz 검산은 모든 비음수 점에서 유효하고 등호 조건이 양의 후보만 남기므로, 이 사례에서는 그 경계까지 포함해 최적성을 확인해 준다.
 
 ---
 
@@ -1042,15 +1046,17 @@ $$
 \sum_{i=1}^n\max\{0,\mu-\alpha_i\}=1
 $$
 
-#### 3채널 수치 예제: 수업의 전력 배분 결과를 재현하기
+<span id="3채널-수치-예제-수업의-전력-배분-결과를-재현하기"></span>
 
-강의에서는 세 채널에 대한 전력 배분 결과가 (0.5, 0.3, 0.2)로 나오는 사례를 시연했다. 그 결과를 일관된 수치로 확인하기 위해 다음 잡음 수준을 갖는 설명용 모델을 사용한다. 이 잡음 값은 강의 중 제시된 배분 결과에 맞춘 재구성 예제이며 교안의 원래 표에서 그대로 옮긴 수치라고 주장하지 않는다.
+#### 3채널 전력 배분을 직접 계산하기
+
+잡음 수준이 다음과 같은 세 채널에 총 전력 1을 배분해 보자.
 
 $$
 \alpha=(0.1,\ 0.3,\ 0.4)
 $$
 
-이 재구성 예제에서 수면 높이는 다음과 같다.
+세 채널이 모두 전력을 받는다고 가정하면 수면 높이는 잡음 합에 전력 1을 더해 3으로 나눈 값이다. 각 배분이 양수인지 확인하면 이 가정도 검사할 수 있다.
 
 $$
 \mu=0.6
@@ -1194,11 +1200,15 @@ Primal 비용은 $\frac12\|w\|^2=1/2$이고 dual 값도 $1-\frac12=1/2$로 같�
 
 
 
-## Part F. 실제 Midterm과 연결하기
+<span id="part-f-실제-midterm과-연결하기"></span>
 
-### 23. 2025 Sample Midterm Q2(c): LP의 Dual과 KKT
+## Part F. LP에 적용하고 연습하기
 
-이 예제는 2025년 공개 Sample Midterm의 실제 LP 문제다. Duality Part 1에서 Dual을 유도했던 문제를 Part 2의 Complementary Slackness로 다시 해석한다.
+<span id="23-2025-sample-midterm-q2c-lp의-dual과-kkt"></span>
+
+### 23. LP의 Dual을 KKT로 다시 읽기
+
+앞서 dual을 구했던 LP에서, 어떤 제약이 최적점을 결정하는지 상보적 느슨함으로 확인해 보자.
 
 $$
 \begin{aligned}
@@ -1277,11 +1287,11 @@ $$
 \boxed{p^*=d^*=4}
 $$
 
-이 예제는 <strong>LP의 꼭짓점 계산 → Dual Multiplier → Complementary Slackness → Strong Duality</strong>가 별개 단원이 아니라 하나의 논리라는 점을 보여준다. 실제 2025 Sample Midterm Q2(c)는 Dual Problem의 유도를 요구했으므로, 위 계산은 그 문제에 대한 KKT 관점의 추가 해설이다.
+이 예제는 <strong>LP의 꼭짓점 계산 → Dual Multiplier → Complementary Slackness → Strong Duality</strong>가 별개 단원이 아니라 하나의 논리라는 점을 보여준다.
 
 ### 24. 시험장에서 KKT 문제를 푸는 순서
 
-교안의 10월 21일 연습문제와 공개 Sample Midterm을 기준으로 다음 순서가 유용하다.
+다음 순서로 식을 정리하면 조건을 빠뜨리지 않고 후보를 구할 수 있다.
 
 1. Objective와 Constraints를 식으로 정확히 옮기고 부등식을 0 이하 형태로 통일한다.
 2. Convexity를 확인한다. 제약의 정의역과 미분 가능성도 점검한다.
@@ -1364,7 +1374,7 @@ $$
 
 </div></details>
 
-<strong>문제 5.</strong> 교안의 10월 21일 연습문제에서 왜 모든 Inequality Multiplier를 0으로 둘 수 있었는가?
+<strong>문제 5.</strong> 자원 배분 예제에서 왜 모든 Inequality Multiplier를 0으로 둘 수 있었는가?
 
 <details class="review-answer"><summary>정답과 해설 펼치기</summary><div class="review-answer-body">
 
@@ -1399,14 +1409,12 @@ $$
 
 행렬 A가 PSD가 아닐 경우 목적함수는 비볼록일 수 있지만, 이 특정 유형은 Strong Duality가 성립한다. 이는 “Convexity가 Strong Duality의 필요조건”이라는 잘못된 결론을 방지해 준다. 이 단원에서는 풀이를 확장하지 않고 개념상 예외로 구분한다.
 
-또한 교안 Part 2의 'Examples with No Duality Gap'에는 Equality-Constrained Least-Norm, Standard-Form LP, QCQP의 Dual을 재검토하는 부분이 있다. 최소 노름과 LP는 Part 1의 dual을 강한 쌍대성의 관점으로 다시 본다. QCQP는 이차 제약으로의 확장이므로 20절에서 별도로 유도했다.
-
 ---
 
-## 출처 및 보충 범위
+<span id="출처-및-보충-범위"></span>
 
-- <strong>주교안:</strong> ENAI601, Module 7 — Duality (part 2), Strong Duality / Relative Interior / Slater's Condition / Complementary Slackness / KKT Conditions / Examples.
-- <strong>수업:</strong> 2026년 10월 21일 ENAI601 강의. Equality-Constrained QP, Water Filling, SVM의 설명과 수업의 중간고사 연습문제를 참고했다.
-- <strong>시험 자료:</strong> ENAI601 Sample Midterm Fall 2025, Problem 2(c). 본문 23절은 기존 시험 문제에 대한 KKT 관점의 보충 풀이이며, 실제 Q2(c)의 요구사항은 Dual Problem의 유도다.
-- <strong>학습용 예제:</strong> 1변수 Active/Inactive 예제, Shadow Price 민감도 예제, 2변수 Gradient Balance, Equality-Constrained QP의 작은 수치 예제는 개념 설명을 위한 추가 예제다. 강의 원문에 실린 수치로 오해하지 않도록 구분했다. Water Filling의 잡음 수치는 강의에서 시연한 전력 배분 결과를 재현하도록 선택했다.
-- <strong>그래프와 보충:</strong> 제공된 수치 그래프 9개를 해당 함수·좌표·해와 대조했다. 활성 여부에 따른 1변수 경우 나누기, Slater 실패 시 승수 비달성 반례, QCQP 수치 예제, SVM dual의 수치 인증과 확인 문제의 다른 잡음 예제는 이해를 위한 보충이다. 수업의 판서 전체 파일은 첨부하지 않았다.
+## 참고 자료
+
+- ENAI601, <strong>Module 7 — Duality (part 2)</strong>: Strong Duality, Slater’s Condition, Complementary Slackness, KKT Conditions와 응용.
+- <strong>2026년 10월 21일 수업</strong>: 자원 배분, 등식 제약 QP, Water Filling, SVM.
+- <strong>Sample Midterm Fall 2025, Problem 2(c)</strong>.
