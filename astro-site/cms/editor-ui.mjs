@@ -45,7 +45,7 @@ export function initializeEditor() {
   wordmark.append(dot);
   const label = document.createElement('span');
   label.className = 'cave-admin-label';
-  label.textContent = '관리자';
+  label.textContent = 'Admin';
   brand.append(wordmark, label);
   document.body.append(brand, themeButton);
 }
