@@ -52,6 +52,7 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 
 /* Quiet chrome: keep actions available without gray tiles and vertical dividers. */
 #nc-root [class*="ToolbarSectionBackLink"],#nc-root [class*="ToolbarSectionMeta"]{border:0!important}
+#nc-root [class*="ToolbarSectionBackLink"]:hover,#nc-root [class*="ToolbarSectionBackLink"]:focus{background:var(--hover);color:var(--ink)}
 #nc-root [class*="ToolbarContainer"]{box-shadow:none!important;border-bottom:1px solid var(--line)}
 #nc-root [class*="SidebarContainer"]{border:0!important;box-shadow:none!important}
 #nc-root [class*="CollectionTopNewButton"]{background:transparent!important;color:var(--accent)!important;border:1px solid var(--accent)!important;box-shadow:none!important;font-weight:700}
