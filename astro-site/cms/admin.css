@@ -1,7 +1,7 @@
 @font-face{font-family:Noto;src:url('/fonts/noto-sans-kr-v13-latin-regular.woff2') format('woff2');font-weight:400;font-display:swap}
 @font-face{font-family:Noto;src:url('/fonts/noto-sans-kr-v13-latin-700.woff2') format('woff2');font-weight:700;font-display:swap}
-:root{--paper:#fff;--ink:#25292d;--muted:#737b83;--line:#e7e9ec;--wash:#f3f4f6;--accent:#25292d;--brand-dot:#3f6757;--hover:#f3f4f6;color-scheme:light}
-:root[data-theme=dark]{--paper:#161a1f;--ink:#e6e9ed;--muted:#a5aeb8;--line:#343c46;--wash:#232a33;--accent:#e6e9ed;--brand-dot:#9ac7b1;--hover:#232a33;color-scheme:dark}
+/* Palette is injected from the blog stylesheet by build-cms.mjs. */
+:root{--hover:var(--hover-wash);--brand-dot:var(--accent)}
 html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 #nc-root *{font-family:inherit}
 #nc-root [class*="RawEditorContainer"] [data-slate-editor],#nc-root [class*="RawEditorContainer"] [data-slate-editor] *{font-family:ui-monospace,Consolas,monospace}
@@ -29,7 +29,7 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,-ap
 #cave-editor-theme{position:fixed;top:15px;right:12px;z-index:999}
 #nc-root .cave-scroll-sync[aria-pressed=true]{color:var(--accent)!important;background:var(--hover)!important}
 #nc-root [class*="AppHeaderContent"],#nc-root [class*="ToolbarContainer"]{padding-right:60px!important}
-#publish-status{background:color-mix(in srgb,var(--paper) 88%,transparent)!important;backdrop-filter:blur(10px);color:var(--ink)!important;border-color:var(--line)!important;left:50%;right:auto;transform:translateX(-50%);width:calc(100% - 32px);max-width:820px;padding:12px 44px 12px 18px;box-shadow:0 4px 20px #0001}
+#publish-status{background:color-mix(in srgb,var(--quote-bg) 88%,transparent)!important;backdrop-filter:blur(10px);color:var(--quote-ink)!important;border-color:var(--quote-line)!important;left:50%;right:auto;transform:translateX(-50%);width:calc(100% - 32px);max-width:820px;padding:12px 44px 12px 18px;box-shadow:0 4px 20px #0001}
 #publish-status button{position:absolute;right:10px;top:8px;border:0;background:transparent;color:var(--ink);font-size:22px;cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media(max-width:800px){#nc-root [class*="ControlPaneContainer"]{padding-left:10px;padding-right:10px}#nc-root [class*="BackCollection"]{max-width:38vw;white-space:normal!important;font-size:11px}#nc-root [class*="ToolbarContainer"]{padding-left:8px}#nc-root [class*="StyledDropdownButton"]{white-space:normal;height:auto;min-height:36px}#nc-root [class*="ControlHint"]{font-size:12px}}
@@ -56,7 +56,7 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,-ap
 #nc-root [class*="ToolbarContainer"]{box-shadow:none!important;border-bottom:1px solid var(--line)}
 #nc-root [class*="SidebarContainer"]{border:0!important;box-shadow:none!important}
 #nc-root [class*="CollectionTopNewButton"]{background:transparent!important;color:var(--accent)!important;border:1px solid var(--accent)!important;box-shadow:none!important;font-weight:700}
-#nc-root [class*="CollectionTopNewButton"]:hover{background:var(--hover)!important;color:var(--ink)!important}
+#nc-root [class*="CollectionTopNewButton"]:hover{background:var(--hover)!important;color:var(--accent)!important}
 #nc-root [class*="AvatarDropdownButton"]{background:transparent!important;color:var(--muted)!important;box-shadow:none!important;padding:8px 10px}
 #nc-root [class*="AvatarDropdownButton"]>*{display:none}
 #nc-root [class*="AvatarDropdownButton"]::before{content:'ACCOUNT';font-size:14px;font-weight:400}
@@ -64,7 +64,6 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,-ap
 #nc-root [class*="RawEditorContainer"] [class*="EditorControlBar"] [class*="ToolbarContainer"]>div:first-child{display:none}
 #nc-root [class*="EditorControlBar"] [class*="ToolbarContainer"]{padding:8px!important;flex-wrap:wrap;gap:8px;min-height:44px;border:0}
 #nc-root [data-slate-editor]{margin-top:0!important;border-top:1px solid var(--line)!important;border-radius:4px!important}
-#nc-root .cave-scroll-sync[aria-pressed=true]{background:transparent!important;color:var(--accent)!important}
 
 /* Shared page gutters, short actions and a compact mobile header. */
 #nc-root [class*="CollectionContainer"]{width:calc(100% - 48px);max-width:1200px;margin:32px auto!important}
@@ -121,7 +120,7 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,-ap
 #nc-root .cms-editor-visual .CodeMirror-cursor{border-left-color:#e6edf3}
 #nc-root .cms-editor-visual .CodeMirror-selected{background:#264f78}
 
-/* Match the public blog's quiet text navigation and neutral palette. */
+/* Match the public blog's navigation; shared tokens provide state colors. */
 #cave-editor-brand{position:fixed;top:12px;left:24px;z-index:999;display:flex;align-items:center;height:42px;gap:10px;color:var(--ink);font-family:Noto,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-decoration:none}
 #cave-editor-brand strong{display:block;font-size:30px;line-height:1;font-weight:700;letter-spacing:-1.2px}
 #cave-editor-brand strong span{color:var(--brand-dot)}
@@ -130,11 +129,11 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,-ap
 #nc-root [class*="AppHeaderActions"]{margin-left:0}
 #nc-root [class*="AppHeaderNavList"]{padding:0;align-items:center}
 #nc-root [class*="AppHeaderNavList"] button{font-size:14px;font-weight:400;line-height:1.7;padding:8px 12px;color:var(--muted)!important}
-#nc-root [class*="AppHeaderNavList"] button:hover{color:var(--ink)!important;background:transparent!important}
+#nc-root [class*="AppHeaderNavList"] button:hover{color:var(--accent)!important;background:transparent!important}
 #nc-root [class*="AppHeaderNavList"] button svg{display:none}
 #nc-root [class*="SettingsWrapper"]{height:36px;gap:4px}
 #nc-root [class*="AppHeaderSiteLink"]{color:var(--muted);font-size:14px;font-weight:400}
-#nc-root [class*="AppHeaderSiteLink"]:hover{color:var(--ink)}
+#nc-root [class*="AppHeaderSiteLink"]:hover{color:var(--accent)}
 #nc-root [class*="ToolbarSectionMeta"] [class*="SettingsWrapper"]{position:fixed;top:15px;right:60px;z-index:1001}
 #nc-root [class*="EditorContainer"]:has(>[class*="ToolbarContainer"]>[class*="ToolbarSectionBackLink"]){padding-top:132px}
 #nc-root [class*="ToolbarContainer"]:has(>[class*="ToolbarSectionBackLink"]){top:66px;padding-right:16px!important;border-top:1px solid var(--line)}
@@ -149,3 +148,16 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,-ap
  #nc-root [class*="AvatarDropdownButton"]::before{font-size:12px}
  #nc-root [class*="AppHeaderSiteLink"]{display:none}
 }
+
+/* Interaction and information use the same roles as blog tags and callouts. */
+#nc-root [class*="SidebarContainer"] a:hover{background:var(--hover-wash);color:var(--accent)}
+#nc-root .sidebar-active svg{color:var(--accent)}
+#nc-root input:focus,#nc-root textarea:focus,#nc-root [data-slate-editor]:focus{border-color:var(--accent)!important}
+#nc-root [class*="CollectionTopDescription"],
+#nc-root .cms-editor-visual [data-slate-editor] blockquote{background:var(--quote-bg);color:var(--quote-ink);border-left:3px solid var(--quote-line);padding:16px 20px}
+#nc-root [class*="ToolbarToggleLabel"]{color:var(--muted)}
+#nc-root [class*="ToolbarToggle"]:has(>[role="switch"][aria-checked="false"])>[class*="ToolbarToggleLabel"]:first-child,
+#nc-root [class*="ToolbarToggle"]:has(>[role="switch"][aria-checked="true"])>[class*="ToolbarToggleLabel"]:last-child{color:var(--accent)}
+#nc-root [role="switch"] [class*="ToggleBackground"]{background:var(--accent)}
+#nc-root [role="switch"] [class*="ToggleHandle"]{background:var(--paper);border:1px solid var(--accent);box-sizing:border-box}
+#publish-status a{color:var(--accent)}
