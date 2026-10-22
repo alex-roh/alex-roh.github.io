@@ -9,7 +9,7 @@ tags:
   - optimization
 date: 2026-10-22
 publishedAt: "2026-10-22T03:45:55-04:00"
-updatedAt: "2026-10-22T16:37:30-04:00"
+updatedAt: "2026-10-22T16:40:34-04:00"
 ---
 
 [앞 글의 Linear Programming](/enai601-linear-programming/)에서는 목적함수가 직선처럼 일정한 기울기를 가지고, 조건이 성립할 때 다면체의 꼭짓점에서 최적해를 찾을 수 있음을 살펴보았다. 그러나 AI 모델의 예측 오차처럼 <strong>차이를 제곱한 비용</strong>은 직선이 아니라 포물선으로 표현된다. 이때도 꼭짓점만 확인하면 최적해를 구할 수 있을까?
@@ -1418,6 +1418,230 @@ $$
 
 ---
 
+### 13. Sample Midterm 3번: 볼록성 판정과 주어진 최적점 증명
+
+<strong>출처: Fall 2025 Sample Midterm, 3번, 3페이지.</strong> 다음 문제의 볼록성을 판정하고 $x^*=(0.8,0.8)^T$가 최적점임을 보이라는 문제다. 수식과 수치는 원문을 따르고, 설명과 풀이는 아래에서 전개한다.
+
+$$
+\begin{aligned}
+\operatorname{minimize}_{x\in\mathbb R^2}\quad&\frac12x^T
+\begin{bmatrix}3.5&-1.5\\-1.5&3.5\end{bmatrix}x
++\begin{bmatrix}-1.2&-0.8\end{bmatrix}x+3\\
+\text{subject to}\quad&4x_1+x_2\ge4,\\
+&x_1+4x_2\ge4,\\
+&x_1+x_2\le4.
+\end{aligned}
+$$
+
+#### (a) Hessian과 가능집합을 각각 확인하기
+
+Hessian은 목적함수의 행렬 $P$다. 고유값을 구하면
+
+$$
+\det(P-\lambda I)=(3.5-\lambda)^2-1.5^2
+=(2-\lambda)(5-\lambda).
+$$
+
+고유값이 2와 5로 모두 양수이므로 목적함수는 strictly convex다. 모든 제약도 affine 부등식이므로 가능집합은 볼록하다. 따라서 이 문제는 Convex QP이며, 최적점이 있다면 유일하다.
+
+#### (b) 주어진 점이 허용되는지 먼저 확인하기
+
+$$
+4(0.8)+0.8=4,\qquad0.8+4(0.8)=4,\qquad0.8+0.8=1.6\le4.
+$$
+
+모든 제약을 만족하며 앞의 두 제약은 등호로 성립한다. 이 점에서 Gradient는
+
+$$
+\nabla f(x^*)=Px^*+q
+=\begin{bmatrix}1.6\\1.6\end{bmatrix}
++\begin{bmatrix}-1.2\\-0.8\end{bmatrix}
+=\begin{bmatrix}0.4\\0.8\end{bmatrix}.
+$$
+
+0이 아니어도 문제가 없다. 확인해야 할 것은 모든 가능점 $y$에 대해 $\nabla f(x^*)^T(y-x^*)\ge0$인가다.
+
+#### 제약 부등식을 더해서 내적이 음수가 아님을 보이기
+
+Gradient를 앞의 두 제약의 법선벡터로 표현해 보자.
+
+$$
+\begin{bmatrix}0.4\\0.8\end{bmatrix}
+=\frac4{75}\begin{bmatrix}4\\1\end{bmatrix}
++\frac{14}{75}\begin{bmatrix}1\\4\end{bmatrix}.
+$$
+
+이 계수는 $4\alpha+\beta=0.4$, $\alpha+4\beta=0.8$을 풀어 얻는다. 두 계수가 모두 양수인 점이 중요하다. 임의의 가능점은 $4y_1+y_2-4\ge0$, $y_1+4y_2-4\ge0$이므로
+
+$$
+\begin{aligned}
+\nabla f(x^*)^T(y-x^*)
+&=\frac4{75}(4y_1+y_2-4)
++\frac{14}{75}(y_1+4y_2-4)\\
+&\ge0.
+\end{aligned}
+$$
+
+따라서 Optimality Criterion을 만족하며, $x^*=(0.8,0.8)^T$는 유일한 전역 최적점이다. 목적함수값은
+
+$$
+\boxed{f(x^*)=2.68}.
+$$
+
+<strong>풀이의 핵심:</strong> “경계에 있다”만으로는 최적성 증명이 되지 않는다. 제약을 이용해 <em>모든 가능점</em>에 대한 내적 부등식을 보였기 때문에 증명이 완성된다. 세 번째 제약은 후보의 허용 여부를 확인할 때 필요하지만, 이번 내적 증명에는 앞의 두 제약만으로 충분하다.
+
+#### 관련 문제: Sample Midterm 1(b)의 제곱합은 왜 볼록한가?
+
+같은 시험 1페이지의 1(b)는 $g(x)=\sum_{\ell=1}^k\|A_\ell x-b_\ell\|_2^2$의 볼록성을 증명하라는 문제다. 이 문제 자체는 최적점을 구하는 QP 문제가 아니라, <strong>QP 목적함수의 볼록성에 대한 증명 문제</strong>다.
+
+$$
+\nabla^2g(x)=2\sum_{\ell=1}^k A_\ell^TA_\ell.
+$$
+
+임의의 벡터 $v$에 대해
+
+$$
+v^T\nabla^2g(x)v
+=2\sum_{\ell=1}^k\|A_\ell v\|_2^2\ge0.
+$$
+
+따라서 Hessian은 PSD이고 $g$는 볼록하다. $A_\ell$들이 정사각행렬이라는 이유만으로 각각 역행렬이 있다고 가정하거나, $g$가 반드시 strictly convex라고 결론 내리면 안 된다.
+
+### 14. HW4 1번: 네 관측값으로 회귀선을 정식화하고 풀기
+
+<strong>출처: ENAI601 HW4, 1번 및 제공된 해설, 1페이지.</strong> 관측값 $(1,2),(2,3),(3,5),(4,4)$에 대해 직선 $\hat y=at+b$의 오차 제곱합을 최소화하는 볼록 최적화 문제를 만들라는 과제다. <strong>과제는 정식화를 요구하며, 아래 최적 계수의 수치 계산은 복습을 위한 추가 풀이</strong>다. $t$는 관측 입력값, $a,b$는 선택할 계수다.
+
+#### 잔차를 적고 하나의 벡터로 묶기
+
+$$
+\operatorname{minimize}_{a,b}\quad
+(a+b-2)^2+(2a+b-3)^2+(3a+b-5)^2+(4a+b-4)^2.
+$$
+
+상수항 $b$도 추정해야 하므로 설계행렬의 두 번째 열을 모두 1로 둔다.
+
+$$
+w=\begin{bmatrix}a\\b\end{bmatrix},\quad
+X=\begin{bmatrix}1&1\\2&1\\3&1\\4&1\end{bmatrix},\quad
+y=\begin{bmatrix}2\\3\\5\\4\end{bmatrix}.
+$$
+
+목적함수는 $\|Xw-y\|_2^2$다. 실제로 곱하면
+
+$$
+X^TX=\begin{bmatrix}30&10\\10&4\end{bmatrix},\qquad
+X^Ty=\begin{bmatrix}39\\14\end{bmatrix},\qquad y^Ty=54.
+$$
+
+따라서 QP 계수는
+
+$$
+P=\begin{bmatrix}60&20\\20&8\end{bmatrix},\qquad
+q=\begin{bmatrix}-78\\-28\end{bmatrix},\qquad r=54.
+$$
+
+Hessian은 $2X^TX$이며 PSD다. 여기서는 $X$의 두 열이 선형독립이므로 실제로 PD이고, 제약이 없는 Convex QP의 해가 유일하다.
+
+#### Gradient를 0으로 놓아 계수 구하기
+
+$$
+2X^T(Xw-y)=0
+\quad\Longleftrightarrow\quad
+\begin{cases}
+30a+10b=39,\\
+10a+4b=14.
+\end{cases}
+$$
+
+둘째 식의 세 배를 첫 식에서 빼면 $2b=3$이므로 $b=1.5$, 이어서 $a=0.8$이다.
+
+$$
+\boxed{\hat y=0.8t+1.5}.
+$$
+
+예측값은 $(2.3,3.1,3.9,4.7)$, 잔차는 $(0.3,0.1,-1.1,0.7)$이다. 따라서 원래 SSE의 최솟값은 $0.09+0.01+1.21+0.49=1.8$이다. <strong>절반의 SSE로 계산했다면 0.9가 나오므로, 목적함수 앞의 계수를 함께 확인해야 한다.</strong>
+
+### 15. HW5 2번: 3변수 제약 QP의 수치해와 검증
+
+<strong>출처: 수업 폴더의 HW5, 2번, 1페이지.</strong> 파일 원문 머리말에는 “ENAI602: HW Assignment #5, Fall 2026”이라고 표기되어 있다. 여기서는 파일에 실린 문제를 그대로 사용한다. 요구사항은 (a) 볼록성 판정과 (b) 수치 solver로 해를 구하는 것이다.
+
+$$
+\begin{aligned}
+\operatorname{minimize}_{x\in\mathbb R^3}\quad&\frac12x^TPx+q^Tx\\
+\text{subject to}\quad&Ax\le b,\quad x\ge0,\quad\mathbf1^Tx=1,
+\end{aligned}
+$$
+
+$$
+P=\begin{bmatrix}1.25&0&-0.75\\0&5&0\\-0.75&0&1.25\end{bmatrix},\quad
+q=\begin{bmatrix}5\\7\\6\end{bmatrix},\quad
+A=\begin{bmatrix}4&0.9&2\\1.3&0.6&6\end{bmatrix},\quad
+b=\begin{bmatrix}1.2\\0.8\end{bmatrix}.
+$$
+
+$x\ge0$는 세 성분이 각각 0 이상이라는 뜻이고, $\mathbf1^Tx=1$은 $x_1+x_2+x_3=1$이다.
+
+#### (a) 방향을 나눠 고유값 확인하기
+
+두 번째 좌표 방향의 고유값은 5다. 첫째·셋째 좌표에 해당하는 블록 $\begin{bmatrix}1.25&-0.75\\-0.75&1.25\end{bmatrix}$의 고유값은 $1.25-0.75=0.5$와 $1.25+0.75=2$다. 세 고유값이 모두 양수이므로 $P$는 PD다. 제약은 모두 affine이므로 Convex QP다.
+
+#### (b) 수치해를 구하고 원래 제약에 대입하기
+
+이 작은 문제에서는 활성 제약(Active Constraint, 등호로 성립하는 제약)의 조합을 열거하는 수치 계산으로 해를 구할 수 있다. 등식 $\mathbf1^Tx=1$은 항상 유지하고, 두 부등식과 세 비음수 제약 중 어느 것들이 등호가 되는지 조합별로 후보를 계산한다. 후보가 모든 제약을 만족하는지도 확인한다. 이 문제에서는 $A$의 두 행이 모두 활성인 조합에서 해를 얻는다.
+
+$$
+\begin{cases}
+4x_1+0.9x_2+2x_3=1.2,\\
+1.3x_1+0.6x_2+6x_3=0.8,\\
+x_1+x_2+x_3=1.
+\end{cases}
+$$
+
+마지막 식에서 $x_2=1-x_1-x_3$을 앞의 두 식에 대입하면
+
+$$
+3.1x_1+1.1x_3=0.3,\qquad0.7x_1+5.4x_3=0.2.
+$$
+
+이를 풀어 얻은 값은 다음과 같다.
+
+$$
+\boxed{x^*\approx(0.08766437,\;0.88666249,\;0.02567314)^T}
+$$
+
+$$
+\boxed{f(x^*)\approx8.76795119}.
+$$
+
+세 성분은 모두 양수이고 합은 1이다. 원래 행렬에 대입하면 $Ax^*\approx(1.2,0.8)^T$여서 두 상한도 만족한다. 다만 <strong>가능한 후보를 찾는 것과 그 후보가 최적임을 보이는 것은 별개</strong>다. 활성 제약을 처음부터 안다고 가정하지 말고, 아래처럼 최적성도 확인한다.
+
+#### 수치 결과를 Optimality Criterion으로 확인하기
+
+이 후보에서는 다음 관계를 만족하는 양수 계수 $\mu$와 실수 $\nu$를 얻는다.
+
+$$
+Px^*+q=-A^T\mu-\nu\mathbf1,
+\qquad
+\mu\approx\begin{bmatrix}1.90515031\\0.62431555\end{bmatrix},
+\quad\nu\approx-13.52253707.
+$$
+
+반올림 전 수치에서 위 관계의 잔차는 부동소수점 오차 범위다. 임의의 가능점 $y$는 $Ay\le b=Ax^*$와 $\mathbf1^T(y-x^*)=0$을 만족하므로
+
+$$
+\begin{aligned}
+\nabla f(x^*)^T(y-x^*)
+&=-\mu^TA(y-x^*)-\nu\mathbf1^T(y-x^*)\\
+&=-\mu^T(Ay-b)\ge0.
+\end{aligned}
+$$
+
+마지막 부등식은 $\mu\ge0$, $Ay-b\le0$이기 때문에 성립한다. 따라서 이 후보가 전역 최소점이며 PD 목적함수이므로 유일하다. 이 계수 표현은 나중에 배우는 Lagrange multiplier와 KKT 조건으로 연결되지만, 여기서는 이미 배운 내적 부등식으로 최적성을 이해할 수 있다.
+
+<strong>HW4와 비교할 점:</strong> HW4 1번은 제약 없이 Gradient가 0인 점을 구했다. HW5 2번은 등식과 부등식 때문에 허용된 이동이 제한된다. 그래서 Gradient 자체가 0인지가 아니라, 가능한 점을 향하는 이동이 비용을 낮출 수 있는지를 검사한다.
+
+---
+
 ## Advanced Notes — 첫 독해에서는 건너뛰어도 되는 보충
 
 여기까지의 본문만으로 Module 6의 기본 QP 정식화와 Convexity, 최적점 검증을 따라갈 수 있다. 아래 내용은 본문에서 사용한 조건이 언제 성립하지 않는지, 혹은 어떻게 확장되는지를 정리한 것이다.
@@ -1531,6 +1755,7 @@ $$
 
 - <strong>강의 기반:</strong> ENAI601 Module 6 — Linear Program, Quadratic Program 및 Examples – Quadratic Program. 특히 QP 표준형, Constrained Least Squares, Distance Between Two Polyhedra의 정식화를 따른다.
 - <strong>수업 맥락:</strong> 2026년 10월 7일 강의에서 QP의 Convexity와 PSD, 두 응용 문제의 정식화를 다룬 흐름을 참고했다.
+- <strong>시험·과제:</strong> Fall 2025 Sample Midterm 3번 및 1(b), ENAI601 HW4 1번과 제공 해설, 수업 폴더 HW5 2번(원문 머리말은 ENAI602). 문제 조건은 원문을 따르며, HW4의 최적 계수 계산과 단계별 설명·검증은 복습용 보충 풀이다.
 - <strong>학습용 수치 예제:</strong> 단일 가중치 회귀 데이터, 정사각형 두 개의 거리, 반공간으로 제한된 최적점, 2×2 Eigenvalue 계산은 이해를 위해 사용한 숫자 예제이며 교안의 원래 관측 데이터가 아니다.
 - <strong>보충 설명:</strong> 고유벡터와 곡률의 연결, Singular PSD 반례, 정지점·경계 최적점의 차이, Full Column Rank 및 Taylor Approximation은 학습 흐름을 연결하기 위한 설명이다.
 
