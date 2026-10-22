@@ -9,7 +9,7 @@ tags:
   - optimization
 series: "ENAI601 Numerical Methods"
 seriesOrder: 1
-updatedAt: "2026-10-22T05:17:33+00:00"
+updatedAt: "2026-10-22T05:24:38+00:00"
 ---
 
 ENAI601 <strong>Numerical Methods for Engineering AI</strong>는 최적화를 공부하기 전에 선형대수를 복습한다. 내적, 노름, 기저, 정사영을 따로 외우면 공식이 많아 보이지만, 모두 같은 질문으로 이어진다. <strong>주어진 벡터를 어떤 방향으로 표현하고, 그 표현의 오차를 어떻게 잴까?</strong>
@@ -598,7 +598,18 @@ $$
 
 ## 11. Gram–Schmidt: 겹치는 방향을 빼서 정규직교기저 만들기
 
-교안의 재귀식은 정사영을 빼서 <strong>직교벡터</strong>를 만드는 단계다. 정규직교기저를 얻으려면 마지막에 각 벡터를 자신의 노름으로 나누는 <strong>정규화</strong>까지 해야 한다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 1 — Projection / Gram–Schmidt</p>
+
+Gram-Schmidt process: Starting with a basis $w_1,\ldots,w_m$, it constructs an orthonormal basis $b_1,\ldots,b_m$.
+
+$$
+b_1\leftarrow w_1,\qquad b_k\leftarrow w_k-\sum_{l=1}^{k-1}\frac{\langle w_k,b_l\rangle}{\langle b_l,b_l\rangle}b_l\quad(k=2,\ldots,m)
+$$
+
+</blockquote>
+
+위 재귀식은 정사영을 빼서 <strong>직교벡터</strong>를 만드는 단계다. 정규직교기저를 얻으려면 마지막에 각 벡터를 자신의 노름으로 나누는 <strong>정규화</strong>까지 해야 한다.
 
 그렇다면 처음부터 직교하지 않는 기저를 갖고 있다면 어떻게 해야 할까?
 

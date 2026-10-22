@@ -9,7 +9,7 @@ series: ENAI601 Numerical Methods
 seriesOrder: 6
 date: 2026-10-21
 publishedAt: "2026-10-21T23:04:15-04:00"
-updatedAt: "2026-10-22T05:17:33+00:00"
+updatedAt: "2026-10-22T05:24:38+00:00"
 ---
 
 [앞 글의 Basic Optimization](/enai601-basic-optimization/)에서는 무엇을 최소화하고 어디에서 선택하는지 구분했다. 이제 그 문제에 볼록성이 있으면 무엇이 달라지는지 살펴본다. 일반적인 문제에서는 주변에서 좋은 점을 찾아도 전체에서 가장 좋다고 할 수 없지만, Convex Optimization에서는 Local Minimum이 Global Minimum이다. [Convex Set](/enai601-convex-sets/)과 [Convex Function](/enai601-convex-functions/)의 기초 정의는 알고 있다는 전제다.
@@ -120,7 +120,14 @@ $$
 
 ### 교안 보충: 같은 Feasible Set도 표현에 따라 다르게 보인다
 
-교안은 Convex Optimization의 <strong>표준형 판별</strong>과 <strong>동등한 문제로의 재정식화(Reformulation)</strong>를 구별한다. 예를 들어 다음 문제를 보자.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 5 — Example (2)</p>
+
+Constructing an equivalent convex problem
+
+</blockquote>
+
+Convex Optimization의 <strong>표준형 판별</strong>과 <strong>동등한 문제로의 재정식화(Reformulation)</strong>는 구별해야 한다. 예를 들어 다음 문제를 보자.
 
 $$
 \begin{aligned}
@@ -157,17 +164,22 @@ $$
 z^T\nabla^2g(w)z=2\|Xz\|_2^2\geq0
 $$
 
-Hessian이 PSD이므로 목적함수는 Convex이다. 특성에 절편을 포함한 교안의 표기로 쓰면, 같은 Hessian은 데이터 벡터의 Outer Product들을 합한 형태다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 5 — Example (1) — Linear regression</p>
 
 $$
-\nabla^2g(w)=2\sum_{i=1}^{N}\tilde u_i\tilde u_i^T
+\nabla^2g(\bar w)=2\sum_{i=1}^p\bar u_i\bar u_i^T\succeq0
 $$
+
+</blockquote>
+
+위 인용의 $\bar u_i$는 절편을 위한 1을 붙인 데이터 벡터이고, $\bar w$는 절편을 포함한 계수 벡터다. 행렬 $X$의 각 행이 $\bar u_i^T$이므로, 이 합은 본문의 $2X^TX$와 같다.
 
 데이터 행렬이 Full Column Rank이면 Hessian은 PD가 되어 Strictly Convex하다. Rank가 부족하면 같은 예측값을 만드는 파라미터가 여러 개일 수 있다. 여기서도 <strong>Convex와 Strictly Convex의 차이</strong>를 구별해야 한다.
 
 ### SVM을 Convex Optimization으로 바꾸기
 
-앞 글의 SVM은 가장 가까운 점까지의 거리를 최대화했다. 학습 데이터는 고정되어 있고 최적화 변수는 법선벡터와 절편이다. 여기서는 교안과 같이 <strong>두 라벨이 모두 존재하고 선형 분리 가능한 유한한 데이터</strong>를 가정한다.
+앞 글의 SVM은 가장 가까운 점까지의 거리를 최대화했다. 학습 데이터는 고정되어 있고 최적화 변수는 법선벡터와 절편이다. 여기서는 <strong>두 라벨이 모두 존재하고 선형 분리 가능한 유한한 데이터</strong>를 가정한다.
 
 $$
 \operatorname{maximize}_{w\ne0,b}\quad
@@ -193,7 +205,14 @@ v_i(\bar w^Tu_i+\bar b)\geq1,
 \frac{r}{\|w\|_2}=\frac1{\|\bar w\|_2}
 $$
 
-즉, 점수의 척도를 1로 고정할 수 있다. 양의 노름의 역수를 최대화하는 것은 노름의 제곱을 최소화하는 것과 <strong>같은 최적 분리면을 선택한다</strong>. 최적 목적함수값 자체는 서로 다르다. 바뀐 변수 위의 막대를 생략하면 교안의 최종 형태를 얻는다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 5 — Example (3) — SVM</p>
+
+Scaling w, b and r by the same scaling factor does not change the optimal value of the problem
+
+</blockquote>
+
+즉, 점수의 척도를 1로 고정할 수 있다. 양의 노름의 역수를 최대화하는 것은 노름의 제곱을 최소화하는 것과 <strong>같은 최적 분리면을 선택한다</strong>. 최적 목적함수값 자체는 서로 다르다. 바뀐 변수 위의 막대를 생략하면 다음 최소화 문제를 얻는다.
 
 $$
 \begin{aligned}
@@ -255,7 +274,14 @@ $$
 > <strong>주의:</strong> Local Minimum이 Global Minimum이라는 성질과, 최적해가 <strong>존재한다</strong>거나 <strong>유일하다</strong>는 주장은 서로 다르다. 연속함수가 비어 있지 않은 Compact Feasible Set 위에서 최솟값을 달성한다는 Weierstrass 정리에는 Compactness가 필요하다. Convexity만으로 존재성이나 유일성이 자동 보장되지는 않는다.
 
 
-이 부분은 교안의 존재성 설명에 필요한 가정을 분리해 읽어야 한다. <strong>Convexity 자체는 최적점의 존재를 보장하지 않는다.</strong> 예를 들어 전체 실수 공간에서 지수함수를 최소화하면 Convex이면서 아래로 유계이지만, 최적값 0에 도달하는 점은 없다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 5 — Benefits of convex optimizations</p>
+
+For a feasible problem, an optimal point exists (follows from Weierstrass extreme value theorem )
+
+</blockquote>
+
+<strong>조건 보충:</strong> 위 문장에는 존재성을 보장할 추가 가정이 필요하다. <strong>Convexity 자체는 최적점의 존재를 보장하지 않는다.</strong> 예를 들어 전체 실수 공간에서 지수함수를 최소화하면 Convex이면서 아래로 유계이지만, 최적값 0에 도달하는 점은 없다.
 
 $$
 \inf_{x\in\mathbb R}e^x=0,
@@ -555,6 +581,15 @@ $$
 $$
 
 등호를 만족하는 Hyperplane이 후보점을 지나고 Feasible Set 전체가 한쪽에 놓인다. 수업에서 설명한 <strong>Supporting Hyperplane(지지 초평면)</strong>의 해석이다. Negative Gradient를 법선으로 보았을 때, 목적함수를 1차적으로 줄이는 쪽으로는 나갈 수 없는 것이다. Gradient가 0이면 이 식은 자명해지므로, 0벡터로 지지 초평면을 정의하지는 않는다.
+
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 5 — Optimality Criterion (2)</p>
+
+$$
+\begin{aligned}\text{Unconstrained: }&\nabla f_0(x^*)=0\\\text{Equality constrained: }&\nabla f_0(x^*)+A^T\nu=0\\\text{Nonnegative orthant: }&x^*\geq0,\quad\nabla f_0(x^*)\geq0,\quad x_i^*(\nabla f_0(x^*))_i=0\end{aligned}
+$$
+
+</blockquote>
 
 ### 4-4. 교안의 세 가지 특수한 경우
 

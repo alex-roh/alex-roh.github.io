@@ -8,7 +8,9 @@ import auth, { isRestrictedInstallation } from '../cms/auth/worker.mjs';
 test('all current articles preview math without losing subscripts or executing HTML', async () => {
   let count = 0;
   for (const category of ['enai601', 'python']) {
-    for (const slug of await readdir(`contents/posts/${category}`)) {
+    for (const entry of await readdir(`contents/posts/${category}`, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const slug = entry.name;
       const text = await readFile(`contents/posts/${category}/${slug}/index.md`, 'utf8');
       const body = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
       const html = renderPreview(body, slug);
@@ -60,7 +62,9 @@ test('series collections exclude attachment READMEs without hiding published art
   for (const collection of config.collections) {
     const folder = collection.folder.replace(/^astro-site\//, '');
     let articles = 0, excluded = 0;
-    for (const slug of await readdir(folder)) {
+    for (const entry of await readdir(folder, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const slug = entry.name;
       for (const name of (await readdir(folder + '/' + slug)).filter(name => name.endsWith('.md'))) {
         const markdown = await readFile(folder + '/' + slug + '/' + name, 'utf8');
         const metadata = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---/);

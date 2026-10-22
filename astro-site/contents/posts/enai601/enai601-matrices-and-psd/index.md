@@ -3,7 +3,7 @@ title: "[ENAI601] 02 — 행렬에서 PSD까지, 사라지는 방향과 복원�
 description: "행·열 관점부터 pivot·rank·null space, 역행렬과 최소제곱, 고유값·고유기저, PSD·PD까지. 손필기와 수업을 바탕으로 영어 용어, 계산 과정, 조건과 반례를 함께 복습한다."
 date: 2026-10-21
 publishedAt: "2026-10-21T00:25:14-04:00"
-updatedAt: "2026-10-22T05:14:51+00:00"
+updatedAt: "2026-10-22T05:24:38+00:00"
 update: 2026-10-21
 tags:
   - ENAI601
@@ -132,7 +132,16 @@ $$
 w^TA=\sum_{i=1}^m w_i r_i^T\in\mathbb R^{1\times n}
 $$
 
-가령 $(2,-1)F=2(1,2)-(3,4)=(-1,0)$이다. 교안의 열벡터 곱과 행벡터 곱은 같은 곱셈을 서로 다른 방향에서 묶어 읽는 예제다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 1 — Matrix Multiplication</p>
+
+linear combination of columns of matrix
+
+linear combination of rows of matrix
+
+</blockquote>
+
+가령 $(2,-1)F=2(1,2)-(3,4)=(-1,0)$이다. 열벡터 곱과 행벡터 곱은 같은 곱셈을 서로 다른 방향에서 묶어 읽는 예제다.
 
 ### 전치와 기본 행렬: 뒤의 식을 읽기 위한 준비
 
@@ -370,12 +379,17 @@ $$
 Ax=b\quad\Longrightarrow\quad x=A^{-1}b
 $$
 
-교안의 예제는 다음과 같다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 1 — Invertible Matrices</p>
+
+B is a matrix that undoes what matrix A does to a vector
 
 $$
 A=\begin{bmatrix}3&2\\1&4\end{bmatrix},\qquad
 A^{-1}=\frac1{10}\begin{bmatrix}4&-2\\-1&3\end{bmatrix}
 $$
+
+</blockquote>
 
 $2\times 2$ 행렬의 determinant는 다음 식이다.
 
@@ -417,7 +431,16 @@ $$
 
 ### 3×3 이상: 소행렬식과 여인수 전개
 
-교안의 <strong>cofactor expansion(여인수 전개, Laplace expansion)</strong>은 큰 행렬의 determinant를 작은 행렬의 determinant로 줄이는 계산이다. $A$에서 $i$번째 행과 $j$번째 열을 지운 부분행렬(submatrix)을 $A_{\widehat i,\widehat j}$라고 쓰자.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 1 — Determinant</p>
+
+$$
+\det(A)=\sum_{j=1}^n(-1)^{1+j}a_{1,j}\det(A_{1,j}),\qquad A_{i,j}:\text{ delete row }i\text{ and column }j
+$$
+
+</blockquote>
+
+<strong>Cofactor expansion(여인수 전개, Laplace expansion)</strong>은 큰 행렬의 determinant를 작은 행렬의 determinant로 줄이는 계산이다. $A$에서 $i$번째 행과 $j$번째 열을 지운 부분행렬(submatrix)을 $A_{\widehat i,\widehat j}$라고 쓰자.
 
 $$
 M_{ij}=\det(A_{\widehat i,\widehat j}),\qquad
@@ -694,7 +717,16 @@ $$
 
 지금까지의 $Av=\lambda v$는 열벡터를 오른쪽에서 곱하므로 <strong>right eigenvector(오른쪽 고유벡터)</strong>의 정의다. 보통 별도 수식어 없이 eigenvector라고 하면 이를 뜻한다.
 
-교안에는 왼쪽에서 행벡터를 곱하는 <strong>left eigenvector(왼쪽 고유벡터)</strong>도 나온다. 0이 아닌 열벡터 $\ell$을 사용해 쓰면
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 1 — Eigenvalues &amp; Eigenvectors</p>
+
+$$
+wA=\nu w
+$$
+
+</blockquote>
+
+이 식은 왼쪽에서 행벡터를 곱하는 <strong>left eigenvector(왼쪽 고유벡터)</strong>의 조건이다. 0이 아닌 열벡터 $\ell$을 사용해 쓰면
 
 $$
 \ell^TA=\lambda\ell^T
@@ -719,13 +751,16 @@ $$
 \det(\lambda I-A)=0
 $$
 
-교안의 대칭행렬을 예로 들면
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 1 — Finding eigenvalues and eigenvectors</p>
 
 $$
-S=\begin{bmatrix}1&-2\\-2&6\end{bmatrix}
+A=\begin{bmatrix}1&-2\\-2&6\end{bmatrix},\qquad\lambda_1=0.298,\quad\lambda_2=6.702
 $$
 
-이고 특성다항식은
+</blockquote>
+
+이하에서는 이 행렬을 $S$로 표기한다. 특성다항식은
 
 $$
 \det(\lambda I-S)=(\lambda-1)(\lambda-6)-4
@@ -794,7 +829,16 @@ $$
 S=S^T
 $$
 
-교안에서 강조하는 성질은 다음과 같다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 1 — Symmetric Matrices</p>
+
+Eigenvalues of a symmetric real matrix are real
+
+Eigenvectors of a symmetric real matrix corresponding to two distinct eigenvalues are orthogonal
+
+</blockquote>
+
+이를 포함한 실수 대칭행렬의 성질은 다음과 같다.
 
 - 고유값이 모두 실수다.
 - 서로 다른 고유값에 대응하는 고유벡터들은 직교한다.
@@ -945,6 +989,17 @@ $$
 
 첫 번째가 <strong>positive semidefinite(양의 준정부호)</strong>, 두 번째가 <strong>positive definite(양의 정부호)</strong>다.
 
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 1 — Positive (Semi)definite Matrices</p>
+
+positive semidefinite (or non-negative definite)
+
+$$
+A=A^T,\qquad x^TAx\geq0\quad\forall x\in\mathbb R^n
+$$
+
+</blockquote>
+
 약자는 각각 <strong>PSD</strong>, <strong>PD</strong>이며, 교안의 <strong>non-negative definite(비음의 정부호)</strong>도 PSD와 같은 뜻으로 쓰인다. 여기서 *positive*는 원소별 부호가 아니라 이차형식의 부호를 가리킨다. 또한 PD는 PSD의 조건도 만족하므로 <strong>PD는 PSD에 포함된다.</strong> “PSD”라고 했다고 해서 반드시 0인 고유값이 있어야 하는 것은 아니다.
 
 $S\succeq0$, $S\succ0$은 각각 PSD와 PD를 나타내는 행렬 부등식 표기다. 원소마다 $s_{ij}\ge0$을 요구하는 elementwise inequality와는 다르다. PD에서도 $x=0$을 넣으면 결과는 0이므로 정의에서 제외한다.
@@ -1005,7 +1060,18 @@ $$
 
 ## 13. 왜 BᵀB와 outer product는 PSD일까?
 
-교안의 마지막 연결은 행렬을 특정 형태로 만들면 PSD임을 바로 보일 수 있다는 것이다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 1 — Positive Semidefinite Matrices</p>
+
+Example of positive semidefinite matrix:
+
+$$
+A=BB^T,\qquad x^TAx=\|B^Tx\|_2^2\geq0,\qquad C=B^TB\text{ is also positive semidefinite}
+$$
+
+</blockquote>
+
+이 형태의 행렬에서는 이차형식을 제곱 노름으로 바꾸어 PSD임을 바로 보일 수 있다.
 
 $B\in\mathbb R^{m\times n}$이면 $B^TB\in\mathbb R^{n\times n}$, $BB^T\in\mathbb R^{m\times m}$다. 먼저 부호를 따지기 전에 대칭성부터 확인한다.
 
@@ -1107,7 +1173,7 @@ N=\begin{bmatrix}1&-1\\1&1\end{bmatrix},\qquad
 x^TNx=x_1^2+x_2^2
 $$
 
-이 경우 대칭 부분이 $I_{2}$다. 이번 글에서는 교안의 관례에 따라 $N$ 자체를 PSD/PD 행렬로 분류하지 않고, <strong>$N$의 이차형식은 $I_{2}$의 이차형식과 같다</strong>고 표현한다. 부호 부등식 자체와 대칭행렬을 대상으로 한 용어의 정의를 구분한다.
+이 경우 대칭 부분이 $I_{2}$다. 여기서는 대칭행렬을 대상으로 한 정의에 따라 $N$ 자체를 PSD/PD 행렬로 분류하지 않고, <strong>$N$의 이차형식은 $I_{2}$의 이차형식과 같다</strong>고 표현한다. 부호 부등식 자체와 대칭행렬을 대상으로 한 용어의 정의를 구분한다.
 
 ## 15. x와 Ax의 각도로 PSD를 읽을 때의 주의점
 

@@ -9,7 +9,7 @@ series: ENAI601 Numerical Methods
 seriesOrder: 5
 date: 2026-10-21
 publishedAt: "2026-10-21T23:04:15-04:00"
-updatedAt: "2026-10-22T05:17:33+00:00"
+updatedAt: "2026-10-22T05:24:38+00:00"
 ---
 
 [앞 글의 Convex Function](/enai601-convex-functions/)까지 함수의 모양과 미분 조건을 공부했다. 이제는 그 함수를 목적함수와 제약조건으로 사용해, 가장 좋은 선택을 찾는 문제를 구성한다.
@@ -37,6 +37,17 @@ $$
 
 여기서 미지수인 벡터는 <strong>Optimization Variable</strong>, 목적함수는 <strong>Objective Function</strong>, 부등식과 등식은 각각 <strong>Inequality Constraint</strong>, <strong>Equality Constraint</strong>다. 제약조건이 없는 경우를 <strong>Unconstrained Optimization</strong>이라고 한다.
 
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 4 — Domain / Feasible Set</p>
+
+The feasible set or constraint set is the set of all feasible points
+
+$$
+D=\bigcap_{i=0}^m\operatorname{dom}f_i\cap\bigcap_{j=1}^p\operatorname{dom}h_j,\qquad D^*\subseteq D
+$$
+
+</blockquote>
+
 > <strong>중요한 표기 구분:</strong> 이 글에서는 허용 가능한 점들의 집합을 `D`(Feasible Set), 최적점을 `x^*`, 최적값을 `p^*`로 구분한다. 교안에서는 `D`가 공통 Domain, `D*`가 Feasible Set이다. 이 글에서는 Domain을 `𝒟`, Feasible Set을 `D`로 구별하므로 교안의 `D*`가 본문의 `D`에 해당한다. 기호보다 역할을 먼저 파악한다.
 
 
@@ -61,7 +72,16 @@ $$
 
 노름 자체를 최소화해도 제곱한 노름과 최적점은 같다. 0 이상에서 제곱은 순서를 보존하기 때문이다. 다만 미분과 Hessian 계산에는 제곱한 형태가 편하다. [행렬 글의 최소제곱·의사역행렬](/enai601-matrices-and-psd/)은 이렇게 <strong>학습 문제의 파라미터를 고르는 도구</strong>로 이어진다.
 
-교안에는 특성별 가중치를 음수가 아니게 제한하는 예제도 있다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 4 — Examples (1) — Linear regression</p>
+
+$$
+f_i(w)=-w_i,\quad i=1,\ldots,n,\qquad D^*=\mathbb R\times\mathbb R_+^n
+$$
+
+</blockquote>
+
+이 예제에서는 특성별 가중치를 음수가 아니게 제한한다.
 
 $$
 -w_j\leq0\quad(j=1,\ldots,n),
@@ -76,7 +96,16 @@ $$
 \hat r_B=\theta_0+\theta_1r_T+\theta_2r_M
 $$
 
-교안의 일반적인 학습 목적함수에는 <strong>Regularization(정규화 / 규제)</strong>도 등장한다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 4 — Mathematical Optimization</p>
+
+loss function
+
+regularization function
+
+</blockquote>
+
+일반적인 학습 목적함수에는 <strong>Regularization(정규화 / 규제)</strong>도 등장한다.
 
 $$
 \operatorname{minimize}_{\theta}\quad
@@ -88,7 +117,16 @@ Loss는 데이터에 얼마나 잘 맞는지를 측정하고, Regularization은 
 
 ### 분류 문제에서는 무엇을 가장 좋다고 볼까?
 
-교안의 <strong>Support Vector Machine(SVM)</strong>은 라벨이 -1 또는 +1인 데이터를 분류한다. 두 종류가 선형으로 분리 가능하다고 가정하면, 다음 Hyperplane의 양쪽에 데이터를 놓을 수 있다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 4 — Support vector machine</p>
+
+Binary classification (labels: -1 or 1)
+
+Approach: We will try to maximize the margin, i.e., the minimum distance to the separating hyperplane from all samples
+
+</blockquote>
+
+<strong>Support Vector Machine(SVM)</strong>은 라벨이 -1 또는 +1인 데이터를 분류한다. 두 종류가 선형으로 분리 가능하다고 가정하면, 다음 Hyperplane의 양쪽에 데이터를 놓을 수 있다.
 
 $$
 H(w,b)=\{u:w^Tu+b=0\},\qquad w\ne0
@@ -188,7 +226,20 @@ $$
 
 ## 4. Active·Inactive·Redundant Constraint는 무엇이 다를까?
 
-교안과 수업에서 소개한 세 용어는 제약조건을 읽는 서로 다른 질문이다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 4 — Active and Redundant Constraint</p>
+
+we say that the i-th inequality constraint is &quot;active&quot;.
+
+is said to be &quot;redundant&quot; if deleting it does not change the feasible set
+
+$$
+f_i(x)=0:\text{ active},\qquad f_i(x)<0:\text{ inactive}
+$$
+
+</blockquote>
+
+이 세 용어는 제약조건을 읽는 서로 다른 질문이다.
 
 $$
 \begin{aligned}

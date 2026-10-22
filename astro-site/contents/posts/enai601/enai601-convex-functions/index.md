@@ -9,7 +9,7 @@ series: ENAI601 Numerical Methods
 seriesOrder: 4
 date: 2026-10-21
 publishedAt: 2026-10-21T02:52:02-04:00
-updatedAt: "2026-10-22T05:17:33+00:00"
+updatedAt: "2026-10-22T05:24:38+00:00"
 ---
 
 Convex function의 모양은 함수값과 미분값의 역할을 구별하는 데서 이해할 수 있다. <strong>$f$는 높이, $f'$는 기울기, $f''$는 기울기의 변화</strong>다. 이 세 가지를 구분하고 나면, 왜 그래프가 chord 아래에 놓이는지, 왜 접선은 함수 전체의 하한이 되는지, 왜 다변수에서는 Hessian을 보는지가 하나의 흐름으로 이어진다.
@@ -409,7 +409,18 @@ $$
 
 ## 13. PD이면 strictly convex지만, 역은 성립하지 않는다
 
-교안에서 주의하는 조건이다. 열린 convex domain에서 $C^{2}$인 함수에 대해
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 3 — Second-Order Conditions</p>
+
+The converse, however, is not true, i.e., it is not a necessary condition
+
+$$
+\nabla^2 f(x)\succ0\ \text{for all }x\in\operatorname{dom}f\quad\Longrightarrow\quad f\text{ is strictly convex}
+$$
+
+</blockquote>
+
+이것은 충분조건이며, 필요한 domain·미분 조건을 함께 확인해야 한다. 열린 convex domain에서 $C^{2}$인 함수에 대해
 
 $$
 \nabla^2f(x)\succ0\text{ for every }x\in D
@@ -430,13 +441,16 @@ $$
 
 ## 14. 이차함수와 최소제곱을 한 번에 판정하기
 
-실수 대칭행렬 $P$를 사용하는 교안의 이차함수는
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 3 — Quadratic Function</p>
 
 $$
-f(x)=\frac12x^TPx+q^Tx+r
+f(x)=\frac12x^TPx+q^Tx+r,\qquad P\in\mathbb S^n
 $$
 
-다. gradient와 Hessian은
+</blockquote>
+
+gradient와 Hessian은
 
 $$
 \nabla f(x)=Px+q,\qquad \nabla^2f(x)=P
@@ -458,7 +472,14 @@ $$
 
 ## 15. 교안 보충: domain 밖을 +∞로 표현하기
 
-여기부터는 필기의 미분·곡률 흐름을 바탕으로 교안의 뒤쪽 내용을 연결한다.
+Domain 제약을 함수값에 포함시키면 최적화 문제의 표현을 간단하게 만들 수 있다.
+
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 3 — Extended-Valued Function</p>
+
+Useful to extend a convex function $f$ to all of $\mathbb R^n$ by defining its value to be $\infty$ outside $\operatorname{dom}f$.
+
+</blockquote>
 
 domain $D$에서 정의된 convex $f$를 전체 공간으로 확장할 때, domain 밖의 값을 $+\infty$로 놓을 수 있다.
 
@@ -489,7 +510,18 @@ $$
 
 이기 때문이다. convex function의 부등식 제약이 convex feasible set을 만든다는 연결이다.
 
-하지만 역은 성립하지 않는다. 교안의 반례 $f(x)=-e^x$는 $f''(x)=-e^x<0$이라 convex가 아니다. 그럼에도 sublevel set은
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 3 — Sublevel Sets</p>
+
+The converse is not in general true
+
+$$
+f(x)=-\exp(x)
+$$
+
+</blockquote>
+
+하지만 역은 성립하지 않는다. 인용의 반례 $f(x)=-e^x$는 $f''(x)=-e^x<0$이라 convex가 아니다. 그럼에도 sublevel set은
 
 $$
 C_\alpha=\begin{cases}
@@ -537,11 +569,14 @@ $$
 
 임의의 비어 있지 않은 함수족에 대한 pointwise supremum에도 같은 볼록성 보존이 성립한다. 다만 값이 $+\infty$가 되는 입력이 있을 수 있으므로 유한한 domain을 확인한다.
 
-교안은 이를 실수 대칭행렬 $X$의 최대 고유값에도 적용한다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 3 — Maximum eigenvalue of symmetric matrix</p>
 
 $$
-\lambda_{\max}(X)=\sup_{\|v\|_2=1}v^TXv
+\lambda_{\max}(X)=\sup_{\|y\|_2=1}y^TXy,\qquad X\in\mathbb S^n
 $$
+
+</blockquote>
 
 $v$를 고정하면 $v^TXv$는 <strong>행렬 변수 $X$에 대해 선형</strong>이다. 그 함수들의 supremum이므로 $\lambda_{\max}$는 $X$에 대해 convex다. 같은 이차형식도 무엇을 변수로 두느냐에 따라 역할이 달라진다.
 
@@ -558,7 +593,16 @@ $$
 
 여서 합성은 convex가 아니다. $h$는 $g$의 값이 움직이는 범위 전체에서 증가하는 함수가 아니었다.
 
-교안의 대표적인 <strong>충분조건</strong>은 다음과 같다. 합성 domain이 convex이고 관련 값들이 각 함수의 domain 안에 들어가는 조건을 함께 확인한다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 3 — Composition of two functions</p>
+
+h is convex, h is non-decreasing, and g is convex
+
+h is convex, h is non-increasing, and g is concave
+
+</blockquote>
+
+이 두 가지 <strong>충분조건</strong>은 다음과 같다. 합성 domain이 convex이고 관련 값들이 각 함수의 domain 안에 들어가는 조건을 함께 확인한다.
 
 | $h$의 성질 | $g$의 성질 | $h(g(x))$ |
 | --- | --- | --- |
@@ -575,7 +619,18 @@ $$
 
 의 양쪽 함수는 convex지만 $F(0)=F(2)=0$, $F(1)=1$이라 chord 조건을 어긴다. <strong>Pointwise minimum은 일반적으로 convexity를 보존하지 않는다.</strong>
 
-교안의 보존 정리는 다른 형태다. $F(x,y)$가 <strong>$(x,y)$에 대해 jointly convex</strong>이고, $y$를 움직이는 집합 $C$가 비어 있지 않은 convex set일 때
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 3 — Minimum and infimum</p>
+
+Suppose $f$ is convex in $(x,y)$ and $C$ is a non-empty convex set.
+
+$$
+g(x)=\inf_{y\in C}f(x,y),\qquad f\text{ is convex in }(x,y)
+$$
+
+</blockquote>
+
+위 정리는 서로 다른 함수 중 최소를 고르는 연산이 아니라, 하나의 jointly convex 함수에서 변수 일부를 최소화하는 연산이다. $F(x,y)$가 <strong>$(x,y)$에 대해 jointly convex</strong>이고, $y$를 움직이는 집합 $C$가 비어 있지 않은 convex set일 때
 
 $$
 g(x)=\inf_{y\in C}F(x,y)
@@ -583,7 +638,16 @@ $$
 
 는 적절한 유한성 조건 아래 convex다. 여기서는 $F$가 전체 곱공간에서 정의되고 $g(x)$가 모든 $x$에서 유한하다고 하자. 각 $x$에서 거의 최소인 두 $y$를 고른 뒤, 그 $(x,y)$ 쌍들을 함께 볼록결합하면 이 결과를 이해할 수 있다. infimum이 실제로 달성되어야만 하는 정리는 아니다.
 
-교안의 예제를 완전제곱으로 정리하면
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 3 — Minimum and infimum — Example</p>
+
+$$
+f(x,y)=x^2+xy+2y^2,\qquad g(x)=\inf_{y\in\mathbb R}f(x,y)=\frac78x^2
+$$
+
+</blockquote>
+
+이 예제를 완전제곱으로 정리하면
 
 $$
 F(x,y)=x^2+xy+2y^2

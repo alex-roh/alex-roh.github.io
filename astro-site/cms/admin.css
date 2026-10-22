@@ -99,3 +99,17 @@ html,body,#nc-root{background:var(--paper);color:var(--ink);font-family:Noto,sys
 #nc-root .cms-editor-visual [data-slate-editor] *{color:inherit}
 #nc-root .cms-editor-visual [data-slate-editor] code{background:var(--wash)!important;color:var(--ink)!important}
 #nc-root .cms-editor-visual [data-slate-editor] a{color:var(--accent)!important}
+
+/* Only per-series creation remains; MEDIA stays in the header. */
+#nc-root [class*="AppHeaderNavList"]>li:has(>a[href="#/"]),
+#nc-root [class*="AppHeaderQuickNewButton"]{display:none}
+.cave-guide-button{display:block;margin:0 0 16px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;cursor:pointer}
+#cave-editorial-guide{width:min(760px,calc(100vw - 32px));max-height:80vh;box-sizing:border-box;overflow:auto;padding:24px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;font-family:Noto,system-ui,sans-serif}
+#cave-editorial-guide::backdrop{background:#0006}
+#cave-editorial-guide header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+#cave-editorial-guide header h2{font-size:18px;margin:0;overflow-wrap:anywhere}
+#cave-editorial-guide button{flex-shrink:0;background:var(--wash);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer;font:inherit}
+.cave-guide-content{font-size:15px;line-height:1.8;overflow-wrap:anywhere}
+.cave-guide-content h1{font-size:23px}.cave-guide-content h2{font-size:18px;margin-top:24px}
+.cave-guide-content ul{padding-left:24px}.cave-guide-content li{margin-bottom:8px}
+.cave-guide-content a{color:var(--accent)}

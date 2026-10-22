@@ -3,7 +3,7 @@ title: "[ENAI601] 03 — Convex Set, 제약조건을 공간의 모양으로 읽�
 description: "열린집합·닫힌집합·compact부터 affine/convex/conic combination과 hull, hyperplane·halfspace·polyhedron, affine image·preimage, supporting hyperplane까지 예제와 증명으로 복습한다."
 date: 2026-10-21
 publishedAt: "2026-10-21T01:28:45-04:00"
-updatedAt: "2026-10-22T05:17:33+00:00"
+updatedAt: "2026-10-22T05:24:38+00:00"
 tags:
   - ENAI601
   - convex-sets
@@ -73,7 +73,18 @@ $$
 
 반대로 $[0,1]$에서는 $x=0$ 주변의 어떤 양의 반지름 구간도 음수를 포함한다. 따라서 $\mathbb R$에서 열린집합이 아니다.
 
-교안은 작은 공을 닫힌 공, 즉 거리 $\le \varepsilon$로 써서 열린집합을 정의한다. 여기서는 표준적인 열린 공 표기를 사용했다. <strong>적당한 양의 반지름이 존재한다</strong>는 조건에서는 두 방식이 동치다. 열린 공이 들어가면 반지름을 절반으로 줄인 닫힌 공도 들어간다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 2 — Open and Closed Sets</p>
+
+Definition: A set $C\subseteq\mathbb R^n$ is said to be &quot;open&quot; if, for every point $x\in C$, there exists $\epsilon>0$ such that $B_\epsilon(x)\subset C$.
+
+$$
+\forall x\in C,\quad\exists\epsilon>0:\ B_\epsilon(x)\subset C,\qquad B_\epsilon(x)=\{z\in\mathbb R^n:\|x-z\|_2\leq\epsilon\}
+$$
+
+</blockquote>
+
+이 인용의 공은 거리 $\le \varepsilon$인 닫힌 공이다. 여기서는 표준적인 열린 공 표기를 사용했다. <strong>적당한 양의 반지름이 존재한다</strong>는 조건에서는 두 방식이 동치다. 열린 공이 들어가면 반지름을 절반으로 줄인 닫힌 공도 들어간다.
 
 ## 3. Closed set: 극한으로 도달하는 점을 빠뜨리지 않는다
 
@@ -367,6 +378,17 @@ $(0,1)$, $[0,1]$, [0,1)은 모두 convex다. 경계를 포함하는 방식은 �
 
 ## 8. Conic combination과 세 가지 hull
 
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 2 — Combinations and Hulls</p>
+
+Affine hull - set of all affine combinations of points in C
+
+Conic hull - set of all conic combinations of points in C
+
+Convex hull - set of all convex combinations of points in C
+
+</blockquote>
+
 ### Hull은 무엇을 모은 집합일까?
 
 <strong>Hull(헐)은 주어진 점들을 재료로, 정해진 결합 규칙에 따라 만들 수 있는 모든 점을 모은 집합</strong>이다. 이름만으로 어떤 규칙인지는 정해지지 않으므로 앞에 convex, affine, conic을 붙인다.
@@ -400,7 +422,7 @@ $$
 | Conic | 각각 0 이상, 합은 자유 | 좌표가 모두 0 이상인 사분면: conic hull |
 | Convex | 각각 0 이상이고 합이 1 | 그 직선 중 사분면 안의 닫힌 선분: convex hull |
 
-<strong>Conic combination(원뿔 결합)</strong>은 교안에서 함께 소개하는 다음 계산이다. 음수 계수는 쓰지 않지만, 합을 1로 묶지 않으므로 전체 크기도 자유롭게 바꿀 수 있다.
+<strong>Conic combination(원뿔 결합)</strong>은 다음 계산이다. 음수 계수는 쓰지 않지만, 합을 1로 묶지 않으므로 전체 크기도 자유롭게 바꿀 수 있다.
 
 $$
 x=\sum_{i=1}^k\theta_i x_i,\qquad\theta_i\geq0
@@ -873,7 +895,7 @@ $x$↦Ax−b가 affine이고, 출력의 닫힌 공이 convex이기 때문이다.
 
 ## 17. Supporting hyperplane: 경계를 한쪽에서 받치는 초평면
 
-이 내용은 손필기의 범위 다음에 교안과 수업에서 이어진다. 집합 $C$의 경계점 $z$를 지나면서, $C$ 전체를 한쪽 반공간에 두는 초평면을 생각하자.
+집합 $C$의 경계점 $z$를 지나면서, $C$ 전체를 한쪽 반공간에 두는 초평면을 생각하자.
 
 $$
 H=\{x:a^Tx=b\},\qquad a\ne0,\quad b=a^Tz,
@@ -888,7 +910,18 @@ $$
 
 왼쪽의 빨간 선은 원판을 양쪽으로 가르므로 supporting이 아니다. 파란 선은 원판 전체를 한쪽에 두고 경계점에서 받친다. 오른쪽은 같은 그림에서 경계의 포함 여부만 바꾼 경우다. 이 차이를 다음의 열린집합 설명과 함께 읽는다.
 
-수업과 교안의 <strong>supporting hyperplane theorem</strong>은 비어 있지 않은 convex set의 모든 경계점에 지지 초평면이 존재한다고 말한다. 같은 정리는 [Boyd·Vandenberghe의 공개 강의자료 §2.23](https://web.stanford.edu/~boyd/cvxbook/bv_cvxslides.pdf)에서도 확인할 수 있다.
+<blockquote class="lecture-excerpt">
+<p class="lecture-excerpt-label">교안 발췌 · Module 2 — Supporting Hyperplanes</p>
+
+Supporting hyperplane theorem:
+
+$$
+C\subseteq\mathbb R^n\text{ convex},\quad z\in\partial C\quad\Longrightarrow\quad\text{a supporting hyperplane exists at }z
+$$
+
+</blockquote>
+
+이 <strong>supporting hyperplane theorem</strong>은 비어 있지 않은 convex set의 모든 경계점에 지지 초평면이 존재한다고 말한다. 같은 정리는 [Boyd·Vandenberghe의 공개 강의자료 §2.23](https://web.stanford.edu/~boyd/cvxbook/bv_cvxslides.pdf)에서도 확인할 수 있다.
 
 ### 경계점이 반드시 C 안에 있는 것은 아니다
 
@@ -1219,4 +1252,4 @@ $$
 - <strong>2026-09-16 수업</strong>: 원판과 원 둘레, open/closed의 반례, affine set, halfspace·polyhedron, 정사각형의 두 affine image 예제, supporting hyperplane.
 - [Boyd·Vandenberghe, Convex Optimization 공개 강의자료 §2.23](https://web.stanford.edu/~boyd/cvxbook/bv_cvxslides.pdf): supporting hyperplane theorem의 조건 확인.
 
-최소값 존재 조건, 상대적 내부, 거리와 정사영 공식의 유도, 볼록성 보존의 증명, 열린집합의 경계에서의 지지 초평면 예제는 복습을 위해 보강했다. 수식의 조건과 계산은 교안과 함께 확인했다. 그림은 본문 좌표로 새로 작성했으며 필기나 강의자료 원문을 전재하지 않았다.
+최소값 존재 조건, 상대적 내부, 거리와 정사영 공식의 유도, 볼록성 보존의 증명, 열린집합의 경계에서의 지지 초평면 예제는 복습을 위해 보강했다. 수식의 조건과 계산은 교안과 함께 확인했다. 그림은 본문 좌표로 새로 작성했다. 교안의 짧은 발췌는 본문에서 별도 블록으로 구분했으며, 필기와 강의자료 전체 파일은 첨부하지 않았다.

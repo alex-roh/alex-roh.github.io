@@ -1,3 +1,4 @@
+import { installEditorialGuides } from './editorial-guides.mjs';
 import { mapScroll } from './scroll-map.mjs';
 
 let disposePreview;
@@ -14,6 +15,7 @@ function applyTheme() { document.documentElement.dataset.theme = theme(); }
 
 export function initializeEditor() {
   applyTheme();
+  installEditorialGuides();
   if (!stored('cms.md-mode')) save('cms.md-mode', 'raw');
   // The built-in ratio sync misses iframe document scroll events in this layout.
   // Use one source-aware synchronizer, avoiding two controllers fighting each other.
