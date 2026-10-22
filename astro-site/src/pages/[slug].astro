@@ -8,7 +8,7 @@ export async function getStaticPaths() { return (await allPosts()).map(post => (
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const posts = await allPosts();
-const related = post.data.series ? seriesPosts(posts, post.data.series) : [];
+const related = post.data.series ? seriesPosts(posts, post.data.series).reverse() : [];
 const toc = headings.filter(h => h.depth === 2 || h.depth === 3);
 const attachments = Object.keys(import.meta.glob('/contents/posts/**/*.{py,pdf,zip}')).filter(p => p.split('/').at(-2) === post.id).map(p => p.split('/').at(-1)!);
 const index = posts.findIndex(p => p.id === post.id);
