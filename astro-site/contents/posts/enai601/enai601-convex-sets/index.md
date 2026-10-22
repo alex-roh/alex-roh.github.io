@@ -3,7 +3,7 @@ title: "[ENAI601] 03 — Convex Set, 제약조건을 공간의 모양으로 읽�
 description: "열린집합·닫힌집합·compact부터 affine/convex/conic combination과 hull, hyperplane·halfspace·polyhedron, affine image·preimage, supporting hyperplane까지 예제와 증명으로 복습한다."
 date: 2026-10-21
 publishedAt: "2026-10-21T01:28:45-04:00"
-updatedAt: "2026-10-22T05:14:51+00:00"
+updatedAt: "2026-10-22T05:17:33+00:00"
 tags:
   - ENAI601
   - convex-sets
@@ -24,7 +24,7 @@ ENAI601에서 최적화 문제를 풀려면 먼저 제약조건이 허용하는 
 
 이 글의 공간은 유한차원 실수 공간 $\mathbb{R}^{n}$이다. interior·boundary·open·closed는 별도로 말하지 않으면 <strong>주변 공간 $\mathbb{R}^{n}$을 기준</strong>으로 한다. 내적과 거리는 표준 내적과 유클리드 노름을 사용한다.
 
-| 먼저 붙잡을 질문 | 이어지는 개념 |
+| 먼저 확인할 질문 | 이어지는 개념 |
 | --- | --- |
 | 집합에 경계가 포함되는가? 끝없이 뻗는가? | open, closed, bounded, compact |
 | 점들을 어떤 계수로 섞는가? | affine, convex, conic combination과 hull |

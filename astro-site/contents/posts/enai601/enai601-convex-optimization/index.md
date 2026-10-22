@@ -9,7 +9,7 @@ series: ENAI601 Numerical Methods
 seriesOrder: 6
 date: 2026-10-21
 publishedAt: "2026-10-21T23:04:15-04:00"
-updatedAt: "2026-10-22T05:14:51+00:00"
+updatedAt: "2026-10-22T05:17:33+00:00"
 ---
 
 [앞 글의 Basic Optimization](/enai601-basic-optimization/)에서는 무엇을 최소화하고 어디에서 선택하는지 구분했다. 이제 그 문제에 볼록성이 있으면 무엇이 달라지는지 살펴본다. 일반적인 문제에서는 주변에서 좋은 점을 찾아도 전체에서 가장 좋다고 할 수 없지만, Convex Optimization에서는 Local Minimum이 Global Minimum이다. [Convex Set](/enai601-convex-sets/)과 [Convex Function](/enai601-convex-functions/)의 기초 정의는 알고 있다는 전제다.
@@ -31,7 +31,7 @@ Convex Set과 Convex Function을 배운 뒤, 다음 문제는 <strong>최적화 
 
 ### 왜 Inequality는 Convex인데 Equality는 Affine일까?
 
-우리가 가장 오래 붙잡았던 질문이다. <strong>Affine은 Convex Function보다 더 제한적인 형태</strong>이며, Convex이면서 동시에 Concave인 함수다.
+부등식과 등식은 두 점 사이의 값을 제한하는 방식이 다르다. <strong>Affine은 Convex Function보다 더 제한적인 형태</strong>이며, Convex이면서 동시에 Concave인 함수다.
 
 Convex Function은 두 점 사이의 함수값에 대해 다음을 보장한다.
 
@@ -436,7 +436,7 @@ $$
 
 ## 4. Optimality Criterion: Gradient를 이용해 최적점을 검증하기
 
-우리가 Convex Optimization인지 확인하고 Local → Global 성질을 배운 이유는 결국 한 질문으로 이어진다.
+Convex Optimization의 Local → Global 성질을 실제로 활용하려면, 주어진 후보점이 최적점인지 판별할 수 있어야 한다.
 
 > "이미 찾은 후보 Feasible Point가 정말 Global Minimum인지 어떻게 확인할까?"
 
@@ -625,5 +625,5 @@ $$
 
 - ENAI601, Richard J. La, *Module 5 — Convex Optimization*, Fall 2026 교안. 연결되는 SVM의 최초 설정은 *Module 4 — Basic Optimization*을 함께 참고했다.
 - ENAI601 2026년 9월 30일 수업의 Convex Standard Form·재정식화 설명과 10월 7일 수업의 Local/Global Optima·Optimality Criterion 설명.
-- 별도로 공부하며 정리한 스터디 노트의 Affine Equality 질문, Local = Global 증명, Gradient의 음수 성분, 최적성 직접 검증 순서를 유지했다. 최소제곱·재정식화·SVM·특수한 최적성 조건은 교안·수업에서 보충했다.
+- 학습 노트: Affine Equality, Local = Global 증명, Gradient의 음수 성분, 최적성 직접 검증. 최소제곱·재정식화·SVM·특수한 최적성 조건은 교안·수업을 참고했다.
 - 그림은 본문의 함수식으로 새로 그린 예제이며 강의 도판을 복제한 것이 아니다. 최적해의 존재성에 대한 가정과 비교 예제는 혼동을 피하기 위한 보충 설명이다.

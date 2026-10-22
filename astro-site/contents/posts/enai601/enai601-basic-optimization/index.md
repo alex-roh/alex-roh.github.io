@@ -9,7 +9,7 @@ series: ENAI601 Numerical Methods
 seriesOrder: 5
 date: 2026-10-21
 publishedAt: "2026-10-21T23:04:15-04:00"
-updatedAt: "2026-10-22T05:14:51+00:00"
+updatedAt: "2026-10-22T05:17:33+00:00"
 ---
 
 [앞 글의 Convex Function](/enai601-convex-functions/)까지 함수의 모양과 미분 조건을 공부했다. 이제는 그 함수를 목적함수와 제약조건으로 사용해, 가장 좋은 선택을 찾는 문제를 구성한다.
@@ -112,7 +112,7 @@ $$
 \end{aligned}
 $$
 
-이 식은 우리가 원하는 기준을 표현하지만, 아직 앞의 최소화 Standard Form과는 다르다. <strong>좋은 해의 의미를 정하는 일과, 계산하기 좋은 문제로 표현하는 일은 별개의 단계</strong>다. 다음 글에서 같은 분리면을 유지하며 Convex Optimization 형태로 바꾸는 과정을 이어 본다.
+이 식은 최대 Margin이라는 목표를 표현하지만, 아직 앞의 최소화 Standard Form과는 다르다. <strong>좋은 해의 의미를 정하는 일과, 계산하기 좋은 문제로 표현하는 일은 별개의 단계</strong>다. 다음 글에서 같은 분리면을 유지하며 Convex Optimization 형태로 바꾸는 과정을 이어 본다.
 
 ## 2. Domain과 Feasible Set은 왜 구별할까?
 
@@ -146,7 +146,7 @@ $$
 
 > "목적함수와 제약조건의 Convexity를 확인했다면 Feasible Set은 이미 Convex한 것 아닌가?"
 
-아니다. 제약조건이 만들어 내는 영역이 Convex해도, <strong>공통 Domain이 비볼록이면 교집합의 볼록성을 보장할 수 없다.</strong> 반대로 Domain이 비볼록하다는 이유만으로 Feasible Set이 반드시 비볼록한 것도 아니다. 우리가 사용하는 표준 판별법에서 보장이 사라진다는 의미다.
+아니다. 제약조건이 만들어 내는 영역이 Convex해도, <strong>공통 Domain이 비볼록이면 교집합의 볼록성을 보장할 수 없다.</strong> 반대로 Domain이 비볼록하다는 이유만으로 Feasible Set이 반드시 비볼록한 것도 아니다. 표준 판별법에 따른 볼록성 보장이 사라진다는 의미다.
 
 예를 들어 다음과 같은 Domain이 지정돼 있다고 하자.
 
@@ -225,4 +225,4 @@ Basic Optimization에서 먼저 확인할 것은 다음과 같다.
 
 - ENAI601, Richard J. La, *Module 4 — Basic Optimization*, Fall 2026 교안.
 - ENAI601 2026년 9월 30일 수업 및 10월 7일의 Basic Optimization 복습 설명.
-- 별도로 공부하며 정리한 스터디 노트의 Basic Optimization·Domain·Feasible Set 설명을 중심으로 구성했다. ML 예제와 제약조건의 용어는 교안·수업에서 보충했으며, Infimum 비교표와 제약조건의 수치 예제는 개념 확인을 위해 구성했다.
+- 학습 노트: Basic Optimization·Domain·Feasible Set. ML 예제와 제약조건의 용어는 교안·수업을 참고했으며, Infimum 비교표와 제약조건의 수치 예제는 개념 확인을 위한 예제다.
