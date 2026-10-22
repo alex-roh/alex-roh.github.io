@@ -3,7 +3,7 @@ title: "[ENAI601] 03 — Convex Set, 제약조건을 공간의 모양으로 읽�
 description: "열린집합·닫힌집합·compact부터 affine/convex/conic combination과 hull, hyperplane·halfspace·polyhedron, affine image·preimage, supporting hyperplane까지 예제와 증명으로 복습한다."
 date: 2026-10-21
 publishedAt: "2026-10-21T01:28:45-04:00"
-updatedAt: "2026-10-22T04:29:19+00:00"
+updatedAt: "2026-10-22T04:46:28+00:00"
 tags:
   - ENAI601
   - convex-sets
@@ -17,6 +17,10 @@ seriesOrder: 3
 [앞 글의 행렬](/enai601-matrices-and-psd/)이 벡터를 변환하는 규칙이었다면, 이번에는 조건을 만족하는 벡터들을 모아 <strong>공간의 모양</strong>으로 읽는다. 여러 제약조건이 만드는 영역은 어떤 집합이고, 그 안의 두 점을 섞어도 여전히 조건을 만족할까? 이것이 convex set을 공부하는 출발점이다.
 
 이 글은 개인 손글씨 노트 <strong>「3 Convex Set」의 내용이 있는 1–6페이지</strong>, <strong>ENAI601 Module 2 — Convex Sets 교안</strong>, <strong>2026년 9월 16일 수업</strong>을 대조해 작성했다. 원본을 펼치지 않고도 복습할 수 있도록 정의·예제·반례·짧은 증명을 본문에 담았다. Supporting hyperplane은 교안과 수업에서 보충했고, 최소값 존재 조건과 거리 공식의 유도 등은 개념을 연결하기 위한 보충 설명이다.
+
+처음 읽을 때는 용어를 한꺼번에 외우기보다 세 가지 동작을 구별하면 좋다. <strong>제약조건의 교집합</strong>은 허용되는 점만 남기는 일, <strong>hull</strong>은 주어진 점들을 일정한 규칙으로 섞어 만들 수 있는 점을 모두 모으는 일, <strong>image·preimage</strong>는 변환을 통해 입력과 출력을 연결하는 일이다. 그림에서 점·선·색칠된 영역 중 무엇을 집합에 포함하는지 먼저 보고, 그다음 식을 읽는다.
+
+새 그림의 <strong>채운 점은 포함, 빈 점은 제외</strong>를 뜻한다. 화살표가 달린 직선은 그 방향으로 계속 이어지고, 무한한 영역의 색칠은 화면 안에 보이는 일부만 나타낸다. 그림은 개념을 보여 주는 예제이며, 모든 경우에 성립하는 주장은 이어지는 정의와 증명으로 확인한다.
 
 이 글의 공간은 유한차원 실수 공간 $\mathbb{R}^{n}$이다. interior·boundary·open·closed는 별도로 말하지 않으면 <strong>주변 공간 $\mathbb{R}^{n}$을 기준</strong>으로 한다. 내적과 거리는 표준 내적과 유클리드 노름을 사용한다.
 
@@ -50,7 +54,9 @@ $$
 
 ## 2. Open set: 모든 점 주변에 작은 여유가 있다
 
-중심 $x$와 반지름 $\varepsilon >0$인 열린 공을 다음과 같이 쓰자.
+1차원 구간 $C=(0,1)$에서 $x=0.5$라면 $\varepsilon =0.1$을 선택할 수 있다. $x=0.001$처럼 끝에 가까운 점에서도 더 작은 $\varepsilon =0.0005$를 쓰면 된다. 끝점 0과 1은 집합에 없으므로 그 점들에서 공을 넣을 필요는 없다.
+
+이처럼 <strong>집합 안의 어느 점에서도, 충분히 조금은 모든 방향으로 움직일 수 있다</strong>는 것이 open의 뜻이다. 다만 허용되는 이동 거리는 점마다 달라도 된다. 이 생각을 수식으로 쓰기 위해 중심 $x$와 반지름 $\varepsilon >0$인 열린 공을 다음과 같이 쓰자.
 
 $$
 B_\varepsilon(x)=\{z\in\mathbb R^n:\|z-x\|_2<\varepsilon\}
@@ -65,13 +71,13 @@ $$
 
 집합 안의 점을 <strong>어느 것으로 골라도</strong>, 그 점을 중심으로 충분히 작은 공을 그려 집합 안에 넣을 수 있어야 한다. 반지름 $\varepsilon$는 점마다 달라도 된다. 모든 점에서 같은 $\varepsilon$ 하나를 쓸 필요는 없다.
 
-1차원 구간 $C=(0,1)$에서 $x=0.5$라면 $\varepsilon =0.1$을 선택할 수 있다. $x=0.001$처럼 끝에 가까운 점에서도 더 작은 $\varepsilon =0.0005$를 쓰면 된다. 끝점 0과 1은 집합에 없으므로 그 점들에서 공을 넣을 필요는 없다.
-
 반대로 $[0,1]$에서는 $x=0$ 주변의 어떤 양의 반지름 구간도 음수를 포함한다. 따라서 $\mathbb R$에서 열린집합이 아니다.
 
 교안은 작은 공을 닫힌 공, 즉 거리 $\le \varepsilon$로 써서 열린집합을 정의한다. 여기서는 표준적인 열린 공 표기를 사용했다. <strong>적당한 양의 반지름이 존재한다</strong>는 조건에서는 두 방식이 동치다. 열린 공이 들어가면 반지름을 절반으로 줄인 닫힌 공도 들어간다.
 
 ## 3. Closed set: 극한으로 도달하는 점을 빠뜨리지 않는다
+
+열린 구간 `(0,1)` 안에서 `1/2, 1/3, 1/4, …`를 따라가면 0에 가까워지지만 0은 빠져 있다. 닫힌 구간 `[0,1]`은 그 도착점도 포함한다. <strong>Closed는 이런 식으로 집합 안에서 접근해 도달하는 유한한 극한점을 빠뜨리지 않는다는 성질</strong>이다. 내부가 채워져 있다는 뜻은 아니므로, 원 둘레만 있는 집합도 closed일 수 있다.
 
 집합 $C$가 <strong>closed(닫힌집합)</strong>라는 정의는 여집합이 열린집합이라는 것이다.
 
@@ -101,7 +107,11 @@ $[0,1]$은 이 성질을 만족한다. $(0,1)$은 $x_{k}=1/(k+1)$이 0으로 수
 
 ## 4. Interior, closure, boundary를 한 예제로 정리하기
 
-세 개념은 “완전히 안쪽”, “극한까지 포함한 전체”, “안과 밖이 만나는 부분”을 구분한다.
+먼저 `[0,1)`을 보자. 0은 포함하고 1은 제외하는 구간이다. 여기서 <strong>완전히 안쪽만 남기면 interior</strong>, <strong>접근해서 도달하는 점까지 포함하면 closure</strong>, <strong>안과 밖이 만나는 점만 모으면 boundary</strong>다.
+
+![반열린 구간 0 이상 1 미만의 내부는 양 끝을 뺀 구간, 폐포는 양 끝을 포함한 구간, 경계는 두 점 0과 1이다. 채운 점과 빈 점으로 끝점의 포함 여부를 표시했다.](interval-operations.svg)
+
+네 번째 줄은 양끝 <strong>두 점만</strong> 모은 집합이다. 그 사이가 색칠되지 않은 이유는 구간 전체가 boundary인 것이 아니기 때문이다. 또한 1은 원래 집합에는 없어도 boundary에는 들어간다. 이 그림을 다음 정의식과 연결해서 읽는다.
 
 ### Interior: 작은 공을 넣을 수 있는 점들
 
@@ -179,7 +189,11 @@ closed만으로도 부족하다. [0,∞)에서 $f(x)=e^{-x}$는 0으로 가까�
 
 ## 6. Affine combination: 점 하나에서 출발해 방향으로 이동하기
 
-선형결합에 <strong>계수의 합이 1</strong>이라는 조건을 붙이면 affine combination이다.
+두 점 사이의 중간점을 구할 때 각 점에 1/2을 곱해서 더한다. 한 점에 더 가까이 가려면 가중치를 1/4과 3/4처럼 바꿀 수 있다. <strong>Affine combination(아핀 결합)은 이 가중치의 합을 1로 유지하면서, 음수 가중치까지 허용하는 계산</strong>이다. 음수를 허용하면 두 점 사이를 벗어나 같은 직선 위로 더 나아갈 수 있다.
+
+![같은 두 점 (1,1), (3,2)에 대해 affine combination은 직선 전체를, convex combination은 두 점 사이의 닫힌 선분을 만든다. t=2의 점 (5,3)은 affine에서는 허용되고 convex에서는 제외된다.](affine-convex-combinations.svg)
+
+그림의 위아래는 같은 두 점과 같은 계산식을 사용한다. 다른 것은 <strong>이동 비율 t를 어디까지 허용하는가</strong>다. 이제 이 계산을 여러 점으로 일반화하면 다음과 같다.
 
 $$
 x=\sum_{i=1}^k\theta_i x_i,\qquad
@@ -221,7 +235,7 @@ $$
 
 ## 7. Convex combination과 convex set
 
-affine combination에 <strong>모든 계수가 0 이상</strong>이라는 조건을 더한다.
+앞 그림에서 두 점 사이를 벗어나지 않으려면 이동 비율을 0부터 1 사이로 제한한다. 이때 두 가중치는 모두 0 이상이고 합은 1이다. 이렇게 <strong>음수 없이 가중평균을 내는 계산</strong>이 convex combination이다. 여러 점에서도 affine combination에 <strong>모든 계수가 0 이상</strong>이라는 조건을 더한다.
 
 $$
 x=\sum_{i=1}^k\theta_i x_i,\qquad
@@ -263,52 +277,93 @@ $(0,1)$, $[0,1]$, [0,1)은 모두 convex다. 경계를 포함하는 방식은 �
 
 ## 8. Conic combination과 세 가지 hull
 
-교안에는 affine·convex combination과 함께 conic combination도 등장한다.
+### Hull은 무엇을 모은 집합일까?
+
+<strong>Hull(헐)은 주어진 점들을 재료로, 정해진 결합 규칙에 따라 만들 수 있는 모든 점을 모은 집합</strong>이다. 이름만으로 어떤 규칙인지는 정해지지 않으므로 앞에 convex, affine, conic을 붙인다.
+
+두 점 `(1,0)`, `(0,1)`을 재료로 생각해 보자. 각각에 1/4, 3/4을 곱해서 더하면 `(1/4,3/4)`이라는 <strong>점 하나</strong>를 만든다. 두 가중치는 음수가 아니고 합이 1이므로 convex combination이다.
 
 $$
-x=\sum_{i=1}^k\theta_i x_i,\qquad\theta_i\ge0
+\tfrac14(1,0)+\tfrac34(0,1)=(\tfrac14,\tfrac34)
 $$
 
-conic combination은 계수를 음수가 아닌 값으로 제한하지만 <strong>합을 1로 고정하지 않는다.</strong> 따라서 방향뿐 아니라 전체 배율도 자유롭다.
+이제 가중치를 1/2과 1/2, 3/4과 1/4처럼 가능한 모든 값으로 바꾸어 본다. <strong>그렇게 나오는 점을 빠짐없이 모으면 두 점 사이의 선분 전체</strong>가 된다. 이것이 이 두 점의 convex hull이다. 재료는 두 점뿐이지만 결과는 두 점에 그치지 않는다.
 
-| 결합 | 계수 조건 | 두 점 $e_{1}=(1,0)$, $e_{2}=(0,1)$에서 얻는 집합 |
+<strong>Combination은 한 번의 계산 또는 그 결과인 점이고, hull은 그 규칙으로 가능한 결과를 전부 모은 집합</strong>이라고 구별하면 된다. 아래 그림은 재료를 똑같이 두고 결합 규칙만 바꾼 것이다.
+
+![재료점 e1=(1,0), e2=(0,1)은 같지만 계수 조건에 따라 linear span은 평면, affine hull은 x1+x2=1 직선, conic hull은 비음수 사분면, convex hull은 두 점 사이 선분이 된다.](four-hulls.svg)
+
+### 같은 두 점인데 왜 모양이 네 가지일까?
+
+두 재료점이 좌표축의 단위벡터이므로, 두 점에 곱한 계수가 그대로 결과의 좌표가 된다.
+
+$$
+\theta_1(1,0)+\theta_2(0,1)=(\theta_1,\theta_2)
+$$
+
+그래서 계수에 주는 조건을 좌표의 조건으로 그대로 읽을 수 있다.
+
+| 결합 규칙 | 계수에 허용하는 것 | 그림에서 얻는 집합 |
 | --- | --- | --- |
-| linear | 제한 없음 | 평면 $\mathbb{R}^{2}$ 전체 |
-| affine | 합이 1 | $x_{1}+x_{2}=1$인 직선 전체 |
-| conic | 각각 0 이상 | $x_{1}\ge 0$, $x_{2}\ge 0$인 사분면 전체 |
-| convex | 각각 0 이상, 합이 1 | 사분면 안의 (1,0)과 $(0,1)$ 사이 선분 |
+| Linear | 아무 실수나 가능 | 모든 좌표를 만들 수 있으므로 평면 전체: linear span |
+| Affine | 합이 1, 음수도 가능 | 좌표 합이 1인 직선 전체: affine hull |
+| Conic | 각각 0 이상, 합은 자유 | 좌표가 모두 0 이상인 사분면: conic hull |
+| Convex | 각각 0 이상이고 합이 1 | 그 직선 중 사분면 안의 닫힌 선분: convex hull |
 
-집합 $S$의 점들을 재료로 <strong>가능한 모든 유한 결합</strong>을 모은 것이 해당 hull이다.
-
-$$
-\operatorname{aff}S=\left\{\sum_i\theta_i x_i:
-x_i\in S,\ \sum_i\theta_i=1\right\}
-$$
+<strong>Conic combination(원뿔 결합)</strong>은 교안에서 함께 소개하는 다음 계산이다. 음수 계수는 쓰지 않지만, 합을 1로 묶지 않으므로 전체 크기도 자유롭게 바꿀 수 있다.
 
 $$
-\operatorname{cone}S=\left\{\sum_i\theta_i x_i:
-x_i\in S,\ \theta_i\ge0\right\}
+x=\sum_{i=1}^k\theta_i x_i,\qquad\theta_i\geq0
+$$
+
+예를 들어 두 계수를 모두 0으로 두면 원점, 둘 다 2로 두면 `(2,2)`를 얻는다. 원점과 `(2,2)`는 위 그림의 conic hull에는 있지만 affine hull에는 없다. 반대로 `(-1,2)`는 계수 합이 1이어서 affine hull에는 있지만, 음수 좌표 때문에 conic hull에는 없다. <strong>Affine hull과 conic hull 중 하나가 항상 더 크다고 생각하면 안 된다.</strong>
+
+### “가장 작은 집합”이라는 정의는 무슨 뜻일까?
+
+두 재료점을 모두 포함하는 convex set을 만든다고 하자. Convex의 정의상 두 점 사이의 선분을 빼놓을 수 없다. 그런데 <strong>그 선분 자체가 이미 convex</strong>이므로, 그보다 바깥의 점을 추가할 필요는 없다. 그래서 이 선분을 “두 점을 포함하는 가장 작은 convex set”이라고 부른다.
+
+여기서 작다는 것은 길이나 넓이를 최소화한다는 뜻이 아니라 <strong>집합의 포함관계</strong>를 뜻한다. 재료점을 포함하는 다른 모든 convex set 안에 그 convex hull이 들어간다는 뜻이다. Affine hull도 같은 방식으로 이해한다. 두 점을 포함하는 affine set은 그 직선 전체를 포함해야 하고, 그 직선 자체가 affine이므로 그것이 가장 작은 affine set이다.
+
+재료가 세 점이고 한 직선 위에 있지 않다면 convex hull은 <strong>세 점을 꼭짓점으로 하는 채워진 삼각형</strong>이다. 세 변만 모은 테두리가 아니다. 예를 들어 세 점을 같은 비율로 섞은 무게중심도 만들어지므로 내부의 점들이 포함된다. Affine hull은 같은 세 점이 놓이는 평면 전체다.
+
+### 일반적인 정의식으로 옮기기
+
+이제 `S`를 재료점들의 집합이라고 하자. 아래 식들은 <strong>S에서 유한 개 점을 골라, 해당 규칙으로 만들 수 있는 모든 결과</strong>를 모은다는 뜻이다. 점을 고르는 방법, 개수, 계수 모두 가능한 범위에서 바뀐다.
+
+$$
+\operatorname{aff}S=\left\{\sum_{i=1}^k\theta_i x_i:
+k\in\mathbb N,\ x_i\in S,\ \sum_{i=1}^k\theta_i=1,\ \theta_i\in\mathbb R\right\}
 $$
 
 $$
-\operatorname{conv}S=\left\{\sum_i\theta_i x_i:
-x_i\in S,\ \theta_i\ge0,\ \sum_i\theta_i=1\right\}
+\operatorname{cone}S=\left\{\sum_{i=1}^k\theta_i x_i:
+k\in\mathbb N,\ x_i\in S,\ \theta_i\geq0\right\}
 $$
 
-여기서는 $S$가 비어 있지 않다고 하자. affine hull은 $S$를 포함하는 가장 작은 affine set이고, convex hull은 $S$를 포함하는 가장 작은 convex set이다. conic hull은 $S$를 포함하는 가장 작은 <strong>convex cone</strong>이다. 예를 들어 세 비공선 점의 convex hull은 꼭짓점·변·내부를 모두 포함한 삼각형이다.
+$$
+\operatorname{conv}S=\left\{\sum_{i=1}^k\theta_i x_i:
+k\in\mathbb N,\ x_i\in S,\ \theta_i\geq0,\ \sum_{i=1}^k\theta_i=1\right\}
+$$
 
-계수 제한을 비교하면 다음 포함관계를 얻는다.
+여기서는 `S`가 비어 있지 않다고 하자. Affine hull은 S를 포함하는 가장 작은 affine set, convex hull은 S를 포함하는 가장 작은 convex set, conic hull은 S를 포함하는 가장 작은 <strong>convex cone</strong>이다.
+
+계수 조건을 비교하면 convex combination은 affine combination이기도 하고 conic combination이기도 하므로 다음이 성립한다.
 
 $$
 \operatorname{conv}S\subseteq\operatorname{aff}S,
 \qquad\operatorname{conv}S\subseteq\operatorname{cone}S
 $$
 
-affine hull과 conic hull 사이에는 일반적인 포함관계가 없다. 표의 직선과 사분면은 서로를 포함하지 않는다.
+Hull은 무조건 2차원 내부를 채우는 연산도, 무조건 경계를 추가해 닫힌집합을 만드는 연산도 아니다. 두 점의 convex hull은 선분이고, 이미 convex인 열린 구간 `(0,1)`의 convex hull은 그 열린 구간 자체다. <strong>어떤 점이 추가되는지는 결합 규칙과 재료점에 달려 있다.</strong>
+
+또한 제약조건의 <strong>교집합은 공통으로 허용되는 점만 남기는 방향</strong>이고, <strong>hull은 원래 재료점들을 포함하면서 해당 결합 규칙을 만족하도록 넓히는 방향</strong>이다. 서로 다른 일을 하는 개념이다.
+
 
 ## 9. Affine set, subspace, dimension을 연결하기
 
-<strong>Affine set</strong>은 그 안의 서로 다른 두 점을 지나는 <strong>직선 전체</strong>를 포함한다.
+앞 절의 affine hull은 재료점들에서 집합을 <strong>만드는 방법</strong>이었다. 여기서는 이미 주어진 집합이 affine인지 <strong>판정하는 조건</strong>을 본다.
+
+<strong>Affine set</strong>은 그 안의 서로 다른 두 점을 지나는 <strong>직선 전체</strong>를 포함한다. 두 점 사이만 포함하면 convex에는 충분하지만 affine에는 부족하다. 따라서 유한한 선분은 두 끝을 넘어가는 점들을 포함하지 못해 affine이 아니다.
 
 $$
 x_1,x_2\in C,\quad t\in\mathbb R
@@ -316,6 +371,12 @@ x_1,x_2\in C,\quad t\in\mathbb R
 $$
 
 convex set보다 $t$의 범위가 넓다. 따라서 <strong>affine set은 convex지만, convex set이 모두 affine인 것은 아니다.</strong> 선분과 원판은 convex지만 affine은 아니다.
+
+원점을 지나는 직선을 위로 평행이동해도, 두 점을 골라 양쪽으로 끝없이 연장할 수 있다는 성질은 그대로다. 따라서 <strong>원점을 지나야 한다는 조건은 affine set에 없다.</strong> 반면 linear subspace에는 원점이 반드시 포함된다.
+
+![원점을 지나는 부분공간 x2=x1/2를 (0,1)만큼 평행이동하면 원점을 지나지 않는 affine set x2=x1/2+1이 된다. 두 집합에서 이동 가능한 방향 (2,1)은 같다.](affine-set-translation.svg)
+
+위 그림에서 파란 화살표는 허용되는 이동 방향이다. 아래에서는 주황색 기준점에서 출발하지만 같은 파란 방향을 따라 양쪽으로 계속 이동할 수 있다. <strong>위치는 달라져도 이동 가능한 방향은 같다</strong>는 사실을 수식으로 쓴 것이 다음 표현이다.
 
 비어 있지 않은 affine set은 어떤 부분공간 $V$와 점 $x_{0}$에 대해 $x_{0}+V$로 나타낼 수 있다. 선형방정식의 해집합이 대표적이다.
 
@@ -342,6 +403,8 @@ $$
 점들이 주어졌다면 기준점 하나를 빼서 만든 차이 벡터들의 rank로 affine hull의 차원을 구할 수 있다. 두 점이 다르면 1차원, 세 점이 비공선이면 2차원이다. 이 정의는 비어 있지 않은 집합을 기준으로 사용한다.
 
 ## 10. Hyperplane: 선형 등식 하나가 만드는 집합
+
+2차원에서 `x₁+x₂=6`은 합이 정확히 6인 점들만 남기는 직선이다. 3차원에서는 선형 등식 하나가 보통 평면을 남긴다. <strong>Hyperplane은 이런 “주변 공간보다 차원이 하나 낮은 선형 등식의 해집합”을 통일해서 부르는 이름</strong>이다.
 
 0이 아닌 벡터 $a$와 실수 $b$에 대해
 
@@ -507,6 +570,10 @@ $$
 
 ### 같은 경계라도 등호와 부등호에 따라 결과가 달라진다
 
+![같은 2차원 좌표에서 등식 하나는 직선, 독립적인 등식 둘은 점, 세 부등식은 채워진 삼각형, 두 비음수 조건과 합의 등식은 선분을 남긴다.](constraint-shapes.svg)
+
+그림은 모두 같은 축척이다. 왼쪽 아래에는 작은 원판을 넣을 수 있는 2차원 내부가 있지만, 오른쪽 아래 선분에는 그런 원판을 넣을 수 없다. 선분 가운데의 파란 점은 <strong>직선 안에서 보는 상대적 내부</strong>의 예다.
+
 | 동시에 적용하는 조건 | 남는 집합 | 2차원 공간에서 interior |
 | --- | --- | --- |
 | `x₁+x₂=6` | 끝없이 이어지는 직선 | 없음 |
@@ -547,6 +614,12 @@ $$
 또한 비선형 제약이라고 반드시 nonconvex인 것은 아니다. 다음 절의 노름 공도 convex다. 반대로 “등식이니까 affine”이라는 결론은 <strong>선형 등식</strong>일 때의 이야기다. $\lVert x\rVert_{2}=1$은 원 둘레여서 convex가 아니다.
 
 ## 13. Euclidean ball과 norm ball은 왜 convex일까?
+
+여기서 ball(공)은 경계 표면만이 아니라 <strong>중심에서 정해진 거리 이내인 점 전체</strong>를 뜻한다. 또 거리를 재는 규칙인 norm을 바꾸면 같은 반지름 1의 공도 다른 모양이 된다. 아래는 중심이 원점인 2차원 예제다.
+
+![같은 좌표 축척에서 L1 단위 공은 채워진 마름모, L2 단위 공은 원판, L∞ 단위 공은 채워진 정사각형이다. 모두 경계를 포함한다.](norm-balls.svg)
+
+L1은 두 좌표의 절댓값을 더하고, L2는 피타고라스 방식으로 거리를 재고, L∞는 두 좌표의 절댓값 중 큰 값을 본다. 그림에서 색칠한 모든 점이 해당 조건을 만족하며 테두리만을 뜻하지 않는다.
 
 중심 $c$와 반지름 $r>0$인 유클리드 닫힌 공은
 
@@ -662,6 +735,10 @@ $$
 
 ## 16. Affine preimage: 출력 조건을 만족하는 입력들을 모으기
 
+Image(상)는 “이 입력들을 변환하면 <strong>어떤 출력</strong>이 나오는가?”를 묻는다. Preimage(역상)는 반대 방향의 질문이다. “출력이 정해 둔 조건을 만족하려면 <strong>어떤 입력</strong>을 넣을 수 있는가?”를 묻는다.
+
+예를 들어 두 입력을 더하는 함수에서 출력이 0부터 6 사이여야 한다면, 두 입력의 합이 그 구간에 들어가는 모든 입력 쌍을 찾는다. 출력 하나에 입력이 여러 개 대응해도 된다.
+
 출력 공간의 집합 $C$를 정한 뒤, 그 안으로 들어가는 <strong>모든 입력</strong>을 모은다.
 
 $$
@@ -690,7 +767,11 @@ $$
 f^{-1}(C)=\{x:0\le x_1+x_2\le6\}
 $$
 
-이다. 두 평행한 직선 사이의 무한한 띠다. 출력의 compact 구간을 역상으로 가져왔다고 입력 집합까지 bounded가 되는 것은 아니다. (t,−t) 방향으로는 끝없이 움직일 수 있다.
+이다. 두 평행한 직선 사이의 무한한 띠다.
+
+![출력 구간 [0,6]의 역상은 입력 평면에서 0≤x1+x2≤6인 무한한 띠다. 입력 (1,1)은 2, (4,0)은 4로 가며, (1,-1) 방향 이동은 출력을 바꾸지 않는다.](affine-preimage-strip.svg)
+
+오른쪽에서는 출력값 하나를 수직선에 표시하지만, 왼쪽에서는 입력 두 개를 한 점의 두 좌표로 표시한다. 입력의 첫 좌표를 늘린 만큼 둘째 좌표를 줄이면 합은 그대로이므로, 띠를 따라 끝없이 움직일 수 있다. 출력의 compact 구간을 역상으로 가져왔다고 입력 집합까지 bounded가 되는 것은 아니다. (t,−t) 방향으로는 끝없이 움직일 수 있다.
 
 norm ball의 역상을 사용하면 다음 집합의 볼록성도 바로 알 수 있다.
 
@@ -712,6 +793,10 @@ $$
 이를 $z$에서의 <strong>supporting hyperplane(지지 초평면)</strong>이라고 한다. 평면이 $C$를 양쪽으로 가르면 지지 초평면이 아니다.
 
 단위 닫힌 원판에서는 $z=(1,0)$에 대해 $x_{1}=1$인 직선이 한 예다. 원판 전체가 $x_{1}\le 1$ 쪽에 있고 $z$를 지난다.
+
+![닫힌 원판과 열린 원판 모두 x1=1 직선의 한쪽에 놓인다. 닫힌 원판은 접점 (1,0)을 포함하지만 열린 원판은 포함하지 않는다. 원판을 가로지르는 x1=0 직선은 지지선이 아니다.](supporting-lines.svg)
+
+왼쪽의 빨간 선은 원판을 양쪽으로 가르므로 supporting이 아니다. 파란 선은 원판 전체를 한쪽에 두고 경계점에서 받친다. 오른쪽은 같은 그림에서 경계의 포함 여부만 바꾼 경우다. 이 차이를 다음의 열린집합 설명과 함께 읽는다.
 
 수업과 교안의 <strong>supporting hyperplane theorem</strong>은 비어 있지 않은 convex set의 모든 경계점에 지지 초평면이 존재한다고 말한다. 같은 정리는 [Boyd·Vandenberghe의 공개 강의자료 §2.23](https://web.stanford.edu/~boyd/cvxbook/bv_cvxslides.pdf)에서도 확인할 수 있다.
 
