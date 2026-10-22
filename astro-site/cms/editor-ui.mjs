@@ -1,3 +1,4 @@
+import { themeIcons } from '../src/lib/theme-icons.mjs';
 import { mapScroll } from './scroll-map.mjs';
 
 let disposePreview;
@@ -23,9 +24,11 @@ export function initializeEditor() {
   const themeButton = document.createElement('button');
   themeButton.id = 'cave-editor-theme';
   themeButton.type = 'button';
+  themeButton.className = 'theme-toggle';
+  themeButton.innerHTML = themeIcons;
   const updateLabel = () => {
     const dark = document.documentElement.dataset.theme === 'dark';
-    themeButton.textContent = dark ? '☀' : '☾';
+    themeButton.setAttribute('aria-pressed', String(dark));
     themeButton.title = themeButton.ariaLabel = dark ? '라이트모드 켜기' : '다크모드 켜기';
   };
   themeButton.addEventListener('click', () => {

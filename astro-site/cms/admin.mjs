@@ -2,6 +2,7 @@ import { renderPreview } from './preview.mjs';
 import ko from 'decap-cms-locales/dist/esm/ko/index.js';
 import { attachPreview, initializeEditor } from './editor-ui.mjs';
 import './admin.css';
+import '../src/styles/header-controls.css';
 
 const CMS = window.CMS;
 const h = window.h;
