@@ -157,6 +157,7 @@ html,body,#nc-root{background:var(--paper)!important;color:var(--ink)!important;
 #nc-root input:focus,#nc-root textarea:focus,#nc-root [data-slate-editor]:focus{border-color:var(--accent)!important}
 #nc-root [class*="CollectionTopDescription"],
 #nc-root .cms-editor-visual [data-slate-editor] blockquote{background:var(--quote-bg);color:var(--quote-ink);border-left:3px solid var(--quote-line);padding:16px 20px}
+#nc-root [class*="CollectionTopDescription"]{margin:20px 0 24px;line-height:1.8}
 #nc-root [class*="ToolbarToggleLabel"]{color:var(--muted)}
 #nc-root [class*="ToolbarToggle"]:has(>[role="switch"][aria-checked="false"])>[class*="ToolbarToggleLabel"]:first-child,
 #nc-root [class*="ToolbarToggle"]:has(>[role="switch"][aria-checked="true"])>[class*="ToolbarToggleLabel"]:last-child{color:var(--accent)}
