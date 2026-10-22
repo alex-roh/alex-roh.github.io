@@ -58,9 +58,9 @@
 .pagination a[aria-current="page"]{background:var(--accent);color:var(--on-accent);font-weight:700}
 .pagination [aria-disabled="true"]{color:var(--muted);opacity:.5}
 
-/* Reading-spacing trial for the convex sets article only. */
-.prose[data-reading-spacing="compact"]{letter-spacing:-0.020em}
-.prose[data-reading-spacing="compact"] :is(pre,code,.katex){letter-spacing:normal}
+/* Shared reading spacing for all articles and CMS previews. */
+.prose{letter-spacing:-0.020em}
+.prose :is(pre,code,.katex){letter-spacing:normal}
 
 /* Reveal worked answers on a separate, theme-aware reading surface. */
 .prose .review-answer{margin:12px 0 30px}
