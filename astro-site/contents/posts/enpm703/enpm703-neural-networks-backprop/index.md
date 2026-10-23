@@ -10,7 +10,7 @@ tags:
   - backpropagation
 series: "ENPM703 Deep Learning"
 seriesOrder: 1
-updatedAt: "2026-10-22T21:17:49-04:00"
+updatedAt: "2026-10-22T21:33:27-04:00"
 ---
 
 신경망은 입력 숫자에서 특징을 만들고, 그 특징으로 예측하는 함수를 학습한다. 이미지를 숫자로 펴서 class score를 계산하는 것까지는 행렬곱으로 설명할 수 있다. 학습을 이해하려면 그다음 질문까지 이어져야 한다. <strong>예측이 틀렸을 때, 어떤 weight를 어느 방향으로 바꿔야 할까?</strong>
@@ -191,6 +191,11 @@ return out, cache
 ## 5. Two-layer neural network의 전체 forward
 
 이 글에서 말하는 <strong>two-layer network</strong>는 weight를 가진 affine layer가 두 개라는 뜻이다. <strong>Hidden layer는 하나</strong>다. Input layer를 별도의 trainable layer로 세지 않는다.
+
+![입력 feature 3개, hidden unit 4개, class score 2개가 완전 연결된 신경망. Hidden unit에는 ReLU를 적용한다.](network-connections.svg)
+
+그림은 <strong>sample 한 개</strong>가 흐르는 모습을 단순화한 것이다. 원은 값 하나, 선은 학습할 weight 하나다. Hidden unit 하나는 모든 입력의 가중합에 bias를 더하고 ReLU를 적용한다. 각 output은 hidden 값들을 다시 가중합한다. Bias 연결은 선이 복잡해지지 않도록 생략했다. 아래 CIFAR-10 예제의 3,072 → 100 → 10도 연결 원리는 같다.
+
 
 첫 번째 affine layer:
 
@@ -404,6 +409,11 @@ Weight가 여러 sample에 함께 쓰인다는 사실을 미분과 연결해 보
 > “Weight는 샘플마다 같은 거니까, 여러 sample이 만드는 loss에 동시에 영향을 주겠네?”
 
 정확하다. Mini-batch 안에서 sample A와 sample B는 서로 다른 입력을 갖지만 <strong>같은 weight</strong>를 쓴다.
+
+![서로 다른 두 sample이 같은 weight w를 사용한다. 각 입력과 upstream gradient를 곱한 20과 80을 더해 dw 100을 얻는다.](shared-weight-gradient.svg)
+
+파란 화살표는 forward, 주황 화살표는 뒤에서 도착한 gradient다. 두 줄은 다른 sample의 계산이지만 <strong>업데이트할 w는 하나</strong>다. 따라서 각 줄의 `입력 × upstream`을 그 w의 gradient로 모은다. 그림의 `dY`에는 평균 loss의 `1/N`이 이미 포함되어 있다.
+
 
 일단 neuron 하나, weight 하나만 보자.
 
@@ -635,6 +645,11 @@ db = dout.sum(axis=0)
 <strong>맞다. 이것이 `dX`의 핵심이다.</strong>
 
 이번에는 <strong>sample 하나만</strong> 보자. 그 sample의 입력 feature 하나를 `x`라고 하고, output neuron 세 개에 모두 연결되어 있다고 하자. 다른 feature들의 기여는 생략한다.
+
+![하나의 입력 x가 세 output에 연결된다. 각 output에서 돌아온 upstream에 weight를 곱한 8, -5, 6을 더하면 dx는 9다.](input-gradient-paths.svg)
+
+이번 그림은 <strong>한 sample 안의 세 output</strong>이다. 각 주황 경로에서 `upstream × weight`를 구한 뒤 같은 입력 `x`에 도착한 값을 합한다. 두 번째 경로처럼 weight가 음수이면 upstream이 양수여도 기여는 음수가 될 수 있다. `dW`에서 sample들을 합했던 것과, `dX`에서 output 경로들을 합하는 것을 구분하자.
+
 
 $$
 y_1=xw_1+\cdots+b_1
