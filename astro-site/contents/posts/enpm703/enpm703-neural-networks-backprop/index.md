@@ -1255,6 +1255,8 @@ Softmax loss에서 이미 평균 loss를 미분하며 `1/N`이 gradient에 반�
 
 ---
 
+다음 글: [SGD에서 Adam까지 — gradient로 weight를 바꾸는 방법](/enpm703-optimizers-sgd-to-adam/)
+
 ## 참고 자료
 
 ENPM703 과제의 `two_layer_net.ipynb`, `FullyConnectedNets.ipynb`와 관련 신경망 구현 코드.
