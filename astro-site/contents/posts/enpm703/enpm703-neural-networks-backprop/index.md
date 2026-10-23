@@ -832,7 +832,7 @@ $$
 
 ### 과제 코드에서 세 gradient를 함께 읽기
 
-`layers.py`의 `affine_backward`에서 초기 placeholder와 안내 주석을 덜어내면 아래 계산이 남는다. `import numpy as np`가 되어 있다고 가정한다.
+`layers.py`의 `affine_backward`는 아래 세 계산을 묶는다. `import numpy as np`가 되어 있다고 가정한다.
 
 ```python
 def affine_backward(dout, cache):
@@ -846,7 +846,7 @@ def affine_backward(dout, cache):
 
 `dw`는 입력값을 곱해 sample 방향으로 합하고, `db`는 local derivative가 1이라 upstream만 sample 방향으로 합한다. `dx`는 output 방향으로 합한 뒤 forward 이전 입력 shape로 복구한다. **세 계산 모두 같은 최종 loss를 미분한다. 합하는 축이 다른 이유는 미분 대상이 다르기 때문이다.**
 
-Notebook의 affine backward 확인 셀은 numerical gradient와 이 세 값을 비교한다. 저장된 출력은 `dx` 약 $5.40\times10^{-11}$, `dw` 약 $9.90\times10^{-11}$, `db` 약 $2.41\times10^{-11}$의 상대 오차다. 이는 Notebook에 남아 있는 실행 기록이며, 아래에서 설명하는 numerical gradient는 입력을 아주 조금씩 바꿔 출력 변화를 측정해 analytic gradient와 비교하는 방법이다.
+이 세 gradient는 **numerical gradient(수치 미분)**와 비교해 확인할 수 있다. 미분 대상의 값을 아주 조금씩 바꿔 결과의 변화를 측정하고, backward가 계산한 gradient와 비교하는 방법이다. Shape가 맞더라도 미분 계산이 틀릴 수 있으므로, 작은 입력에서 두 결과가 가까운지 확인한다.
 
 ---
 
@@ -1190,23 +1190,8 @@ $$
 **Q6.** 왜 softmax loss 뒤의 `affine_backward`에서는 또 batch size로 나누지 않을까?  
 **답:** Softmax loss에서 이미 평균 loss를 미분하며 `1/N`이 gradient에 반영되었기 때문이다.
 
-### 이 글에서 의도적으로 다루지 않은 내용
-
-- 깊은 network의 학습 안정성, initialization, vanishing/exploding gradients
-- Momentum, RMSProp, Adam의 세부 update equations
-- Batch normalization, dropout, convolution
-- 모든 경우에 적용되는 일반 Jacobian 계산
-
-이 항목들은 **`dW`, `db`, `dX`가 왜 이렇게 계산되는지 설명할 수 있는 다음**에 공부하는 편이 훨씬 수월하다.
-
 ---
 
-## 출처와 설명 범위
+## 참고 자료
 
-제공된 개인 학습 노트 **「신경망을 처음부터 다시 이해하기: Affine, ReLU, Loss, Backpropagation」**을 바탕으로 독립적인 설명문으로 재구성했다. 원본의 sample·feature 구분, affine gradient의 경로별 유도, ReLU, softmax, L2 regularization, 다층 확장의 범위를 유지했다.
-
-코드 연결에는 추가로 제공된 `Python Notebooks/two_layer_net.ipynb`, `FullyConnectedNets.ipynb`와, 구현이 들어 있는 `assignment1-part2/assignment1/cs231n/`의 `layers.py`, `layer_utils.py`, `classifiers/fc_net.py`를 참고했다. 코드 발췌에서는 과제 안내 주석과 placeholder를 생략했다. Notebook의 저장된 출력은 실행 기록으로 구분했으며, 전체 CIFAR-10 학습을 이번 글 작성 과정에서 다시 실행하지 않았다.
-
-원본 노트는 ENPM703의 *Module 05a — Neural Networks*, *Module 05b — Back Propagation*, 2026년 10월 1일·8일 강의 캡션과 `layers.py`, `fc_net.py`, `optim.py`를 참고 자료로 적고 있다. 슬라이드·강의 캡션과 현재 과제 전체 요구사항은 이번 글에서 별도로 대조하지 않았다. 특정 과제의 최신 요구사항이나 채점 기준보다는 그 코드를 이해하기 위한 기초를 설명한다.
-
-Batch normalization, dropout, convolution과 Momentum·Adam의 세부 계산은 이 글의 범위에 포함하지 않는다.
+ENPM703 과제의 `two_layer_net.ipynb`, `FullyConnectedNets.ipynb`와 관련 신경망 구현 코드.
