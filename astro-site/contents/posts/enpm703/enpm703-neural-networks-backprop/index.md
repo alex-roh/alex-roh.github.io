@@ -10,6 +10,7 @@ tags:
   - backpropagation
 series: "ENPM703 Deep Learning"
 seriesOrder: 1
+updatedAt: "2026-10-22T21:07:17-04:00"
 ---
 
 신경망은 입력 숫자에서 특징을 만들고, 그 특징으로 예측하는 함수를 학습한다. 이미지를 숫자로 펴서 class score를 계산하는 것까지는 행렬곱으로 설명할 수 있다. 학습을 이해하려면 그다음 질문까지 이어져야 한다. **예측이 틀렸을 때, 어떤 weight를 어느 방향으로 바꿔야 할까?**
@@ -829,6 +830,26 @@ $$
 
 ---
 
+### 과제 코드에서 세 gradient를 함께 읽기
+
+`layers.py`의 `affine_backward`에서 초기 placeholder와 안내 주석을 덜어내면 아래 계산이 남는다. `import numpy as np`가 되어 있다고 가정한다.
+
+```python
+def affine_backward(dout, cache):
+    x, w, b = cache
+    x_flat = x.reshape(x.shape[0], -1)
+    dw = x_flat.T @ dout
+    dx = (dout @ w.T).reshape(x.shape)
+    db = dout.sum(axis=0)
+    return dx, dw, db
+```
+
+`dw`는 입력값을 곱해 sample 방향으로 합하고, `db`는 local derivative가 1이라 upstream만 sample 방향으로 합한다. `dx`는 output 방향으로 합한 뒤 forward 이전 입력 shape로 복구한다. **세 계산 모두 같은 최종 loss를 미분한다. 합하는 축이 다른 이유는 미분 대상이 다르기 때문이다.**
+
+Notebook의 affine backward 확인 셀은 numerical gradient와 이 세 값을 비교한다. 저장된 출력은 `dx` 약 $5.40\times10^{-11}$, `dw` 약 $9.90\times10^{-11}$, `db` 약 $2.41\times10^{-11}$의 상대 오차다. 이는 Notebook에 남아 있는 실행 기록이며, 아래에서 설명하는 numerical gradient는 입력을 아주 조금씩 바꿔 출력 변화를 측정해 analytic gradient와 비교하는 방법이다.
+
+---
+
 ## 14. ReLU backward와 softmax gradient가 어떻게 붙는가?
 
 ### ReLU backward
@@ -873,6 +894,29 @@ dx /= N
 ```
 
 이렇게 나온 score gradient를 마지막 affine backward에 **upstream**으로 전달한다.
+
+---
+
+### 과제의 softmax 함수: 생략했던 중간값까지 연결하기
+
+```python
+def softmax_loss(x, y):
+    N = x.shape[0]
+    rows = np.arange(N)
+    shifted = x - np.max(x, axis=1, keepdims=True)
+    log_probs = shifted - np.log(
+        np.sum(np.exp(shifted), axis=1, keepdims=True)
+    )
+    loss = -np.mean(log_probs[rows, y])
+    dx = np.exp(log_probs)
+    dx[rows, y] -= 1
+    dx /= N
+    return loss, dx
+```
+
+여기의 `x`는 이미지가 아니라 `(N,C)` 크기의 **score matrix**다. `y`는 `(N,)` 크기의 정수 정답 label이며, class 번호는 0부터 시작한다. `rows`와 `y`를 함께 사용하면 각 sample에서 정답 class의 값 하나씩을 고른다.
+
+`log_probs`는 softmax 확률의 로그다. 먼저 확률을 만든 뒤 아주 작은 확률에 로그를 취하는 대신, 로그 형태를 직접 계산한다. `np.exp(log_probs)`로 확률을 얻고, 정답 위치에서 1을 뺀 뒤 **이 함수에서만** `N`으로 나눈다. 반환된 `dx`가 다음 절의 `dS`, 즉 `dscores`다.
 
 ---
 
@@ -952,6 +996,47 @@ $$
 
 ---
 
+### `TwoLayerNet.loss`의 핵심 구간
+
+다음은 과제 소스의 `loss` 메서드에서 순전파·역전파 부분만 뽑은 것이다. `self.params`에 `W1`, `b1`, `W2`, `b2`가 준비되어 있고, affine·ReLU helper 함수가 import된 문맥에서 읽는다.
+
+```python
+W1, b1 = self.params["W1"], self.params["b1"]
+W2, b2 = self.params["W2"], self.params["b2"]
+
+h, cache1 = affine_relu_forward(X, W1, b1)
+scores, cache2 = affine_forward(h, W2, b2)
+if y is None:
+    return scores
+
+loss, dscores = softmax_loss(scores, y)
+loss += 0.5 * self.reg * (np.sum(W1 * W1) + np.sum(W2 * W2))
+
+dh, dW2, db2 = affine_backward(dscores, cache2)
+dX, dW1, db1 = affine_relu_backward(dh, cache1)
+
+grads = {}
+grads["W1"] = dW1 + self.reg * W1
+grads["b1"] = db1
+grads["W2"] = dW2 + self.reg * W2
+grads["b2"] = db2
+return loss, grads
+```
+
+`y is None`이면 정답과 비교하지 않고 score만 반환한다. 정답이 주어지면 loss와 gradient를 계산한다. **Forward에는 `cache1 → cache2`, backward에는 `cache2 → cache1`이 쓰인다.** `dh`가 첫 번째 layer로 들어가는 upstream이고, `dX`는 원본 입력까지 되돌아온 gradient다.
+
+`affine_relu_backward` 안에서는 아래처럼 ReLU를 먼저, affine을 나중에 되돌린다.
+
+```python
+fc_cache, relu_cache = cache
+da = relu_backward(dout, relu_cache)
+dx, dw, db = affine_backward(da, fc_cache)
+```
+
+Loss와 weight gradient에 함께 들어간 `self.reg` 항은 다음 절에서 연결한다.
+
+---
+
 ## 16. Regularization과 실제 weight update
 
 위에서 계산한 gradient는 기본적으로 **data loss의 영향**이다. L2 regularization을 사용한다면 loss에 추가 항이 들어간다.
@@ -992,6 +1077,31 @@ w = w - learning_rate * dw
 그다음 새로운 mini-batch로 forward → loss → backward → update 과정을 반복한다.
 
 Dataset이 천만 장이어도 **매 update마다 천만 장 전부를 사용해야 하는 것은 아니다.** 예를 들어 mini-batch 100장에 대해서만 loss/gradient를 계산하고 update한 다음 다음 batch로 넘어갈 수 있다. 이것이 mini-batch SGD의 핵심이다.
+
+---
+
+### Notebook에서 실제 학습을 시작하는 부분
+
+`two_layer_net.ipynb`에서 사용한 SGD 학습 호출이다. CIFAR-10 전처리를 마친 `data`와 `TwoLayerNet`, `Solver` import가 필요한 코드다.
+
+```python
+model = TwoLayerNet(32 * 32 * 3, 50, 10)
+solver = Solver(
+    model,
+    data,
+    update_rule="sgd",
+    optim_config={"learning_rate": 1e-3},
+    lr_decay=0.95,
+    num_epochs=10,
+    batch_size=100,
+    print_every=100,
+)
+solver.train()
+```
+
+입력 3,072개에서 hidden feature 50개를 만들고 class score 10개를 출력한다. `batch_size=100`은 한 update에 사용할 sample 수, `learning_rate`는 parameter를 움직이는 크기다. Epoch는 훈련 데이터 한 번 분량을 처리하는 단위이며, 이 Solver는 epoch 경계에서 learning rate에 `lr_decay`를 곱한다.
+
+`solver.train()`이 호출되면 mini-batch 선택 → `model.loss(X_batch, y_batch)` → gradient로 parameter update를 반복한다. **`model.loss`를 한 번 호출하는 것과 모델 학습을 끝내는 것은 다르다.** 이 설정은 당시 실험을 읽기 위한 예이며, 항상 가장 좋은 설정이라는 뜻은 아니다.
 
 ---
 
@@ -1095,6 +1205,8 @@ $$
 
 제공된 개인 학습 노트 **「신경망을 처음부터 다시 이해하기: Affine, ReLU, Loss, Backpropagation」**을 바탕으로 독립적인 설명문으로 재구성했다. 원본의 sample·feature 구분, affine gradient의 경로별 유도, ReLU, softmax, L2 regularization, 다층 확장의 범위를 유지했다.
 
-원본 노트는 ENPM703의 *Module 05a — Neural Networks*, *Module 05b — Back Propagation*, 2026년 10월 1일·8일 강의 캡션과 `layers.py`, `fc_net.py`, `optim.py`를 참고 자료로 적고 있다. 이번 글에서는 해당 슬라이드·캡션·과제 파일을 별도로 대조하지 않았다. 특정 과제의 최신 요구사항이나 채점 기준보다는 그 코드를 이해하기 위한 기초를 설명한다.
+코드 연결에는 추가로 제공된 `Python Notebooks/two_layer_net.ipynb`, `FullyConnectedNets.ipynb`와, 구현이 들어 있는 `assignment1-part2/assignment1/cs231n/`의 `layers.py`, `layer_utils.py`, `classifiers/fc_net.py`를 참고했다. 코드 발췌에서는 과제 안내 주석과 placeholder를 생략했다. Notebook의 저장된 출력은 실행 기록으로 구분했으며, 전체 CIFAR-10 학습을 이번 글 작성 과정에서 다시 실행하지 않았다.
+
+원본 노트는 ENPM703의 *Module 05a — Neural Networks*, *Module 05b — Back Propagation*, 2026년 10월 1일·8일 강의 캡션과 `layers.py`, `fc_net.py`, `optim.py`를 참고 자료로 적고 있다. 슬라이드·강의 캡션과 현재 과제 전체 요구사항은 이번 글에서 별도로 대조하지 않았다. 특정 과제의 최신 요구사항이나 채점 기준보다는 그 코드를 이해하기 위한 기초를 설명한다.
 
 Batch normalization, dropout, convolution과 Momentum·Adam의 세부 계산은 이 글의 범위에 포함하지 않는다.
