@@ -10,22 +10,22 @@ tags:
   - backpropagation
 series: "ENPM703 Deep Learning"
 seriesOrder: 1
-updatedAt: "2026-10-22T21:07:17-04:00"
+updatedAt: "2026-10-22T21:17:49-04:00"
 ---
 
-신경망은 입력 숫자에서 특징을 만들고, 그 특징으로 예측하는 함수를 학습한다. 이미지를 숫자로 펴서 class score를 계산하는 것까지는 행렬곱으로 설명할 수 있다. 학습을 이해하려면 그다음 질문까지 이어져야 한다. **예측이 틀렸을 때, 어떤 weight를 어느 방향으로 바꿔야 할까?**
+신경망은 입력 숫자에서 특징을 만들고, 그 특징으로 예측하는 함수를 학습한다. 이미지를 숫자로 펴서 class score를 계산하는 것까지는 행렬곱으로 설명할 수 있다. 학습을 이해하려면 그다음 질문까지 이어져야 한다. <strong>예측이 틀렸을 때, 어떤 weight를 어느 방향으로 바꿔야 할까?</strong>
 
-ENPM703 시리즈의 첫 글은 **입력 → Affine → ReLU → Score → Loss → Backpropagation → Update**를 한 흐름으로 연결한다. 숫자 하나의 계산에서 출발해 mini-batch의 배열 계산으로 확장한다. 읽고 나면 `dW`, `db`, `dX`의 공식을 외우는 대신, 무엇을 곱하고 어떤 경로를 더하는지 설명하는 것이 목표다.
+ENPM703 시리즈의 첫 글은 <strong>입력 → Affine → ReLU → Score → Loss → Backpropagation → Update</strong>를 한 흐름으로 연결한다. 숫자 하나의 계산에서 출발해 mini-batch의 배열 계산으로 확장한다. 읽고 나면 `dW`, `db`, `dX`의 공식을 외우는 대신, 무엇을 곱하고 어떤 경로를 더하는지 설명하는 것이 목표다.
 
-처음 읽을 때는 **1–7절의 순전파**, **8–14절의 역전파 원리**, **15–18절의 구현 연결** 순서로 읽으면 된다. 행렬곱은 한 행과 한 열의 같은 위치 숫자들을 곱해 더하는 계산이고, 편미분은 다른 변수들을 고정한 채 한 변수만 조금 바꿀 때 결과가 얼마나 변하는지 나타내는 값이다. 이 두 계산을 작은 예제로 연결한다.
+처음 읽을 때는 <strong>1–7절의 순전파</strong>, <strong>8–14절의 역전파 원리</strong>, <strong>15–18절의 구현 연결</strong> 순서로 읽으면 된다. 행렬곱은 한 행과 한 열의 같은 위치 숫자들을 곱해 더하는 계산이고, 편미분은 다른 변수들을 고정한 채 한 변수만 조금 바꿀 때 결과가 얼마나 변하는지 나타내는 값이다. 이 두 계산을 작은 예제로 연결한다.
 
-> **표기 약속:** `N`은 한 번에 처리하는 sample 수, `D`는 sample당 입력 feature 수, `M`은 한 affine layer의 출력 수다. `dX`는 작은 변화량 자체가 아니라 **최종 loss를 X로 미분한 gradient**를 뜻한다. `@`는 행렬곱, `*`와 $\odot$는 같은 위치의 성분끼리 곱하는 연산이다.
+> <strong>표기 약속:</strong> `N`은 한 번에 처리하는 sample 수, `D`는 sample당 입력 feature 수, `M`은 한 affine layer의 출력 수다. `dX`는 작은 변화량 자체가 아니라 <strong>최종 loss를 X로 미분한 gradient</strong>를 뜻한다. `@`는 행렬곱, `*`와 $\odot$는 같은 위치의 성분끼리 곱하는 연산이다.
 
 ## 1. 신경망은 왜 필요한가?
 
 ### 출발점: linear classifier
 
-CIFAR-10에는 비행기, 자동차, 고양이 같은 이미지들이 있다. 이미지가 주어지면 모델은 각 class에 대한 **score**를 계산하고, 가장 높은 score를 가진 class를 예측한다.
+CIFAR-10에는 비행기, 자동차, 고양이 같은 이미지들이 있다. 이미지가 주어지면 모델은 각 class에 대한 <strong>score</strong>를 계산하고, 가장 높은 score를 가진 class를 예측한다.
 
 Linear classifier는 입력 feature들에 weight를 곱해 더한 다음 bias를 더한다.
 
@@ -33,28 +33,28 @@ $$
 s = w^T x+b
 $$
 
-여기서 입력 feature는 이미지의 pixel values일 수도 있고, 사람이 미리 계산해 놓은 특징(HOG 등)일 수도 있다. **Weight는 어떤 feature가 score에 얼마만큼 기여하는지** 결정한다. Bias는 전체 score를 이동시키는 항이다.
+여기서 입력 feature는 이미지의 pixel values일 수도 있고, 사람이 미리 계산해 놓은 특징(HOG 등)일 수도 있다. <strong>Weight는 어떤 feature가 score에 얼마만큼 기여하는지</strong> 결정한다. Bias는 전체 score를 이동시키는 항이다.
 
 하지만 하나의 linear transformation만으로는 복잡한 class 경계를 자유롭게 표현하기 어렵다. 예를 들어 XOR처럼 단일 직선으로 두 class를 나눌 수 없는 경우가 있다.
 
-입력 특징을 사람이 설계하는 **feature engineering**에서 한 걸음 더 나아가, neural network는 분류에 쓸 중간 특징도 학습한다. 이전처럼 입력을 곧바로 class score로 보내는 대신, 중간에 **derived features(학습된 중간 특징)**를 만드는 것이다.
+입력 특징을 사람이 설계하는 <strong>feature engineering</strong>에서 한 걸음 더 나아가, neural network는 분류에 쓸 중간 특징도 학습한다. 이전처럼 입력을 곧바로 class score로 보내는 대신, 중간에 <strong>derived features(학습된 중간 특징)</strong>를 만드는 것이다.
 
 ### 신경망의 아이디어
 
-한 neuron도 기본적으로는 weighted sum과 bias를 계산한다. 새로운 것은 그 다음에 **nonlinear activation function**을 적용한다는 점이다. 여러 neuron을 사용하면 입력을 여러 방향에서 변환한 뒤, 그 결과를 다음 layer에서 다시 조합할 수 있다.
+한 neuron도 기본적으로는 weighted sum과 bias를 계산한다. 새로운 것은 그 다음에 <strong>nonlinear activation function</strong>을 적용한다는 점이다. 여러 neuron을 사용하면 입력을 여러 방향에서 변환한 뒤, 그 결과를 다음 layer에서 다시 조합할 수 있다.
 
-따라서 신경망을 신비한 블랙박스보다는 **익숙한 linear operations와 작은 nonlinear operations를 여러 번 연결한 모델**로 이해하는 편이 쉽다.
+따라서 신경망을 신비한 블랙박스보다는 <strong>익숙한 linear operations와 작은 nonlinear operations를 여러 번 연결한 모델</strong>로 이해하는 편이 쉽다.
 
 ---
 
 ## 2. 이미지, sample, feature, neuron을 먼저 구분하기
 
-먼저 **training sample 수**, **feature 수**, **neuron 수**를 구분해야 한다. 셋은 배열에서 서로 다른 역할을 한다.
+먼저 <strong>training sample 수</strong>, <strong>feature 수</strong>, <strong>neuron 수</strong>를 구분해야 한다. 셋은 배열에서 서로 다른 역할을 한다.
 
-- **Sample:** 학습에 쓰는 이미지 한 장. Mini-batch가 100이면 sample이 100장이다.
-- **Feature:** 이미지 한 장을 설명하는 숫자 하나. CIFAR-10 RGB 원본 이미지는 한 장당 3 × 32 × 32 = **3,072 features**다.
-- **Neuron / hidden unit:** 해당 layer가 만들어 내는 새로운 출력값 하나. Hidden unit을 100개로 설정하면 이미지 한 장에서 100개의 hidden values가 나온다.
-- **Class:** 최종 예측 대상. CIFAR-10의 class 수는 10개다.
+- <strong>Sample:</strong> 학습에 쓰는 이미지 한 장. Mini-batch가 100이면 sample이 100장이다.
+- <strong>Feature:</strong> 이미지 한 장을 설명하는 숫자 하나. CIFAR-10 RGB 원본 이미지는 한 장당 3 × 32 × 32 = <strong>3,072 features</strong>다.
+- <strong>Neuron / hidden unit:</strong> 해당 layer가 만들어 내는 새로운 출력값 하나. Hidden unit을 100개로 설정하면 이미지 한 장에서 100개의 hidden values가 나온다.
+- <strong>Class:</strong> 최종 예측 대상. CIFAR-10의 class 수는 10개다.
 
 Mini-batch 100장을 하나의 배열에 담으면 다음 shape이다.
 
@@ -80,11 +80,11 @@ $$
 Z_1:\;(100,100)
 $$
 
-**첫 번째 100은 이미지 수, 두 번째 100은 이미지 한 장에서 만들어진 hidden feature 수**다. 둘이 우연히 같을 뿐 전혀 다른 축이다.
+<strong>첫 번째 100은 이미지 수, 두 번째 100은 이미지 한 장에서 만들어진 hidden feature 수</strong>다. 둘이 우연히 같을 뿐 전혀 다른 축이다.
 
 여기서 정말 중요한 사실이 있다.
 
-> 각 sample의 입력값은 서로 다르지만, **같은 layer의 weight와 bias는 mini-batch 모든 sample이 공유한다.**
+> 각 sample의 입력값은 서로 다르지만, <strong>같은 layer의 weight와 bias는 mini-batch 모든 sample이 공유한다.</strong>
 
 이 한 문장이 나중에 `dW`와 `db`에서 여러 sample의 gradient contribution을 더하는 이유다.
 
@@ -108,7 +108,7 @@ $$
 Y=XW+b
 $$
 
-**Affine**은 linear transformation에 bias를 더한 형태다. 엄밀하게는 bias가 있으므로 affine이라고 부른다.
+<strong>Affine</strong>은 linear transformation에 bias를 더한 형태다. 엄밀하게는 bias가 있으므로 affine이라고 부른다.
 
 ### 실제 NumPy 코드 읽기
 
@@ -121,9 +121,9 @@ return out, cache
 
 첫 번째 줄의 `x.shape[0]`은 sample 수다. `-1`은 나머지 차원의 크기를 자동 계산하라는 뜻이다. 따라서 CIFAR-10처럼 `(N, 3, 32, 32)`인 배열을 `(N, 3072)`로 바꾼다.
 
-두 번째 줄의 `@`는 matrix multiplication이다. `+ b`는 **broadcasting** 덕분에 같은 bias vector를 모든 sample row에 더한다.
+두 번째 줄의 `@`는 matrix multiplication이다. `+ b`는 <strong>broadcasting</strong> 덕분에 같은 bias vector를 모든 sample row에 더한다.
 
-세 번째 줄은 나중에 backward에서 다시 필요한 값을 저장한다. `cache`는 output이 아니라 **forward 당시의 메모**다. 마지막 줄에서 output과 cache를 함께 돌려준다.
+세 번째 줄은 나중에 backward에서 다시 필요한 값을 저장한다. `cache`는 output이 아니라 <strong>forward 당시의 메모</strong>다. 마지막 줄에서 output과 cache를 함께 돌려준다.
 
 일반적인 shape은 다음과 같다.
 
@@ -136,7 +136,7 @@ return out, cache
 
 ### 왜 한 neuron이 여러 개 있는 것처럼 보이나?
 
-Output neuron이 M개면 weight matrix의 **각 column**이 하나의 output neuron으로 들어가는 연결 weight들을 담는다(현재 NumPy 코드 기준). 같은 input sample이 여러 column과 dot product하면서 M개의 score를 얻는다.
+Output neuron이 M개면 weight matrix의 <strong>각 column</strong>이 하나의 output neuron으로 들어가는 연결 weight들을 담는다(현재 NumPy 코드 기준). 같은 input sample이 여러 column과 dot product하면서 M개의 score를 얻는다.
 
 ---
 
@@ -162,9 +162,9 @@ $$
 S=X(W_1W_2)+(b_1W_2+b_2)
 $$
 
-결국 **큰 affine transformation 하나로 합쳐진다.** 층을 두 개 쌓은 것만으로는 새로운 비선형 표현력이 생기지 않는다.
+결국 <strong>큰 affine transformation 하나로 합쳐진다.</strong> 층을 두 개 쌓은 것만으로는 새로운 비선형 표현력이 생기지 않는다.
 
-그래서 중간에 **activation function**을 넣는다. 여기서는 ReLU를 사용한다.
+그래서 중간에 <strong>activation function</strong>을 넣는다. 여기서는 ReLU를 사용한다.
 
 $$
 \operatorname{ReLU}(z)=\max(0,z)
@@ -184,13 +184,13 @@ cache = x
 return out, cache
 ```
 
-왜 입력 `x`를 cache할까? Backward에서는 **forward 당시 입력이 양수였는지** 알아야 하기 때문이다. ReLU는 단순하지만 신경망에 꼭 필요한 nonlinearity를 제공한다.
+왜 입력 `x`를 cache할까? Backward에서는 <strong>forward 당시 입력이 양수였는지</strong> 알아야 하기 때문이다. ReLU는 단순하지만 신경망에 꼭 필요한 nonlinearity를 제공한다.
 
 ---
 
 ## 5. Two-layer neural network의 전체 forward
 
-이 글에서 말하는 **two-layer network**는 weight를 가진 affine layer가 두 개라는 뜻이다. **Hidden layer는 하나**다. Input layer를 별도의 trainable layer로 세지 않는다.
+이 글에서 말하는 <strong>two-layer network</strong>는 weight를 가진 affine layer가 두 개라는 뜻이다. <strong>Hidden layer는 하나</strong>다. Input layer를 별도의 trainable layer로 세지 않는다.
 
 첫 번째 affine layer:
 
@@ -231,27 +231,27 @@ h, cache1 = affine_relu_forward(X, W1, b1)
 scores, cache2 = affine_forward(h, W2, b2)
 ```
 
-`affine_relu_forward`는 새로운 수학을 추가한 함수가 아니라 **affine forward + ReLU forward를 묶어 부르는 편의 함수**다.
+`affine_relu_forward`는 새로운 수학을 추가한 함수가 아니라 <strong>affine forward + ReLU forward를 묶어 부르는 편의 함수</strong>다.
 
 ---
 
 ## 6. Scores에서 Loss까지: SVM과 Softmax
 
-모델이 class scores를 만들었다고 해서 학습이 끝난 것은 아니다. 현재 weight가 얼마나 나쁜지 숫자로 평가해야 한다. 그 숫자가 **loss**다.
+모델이 class scores를 만들었다고 해서 학습이 끝난 것은 아니다. 현재 weight가 얼마나 나쁜지 숫자로 평가해야 한다. 그 숫자가 <strong>loss</strong>다.
 
 ### SVM loss
 
-Multiclass SVM은 올바른 class의 score가 다른 class보다 **margin만큼 더 높기를 요구**한다.
+Multiclass SVM은 올바른 class의 score가 다른 class보다 <strong>margin만큼 더 높기를 요구</strong>한다.
 
 $$
 L_{\mathrm{SVM}}=\sum_{j\ne y}\max(0,s_j-s_y+1)
 $$
 
-Margin 조건을 만족하면 해당 class에 대한 penalty는 0, 위반하면 penalty가 생긴다. 여기서 `svm_loss` 함수에 들어가는 `x`라는 이름은 원본 이미지가 아니라 **이미 계산된 score matrix**라는 점을 주의하자.
+Margin 조건을 만족하면 해당 class에 대한 penalty는 0, 위반하면 penalty가 생긴다. 여기서 `svm_loss` 함수에 들어가는 `x`라는 이름은 원본 이미지가 아니라 <strong>이미 계산된 score matrix</strong>라는 점을 주의하자.
 
 ### Softmax loss
 
-여기서는 **softmax + cross-entropy**를 사용한다.
+여기서는 <strong>softmax + cross-entropy</strong>를 사용한다.
 
 먼저 score들을 class probability로 바꾼다.
 
@@ -277,17 +277,17 @@ $$
 shifted = x - np.max(x, axis=1, keepdims=True)
 ```
 
-중요한 건 `softmax_loss`가 **loss 값만 주는 것이 아니라 score에 대한 gradient도 반환한다**는 사실이다. 그 gradient가 신경망 전체 backward의 출발점이 된다.
+중요한 건 `softmax_loss`가 <strong>loss 값만 주는 것이 아니라 score에 대한 gradient도 반환한다</strong>는 사실이다. 그 gradient가 신경망 전체 backward의 출발점이 된다.
 
-SVM과 softmax는 **모델의 weight 구조 자체가 아니라 scores를 평가하는 서로 다른 loss 설계**라고 이해하면 된다.
+SVM과 softmax는 <strong>모델의 weight 구조 자체가 아니라 scores를 평가하는 서로 다른 loss 설계</strong>라고 이해하면 된다.
 
 ---
 
 ## 7. Loss를 계산한 뒤에는 왜 gradient가 필요한가?
 
-우리의 목표는 단순히 loss를 측정하는 데 있지 않다. **Loss가 작아지도록 weight와 bias를 바꿔야 한다.**
+우리의 목표는 단순히 loss를 측정하는 데 있지 않다. <strong>Loss가 작아지도록 weight와 bias를 바꿔야 한다.</strong>
 
-Gradient는 현재 parameter를 조금 움직였을 때 loss가 어떻게 변하는지를 알려준다. **Gradient descent**는 그 gradient의 반대 방향으로 parameter를 업데이트한다.
+Gradient는 현재 parameter를 조금 움직였을 때 loss가 어떻게 변하는지를 알려준다. <strong>Gradient descent</strong>는 그 gradient의 반대 방향으로 parameter를 업데이트한다.
 
 $$
 W_{\mathrm{new}}=W_{\mathrm{old}}-\eta\frac{\partial L}{\partial W}
@@ -295,7 +295,7 @@ $$
 
 여기서 learning rate는 한 번에 얼마나 움직일지를 조절한다.
 
-Weight가 수십만 개라면 모든 weight의 gradient가 필요하다. 그 수많은 미분을 일일이 처음부터 계산하지 않고, **작은 계산 단위로 쪼개서 거꾸로 전달하는 방법**이 backpropagation이다.
+Weight가 수십만 개라면 모든 weight의 gradient가 필요하다. 그 수많은 미분을 일일이 처음부터 계산하지 않고, <strong>작은 계산 단위로 쪼개서 거꾸로 전달하는 방법</strong>이 backpropagation이다.
 
 ---
 
@@ -320,7 +320,7 @@ $$
 \frac{\partial q}{\partial x}
 $$
 
-앞에 있는 값은 뒤쪽에서 돌아온 **upstream gradient**, 뒤에 있는 값은 지금 연산의 **local gradient**다.
+앞에 있는 값은 뒤쪽에서 돌아온 <strong>upstream gradient</strong>, 뒤에 있는 값은 지금 연산의 <strong>local gradient</strong>다.
 
 $$
 \text{gradient passed backward}
@@ -328,18 +328,18 @@ $$
 \text{upstream gradient}\times\text{local derivative}
 $$
 
-그런데 하나의 변수가 **여러 계산 경로로** 최종 loss에 영향을 줬다면 어떻게 될까?
+그런데 하나의 변수가 <strong>여러 계산 경로로</strong> 최종 loss에 영향을 줬다면 어떻게 될까?
 
-각 경로에서 chain rule로 contribution을 계산한 다음, **같은 변수에 대한 contribution을 전부 더한다.**
+각 경로에서 chain rule로 contribution을 계산한 다음, <strong>같은 변수에 대한 contribution을 전부 더한다.</strong>
 
 $$
 \frac{\partial L}{\partial x}
 =g_1+g_2+g_3+\cdots
 $$
 
-여기서 `g1`은 upstream 자체가 아니라 **해당 경로의 upstream × local derivative까지 완료한 contribution**이라고 정의한다. 이 구분을 지켜야 한다. 이미 `g1` 안에 local derivative를 곱해 놓고 마지막에 weight를 또 곱하면 잘못된 계산이 된다.
+여기서 `g1`은 upstream 자체가 아니라 <strong>해당 경로의 upstream × local derivative까지 완료한 contribution</strong>이라고 정의한다. 이 구분을 지켜야 한다. 이미 `g1` 안에 local derivative를 곱해 놓고 마지막에 weight를 또 곱하면 잘못된 계산이 된다.
 
-> **역전파의 핵심:** 여러 경로마다 **upstream × local**을 구한 후, 그것들이 **같은 변수로 돌아오면 합한다.** Matrix multiplication은 이 곱과 합을 한꺼번에 계산할 뿐이다.
+> <strong>역전파의 핵심:</strong> 여러 경로마다 <strong>upstream × local</strong>을 구한 후, 그것들이 <strong>같은 변수로 돌아오면 합한다.</strong> Matrix multiplication은 이 곱과 합을 한꺼번에 계산할 뿐이다.
 
 ---
 
@@ -377,7 +377,7 @@ $$
 \frac{\partial y}{\partial b}=1
 $$
 
-따라서 **weight gradient를 계산하려면 forward 당시의 input이 필요하고**, **input gradient를 계산하려면 forward 당시의 weight가 필요하다.**
+따라서 <strong>weight gradient를 계산하려면 forward 당시의 input이 필요하고</strong>, <strong>input gradient를 계산하려면 forward 당시의 weight가 필요하다.</strong>
 
 그래서 다음처럼 저장한다.
 
@@ -387,13 +387,13 @@ cache = (x, w, b)
 
 실제로 이 구현의 `affine_backward`에서는 `b`의 값을 계산에 직접 사용하지 않는다. Bias의 local derivative는 항상 1이기 때문이다. 그럼에도 forward 인자 전체를 저장하면 일관된 인터페이스를 유지할 수 있다.
 
-원래 `x`의 shape도 기억해야 한다. Forward에서 flatten했지만, backward에서 돌려주는 `dx`는 **원래 입력과 같은 shape**이어야 하기 때문이다.
+원래 `x`의 shape도 기억해야 한다. Forward에서 flatten했지만, backward에서 돌려주는 `dx`는 <strong>원래 입력과 같은 shape</strong>이어야 하기 때문이다.
 
 정리하면:
 
-- `out`은 **다음 layer로 보내는 결과**다.
-- `cache`는 **현재 layer가 나중에 backward할 때 쓸 정보**다.
-- `dout`은 **뒤쪽 layer에서 나중에 도착한 upstream gradient**다.
+- `out`은 <strong>다음 layer로 보내는 결과</strong>다.
+- `cache`는 <strong>현재 layer가 나중에 backward할 때 쓸 정보</strong>다.
+- `dout`은 <strong>뒤쪽 layer에서 나중에 도착한 upstream gradient</strong>다.
 
 ---
 
@@ -403,7 +403,7 @@ Weight가 여러 sample에 함께 쓰인다는 사실을 미분과 연결해 보
 
 > “Weight는 샘플마다 같은 거니까, 여러 sample이 만드는 loss에 동시에 영향을 주겠네?”
 
-정확하다. Mini-batch 안에서 sample A와 sample B는 서로 다른 입력을 갖지만 **같은 weight**를 쓴다.
+정확하다. Mini-batch 안에서 sample A와 sample B는 서로 다른 입력을 갖지만 <strong>같은 weight</strong>를 쓴다.
 
 일단 neuron 하나, weight 하나만 보자.
 
@@ -421,7 +421,7 @@ $$
 L=\frac{L_A+L_B}{2}
 $$
 
-우리가 구하려는 것은 **전체 loss를 현재 weight에 대해 미분한 것**이다.
+우리가 구하려는 것은 <strong>전체 loss를 현재 weight에 대해 미분한 것</strong>이다.
 
 $$
 \frac{\partial L}{\partial w}
@@ -434,11 +434,11 @@ $$
 \right)
 $$
 
-왜 합할까? **전체 loss 자체가 각 sample loss의 평균**이기 때문이다. 같은 weight를 움직이면 A의 loss도 B의 loss도 바뀐다.
+왜 합할까? <strong>전체 loss 자체가 각 sample loss의 평균</strong>이기 때문이다. 같은 weight를 움직이면 A의 loss도 B의 loss도 바뀐다.
 
 그다음 각 sample의 contribution을 따로 구한다.
 
-**Sample A — upstream × local**
+<strong>Sample A — upstream × local</strong>
 
 $$
 g_A
@@ -449,7 +449,7 @@ g_A
 \frac{\partial L_A}{\partial y_A}x_A
 $$
 
-**Sample B — upstream × local**
+<strong>Sample B — upstream × local</strong>
 
 $$
 g_B
@@ -478,11 +478,11 @@ $$
 \frac{g_1+g_2+\cdots+g_N}{N}
 $$
 
-이것이 **하나의 weight가 여러 sample에서 공유되는 경우**, gradient contribution을 sample 방향으로 합하는 이유다.
+이것이 <strong>하나의 weight가 여러 sample에서 공유되는 경우</strong>, gradient contribution을 sample 방향으로 합하는 이유다.
 
 ### 그런데 코드에는 왜 `+`가 안 보일까?
 
-NumPy에서는 matrix multiplication의 `@` 연산 자체가 **multiply-and-add**를 수행한다.
+NumPy에서는 matrix multiplication의 `@` 연산 자체가 <strong>multiply-and-add</strong>를 수행한다.
 
 샘플 두 개와 입력 feature 두 개로 축소해 보자. Output neuron은 하나다.
 
@@ -494,7 +494,7 @@ X=
 \end{bmatrix}
 $$
 
-그리고 `dout`에 각 sample의 **평균 loss 기준 upstream gradient**가 들어 있다고 하자.
+그리고 `dout`에 각 sample의 <strong>평균 loss 기준 upstream gradient</strong>가 들어 있다고 하자.
 
 $$
 dY=
@@ -504,7 +504,7 @@ dY=
 \end{bmatrix}
 $$
 
-첫 번째 weight gradient는 **첫 번째 feature의 sample별 기여분을 합한 것**이다.
+첫 번째 weight gradient는 <strong>첫 번째 feature의 sample별 기여분을 합한 것</strong>이다.
 
 $$
 dw_1=2(10)+4(20)=100
@@ -536,7 +536,7 @@ X^TdY
 \end{bmatrix}
 $$
 
-즉 `@` **안에 이미 곱셈과 덧셈이 들어 있다.** 그래서 Python에 `+`나 `sum()`이 따로 보이지 않는다.
+즉 `@` <strong>안에 이미 곱셈과 덧셈이 들어 있다.</strong> 그래서 Python에 `+`나 `sum()`이 따로 보이지 않는다.
 
 일반적으로 다음과 같이 쓴다.
 
@@ -548,7 +548,7 @@ $$
 dw = x_flat.T @ dout
 ```
 
-**주의:** 위 숫자 예제의 `dY`를 **이미 평균 loss의 미분값**으로 놓았다. 일반적인 `softmax_loss`도 gradient를 마지막에 batch size로 나눈다. 따라서 그 뒤의 `affine_backward`에서 다시 나누지 않는다. 평균을 두 번 적용하면 틀린다.
+<strong>주의:</strong> 위 숫자 예제의 `dY`를 <strong>이미 평균 loss의 미분값</strong>으로 놓았다. 일반적인 `softmax_loss`도 gradient를 마지막에 batch size로 나눈다. 따라서 그 뒤의 `affine_backward`에서 다시 나누지 않는다. 평균을 두 번 적용하면 틀린다.
 
 ---
 
@@ -614,15 +614,15 @@ $$
 }
 $$
 
-즉 `dW`와 원리가 똑같다. 다만 **bias의 local derivative는 1**이라 input을 곱하는 과정이 없다.
+즉 `dW`와 원리가 똑같다. 다만 <strong>bias의 local derivative는 1</strong>이라 input을 곱하는 과정이 없다.
 
 ```python
 db = dout.sum(axis=0)
 ```
 
-여기서 `axis=0`은 **sample 방향**이다. `(N, M)` 크기의 upstream을 sample 방향으로 더하면 output neuron마다 bias gradient 하나씩 남아서 `(M,)`이 된다.
+여기서 `axis=0`은 <strong>sample 방향</strong>이다. `(N, M)` 크기의 upstream을 sample 방향으로 더하면 output neuron마다 bias gradient 하나씩 남아서 `(M,)`이 된다.
 
-**`db`만 더하는 것이 아니다.** `dW`도 sample에 대해 합한다. 다만 `dW`의 합은 `@`에 숨어 있고, `db`는 `sum()`으로 눈에 보일 뿐이다.
+<strong>`db`만 더하는 것이 아니다.</strong> `dW`도 sample에 대해 합한다. 다만 `dW`의 합은 `@`에 숨어 있고, `db`는 `sum()`으로 눈에 보일 뿐이다.
 
 ---
 
@@ -632,9 +632,9 @@ db = dout.sum(axis=0)
 
 > “입력 하나는 여러 output에 영향을 줬잖아? 그러면 각 output에서 오는 gradient를 전부 합해야 하는 거 아닌가?”
 
-**맞다. 이것이 `dX`의 핵심이다.**
+<strong>맞다. 이것이 `dX`의 핵심이다.</strong>
 
-이번에는 **sample 하나만** 보자. 그 sample의 입력 feature 하나를 `x`라고 하고, output neuron 세 개에 모두 연결되어 있다고 하자. 다른 feature들의 기여는 생략한다.
+이번에는 <strong>sample 하나만</strong> 보자. 그 sample의 입력 feature 하나를 `x`라고 하고, output neuron 세 개에 모두 연결되어 있다고 하자. 다른 feature들의 기여는 생략한다.
 
 $$
 y_1=xw_1+\cdots+b_1
@@ -648,13 +648,13 @@ $$
 y_3=xw_3+\cdots+b_3
 $$
 
-입력 `x` 하나가 **세 output 모두에 영향을 준다.**
+입력 `x` 하나가 <strong>세 output 모두에 영향을 준다.</strong>
 
 우리는 전체 loss를 `x`에 대해 미분하고 싶다.
 
 먼저 각 output path에서 `x`로 돌아오는 gradient contribution을 정의한다.
 
-**첫 번째 output 경로:**
+<strong>첫 번째 output 경로:</strong>
 
 $$
 g_1
@@ -665,7 +665,7 @@ g_1
 \frac{\partial L}{\partial y_1}w_1
 $$
 
-**두 번째 output 경로:**
+<strong>두 번째 output 경로:</strong>
 
 $$
 g_2
@@ -676,7 +676,7 @@ g_2
 \frac{\partial L}{\partial y_2}w_2
 $$
 
-**세 번째 output 경로:**
+<strong>세 번째 output 경로:</strong>
 
 $$
 g_3
@@ -687,7 +687,7 @@ g_3
 \frac{\partial L}{\partial y_3}w_3
 $$
 
-여기서 `g1`, `g2`, `g3`는 각각 **upstream과 local derivative를 이미 곱해 놓은 값**이다. 같은 `x`에 대한 기여분이므로 마지막에 더한다.
+여기서 `g1`, `g2`, `g3`는 각각 <strong>upstream과 local derivative를 이미 곱해 놓은 값</strong>이다. 같은 `x`에 대한 기여분이므로 마지막에 더한다.
 
 $$
 \boxed{
@@ -709,7 +709,7 @@ $$
 \frac{\partial L}{\partial y_3}w_3
 $$
 
-즉 **하나의 input이 영향을 준 모든 output 경로의 `upstream × weight`를 더한다.**
+즉 <strong>하나의 input이 영향을 준 모든 output 경로의 `upstream × weight`를 더한다.</strong>
 
 이 계산을 모든 sample, 모든 input feature에 대해 matrix로 한 번에 하면:
 
@@ -723,7 +723,7 @@ dx = (dout @ w.T).reshape(x.shape)
 
 ### 왜 `dX`는 sample끼리 더하지 않나?
 
-각 sample의 **입력은 별개의 값**이다. Sample A의 input gradient와 sample B의 input gradient를 섞어 하나로 만들면 안 된다.
+각 sample의 <strong>입력은 별개의 값</strong>이다. Sample A의 input gradient와 sample B의 input gradient를 섞어 하나로 만들면 안 된다.
 
 $$
 dX=
@@ -734,7 +734,7 @@ dX_B\\
 \end{bmatrix}
 $$
 
-**`dX`에서는 한 sample 안의 여러 output 경로를 합한다.** 반면 **`dW`와 `db`에서는 같은 parameter가 여러 sample에서 공유되므로 sample 방향으로 합한다.**
+<strong>`dX`에서는 한 sample 안의 여러 output 경로를 합한다.</strong> 반면 <strong>`dW`와 `db`에서는 같은 parameter가 여러 sample에서 공유되므로 sample 방향으로 합한다.</strong>
 
 그리고 첫 layer의 raw image input `dX`가 계산되더라도, 기본적인 supervised training에서는 그 image pixels를 optimizer가 학습 parameter처럼 업데이트하는 것이 아니다. `dX`는 이전 layer가 있다면 그쪽으로 전달할 gradient이고, 학습되는 주된 parameter는 weight와 bias다.
 
@@ -742,9 +742,9 @@ $$
 
 ## 13. 왜 transpose가 붙을까? 공식보다 shape 먼저 보기
 
-여기까지 오면 matrix 공식은 **새로운 수학 규칙이 아니라 앞에서 계산한 합을 묶어 쓴 표기**라는 걸 알 수 있다.
+여기까지 오면 matrix 공식은 <strong>새로운 수학 규칙이 아니라 앞에서 계산한 합을 묶어 쓴 표기</strong>라는 걸 알 수 있다.
 
-이 글의 NumPy 표기는 **각 sample을 row로 저장**한다.
+이 글의 NumPy 표기는 <strong>각 sample을 row로 저장</strong>한다.
 
 $$
 X:(N,D),\quad W:(D,M),\quad Y:(N,M)
@@ -783,7 +783,7 @@ $$
 dY^TX=(dW)^T
 $$
 
-즉 그 계산도 정보를 담고 있지만 **원래 `W`와 반대 shape**으로 나온다. 최종 `dW`를 얻으려면 한 번 더 transpose해야 한다.
+즉 그 계산도 정보를 담고 있지만 <strong>원래 `W`와 반대 shape</strong>으로 나온다. 최종 `dW`를 얻으려면 한 번 더 transpose해야 한다.
 
 ### Input gradient
 
@@ -824,9 +824,9 @@ $$
 | `db` | `dout.sum(axis=0)` | 여러 sample의 같은 bias | `(M,)` |
 | `dX` | `dout @ w.T` | 한 sample의 여러 output paths | `(N, D)` |
 
-**중요한 notation 차이:** 자료에 따라 sample 하나를 column vector로 놓고 `Wx` 형태로 설명하기도 한다. 이 글에서는 sample이 row이고 `X @ W`로 계산한다. 따라서 다른 자료와 이 글 사이에서 weight matrix 방향이 바뀔 수 있다. **의미는 같은 affine transformation이지만, transpose 위치를 외울 때는 어떤 convention을 사용하는지 먼저 확인해야 한다.**
+<strong>중요한 notation 차이:</strong> 자료에 따라 sample 하나를 column vector로 놓고 `Wx` 형태로 설명하기도 한다. 이 글에서는 sample이 row이고 `X @ W`로 계산한다. 따라서 다른 자료와 이 글 사이에서 weight matrix 방향이 바뀔 수 있다. <strong>의미는 같은 affine transformation이지만, transpose 위치를 외울 때는 어떤 convention을 사용하는지 먼저 확인해야 한다.</strong>
 
-또 하나의 엄밀한 주의점: 위의 **local derivative = X 또는 W**라는 표현은 scalar 예제로 설명할 때 직관적으로 유용하다. Matrix-to-matrix derivative를 엄밀하게 쓰면 Jacobian이라는 더 큰 구조가 등장한다. 그러나 실제 구현은 그 거대한 Jacobian을 만들지 않고 위의 matrix products로 계산한다.
+또 하나의 엄밀한 주의점: 위의 <strong>local derivative = X 또는 W</strong>라는 표현은 scalar 예제로 설명할 때 직관적으로 유용하다. Matrix-to-matrix derivative를 엄밀하게 쓰면 Jacobian이라는 더 큰 구조가 등장한다. 그러나 실제 구현은 그 거대한 Jacobian을 만들지 않고 위의 matrix products로 계산한다.
 
 ---
 
@@ -844,9 +844,9 @@ def affine_backward(dout, cache):
     return dx, dw, db
 ```
 
-`dw`는 입력값을 곱해 sample 방향으로 합하고, `db`는 local derivative가 1이라 upstream만 sample 방향으로 합한다. `dx`는 output 방향으로 합한 뒤 forward 이전 입력 shape로 복구한다. **세 계산 모두 같은 최종 loss를 미분한다. 합하는 축이 다른 이유는 미분 대상이 다르기 때문이다.**
+`dw`는 입력값을 곱해 sample 방향으로 합하고, `db`는 local derivative가 1이라 upstream만 sample 방향으로 합한다. `dx`는 output 방향으로 합한 뒤 forward 이전 입력 shape로 복구한다. <strong>세 계산 모두 같은 최종 loss를 미분한다. 합하는 축이 다른 이유는 미분 대상이 다르기 때문이다.</strong>
 
-이 세 gradient는 **numerical gradient(수치 미분)**와 비교해 확인할 수 있다. 미분 대상의 값을 아주 조금씩 바꿔 결과의 변화를 측정하고, backward가 계산한 gradient와 비교하는 방법이다. Shape가 맞더라도 미분 계산이 틀릴 수 있으므로, 작은 입력에서 두 결과가 가까운지 확인한다.
+이 세 gradient는 <strong>numerical gradient(수치 미분)</strong>와 비교해 확인할 수 있다. 미분 대상의 값을 아주 조금씩 바꿔 결과의 변화를 측정하고, backward가 계산한 gradient와 비교하는 방법이다. Shape가 맞더라도 미분 계산이 틀릴 수 있으므로, 작은 입력에서 두 결과가 가까운지 확인한다.
 
 ---
 
@@ -893,7 +893,7 @@ dx[rows, y] -= 1
 dx /= N
 ```
 
-이렇게 나온 score gradient를 마지막 affine backward에 **upstream**으로 전달한다.
+이렇게 나온 score gradient를 마지막 affine backward에 <strong>upstream</strong>으로 전달한다.
 
 ---
 
@@ -914,9 +914,9 @@ def softmax_loss(x, y):
     return loss, dx
 ```
 
-여기의 `x`는 이미지가 아니라 `(N,C)` 크기의 **score matrix**다. `y`는 `(N,)` 크기의 정수 정답 label이며, class 번호는 0부터 시작한다. `rows`와 `y`를 함께 사용하면 각 sample에서 정답 class의 값 하나씩을 고른다.
+여기의 `x`는 이미지가 아니라 `(N,C)` 크기의 <strong>score matrix</strong>다. `y`는 `(N,)` 크기의 정수 정답 label이며, class 번호는 0부터 시작한다. `rows`와 `y`를 함께 사용하면 각 sample에서 정답 class의 값 하나씩을 고른다.
 
-`log_probs`는 softmax 확률의 로그다. 먼저 확률을 만든 뒤 아주 작은 확률에 로그를 취하는 대신, 로그 형태를 직접 계산한다. `np.exp(log_probs)`로 확률을 얻고, 정답 위치에서 1을 뺀 뒤 **이 함수에서만** `N`으로 나눈다. 반환된 `dx`가 다음 절의 `dS`, 즉 `dscores`다.
+`log_probs`는 softmax 확률의 로그다. 먼저 확률을 만든 뒤 아주 작은 확률에 로그를 취하는 대신, 로그 형태를 직접 계산한다. `np.exp(log_probs)`로 확률을 얻고, 정답 위치에서 1을 뺀 뒤 <strong>이 함수에서만</strong> `N`으로 나눈다. 반환된 `dx`가 다음 절의 `dS`, 즉 `dscores`다.
 
 ---
 
@@ -948,13 +948,13 @@ $$
 
 ### Backward에서는 반대 순서
 
-**첫째.** Softmax loss가 score gradient를 돌려준다.
+<strong>첫째.</strong> Softmax loss가 score gradient를 돌려준다.
 
 $$
 dS=\frac{\partial L}{\partial S}
 $$
 
-**둘째.** 두 번째 affine backward가 세 gradient를 계산한다.
+<strong>둘째.</strong> 두 번째 affine backward가 세 gradient를 계산한다.
 
 $$
 dW_2=H^TdS
@@ -968,15 +968,15 @@ $$
 dH=dSW_2^T
 $$
 
-여기서 `dH`는 끝이 아니다. **첫 번째 layer 쪽으로 전달할 upstream gradient**다.
+여기서 `dH`는 끝이 아니다. <strong>첫 번째 layer 쪽으로 전달할 upstream gradient</strong>다.
 
-**셋째.** ReLU backward가 gradient를 통과시키거나 0으로 막는다.
+<strong>셋째.</strong> ReLU backward가 gradient를 통과시키거나 0으로 막는다.
 
 $$
 dZ_1=dH\odot\mathbf{1}[Z_1>0]
 $$
 
-**넷째.** 첫 번째 affine backward로 내려간다.
+<strong>넷째.</strong> 첫 번째 affine backward로 내려간다.
 
 $$
 dW_1=X^TdZ_1
@@ -992,7 +992,7 @@ $$
 
 이것이 two-layer network의 backpropagation이다. 여러 계층처럼 보여도 각 함수가 하는 일은 변하지 않는다.
 
-코드에서 `cache2`를 먼저 꺼내고 `cache1`을 나중에 쓰는 이유도 **forward의 역순**이기 때문이다.
+코드에서 `cache2`를 먼저 꺼내고 `cache1`을 나중에 쓰는 이유도 <strong>forward의 역순</strong>이기 때문이다.
 
 ---
 
@@ -1023,7 +1023,7 @@ grads["b2"] = db2
 return loss, grads
 ```
 
-`y is None`이면 정답과 비교하지 않고 score만 반환한다. 정답이 주어지면 loss와 gradient를 계산한다. **Forward에는 `cache1 → cache2`, backward에는 `cache2 → cache1`이 쓰인다.** `dh`가 첫 번째 layer로 들어가는 upstream이고, `dX`는 원본 입력까지 되돌아온 gradient다.
+`y is None`이면 정답과 비교하지 않고 score만 반환한다. 정답이 주어지면 loss와 gradient를 계산한다. <strong>Forward에는 `cache1 → cache2`, backward에는 `cache2 → cache1`이 쓰인다.</strong> `dh`가 첫 번째 layer로 들어가는 upstream이고, `dX`는 원본 입력까지 되돌아온 gradient다.
 
 `affine_relu_backward` 안에서는 아래처럼 ReLU를 먼저, affine을 나중에 되돌린다.
 
@@ -1039,7 +1039,7 @@ Loss와 weight gradient에 함께 들어간 `self.reg` 항은 다음 절에서 �
 
 ## 16. Regularization과 실제 weight update
 
-위에서 계산한 gradient는 기본적으로 **data loss의 영향**이다. L2 regularization을 사용한다면 loss에 추가 항이 들어간다.
+위에서 계산한 gradient는 기본적으로 <strong>data loss의 영향</strong>이다. L2 regularization을 사용한다면 loss에 추가 항이 들어간다.
 
 $$
 L_{\mathrm{total}}
@@ -1062,7 +1062,7 @@ $$
 
 여기서는 bias에 L2 penalty를 적용하지 않는다. 따라서 bias gradient에는 위 regularization term이 추가되지 않는다.
 
-구현에서는 **loss·gradient 계산**과 **parameter update**를 구분한다. Network와 Solver로 역할을 나누는 구조라면 network가 loss와 gradients를 반환하고, Solver가 optimizer를 호출해 parameter를 업데이트한다.
+구현에서는 <strong>loss·gradient 계산</strong>과 <strong>parameter update</strong>를 구분한다. Network와 Solver로 역할을 나누는 구조라면 network가 loss와 gradients를 반환하고, Solver가 optimizer를 호출해 parameter를 업데이트한다.
 
 Vanilla SGD에서는:
 
@@ -1076,7 +1076,7 @@ w = w - learning_rate * dw
 
 그다음 새로운 mini-batch로 forward → loss → backward → update 과정을 반복한다.
 
-Dataset이 천만 장이어도 **매 update마다 천만 장 전부를 사용해야 하는 것은 아니다.** 예를 들어 mini-batch 100장에 대해서만 loss/gradient를 계산하고 update한 다음 다음 batch로 넘어갈 수 있다. 이것이 mini-batch SGD의 핵심이다.
+Dataset이 천만 장이어도 <strong>매 update마다 천만 장 전부를 사용해야 하는 것은 아니다.</strong> 예를 들어 mini-batch 100장에 대해서만 loss/gradient를 계산하고 update한 다음 다음 batch로 넘어갈 수 있다. 이것이 mini-batch SGD의 핵심이다.
 
 ---
 
@@ -1101,7 +1101,7 @@ solver.train()
 
 입력 3,072개에서 hidden feature 50개를 만들고 class score 10개를 출력한다. `batch_size=100`은 한 update에 사용할 sample 수, `learning_rate`는 parameter를 움직이는 크기다. Epoch는 훈련 데이터 한 번 분량을 처리하는 단위이며, 이 Solver는 epoch 경계에서 learning rate에 `lr_decay`를 곱한다.
 
-`solver.train()`이 호출되면 mini-batch 선택 → `model.loss(X_batch, y_batch)` → gradient로 parameter update를 반복한다. **`model.loss`를 한 번 호출하는 것과 모델 학습을 끝내는 것은 다르다.** 이 설정은 당시 실험을 읽기 위한 예이며, 항상 가장 좋은 설정이라는 뜻은 아니다.
+`solver.train()`이 호출되면 mini-batch 선택 → `model.loss(X_batch, y_batch)` → gradient로 parameter update를 반복한다. <strong>`model.loss`를 한 번 호출하는 것과 모델 학습을 끝내는 것은 다르다.</strong> 이 설정은 당시 실험을 읽기 위한 예이며, 항상 가장 좋은 설정이라는 뜻은 아니다.
 
 ---
 
@@ -1109,20 +1109,20 @@ solver.train()
 
 `TwoLayerNet`은 첫 번째 affine + ReLU, 마지막 affine + softmax loss라는 고정된 구조였다.
 
-`FullyConnectedNet`은 원리를 바꾸는 것이 아니라 **같은 building blocks를 원하는 수만큼 반복하는 과제**다.
+`FullyConnectedNet`은 원리를 바꾸는 것이 아니라 <strong>같은 building blocks를 원하는 수만큼 반복하는 과제</strong>다.
 
-예를 들어 hidden dimensions를 `[100, 100]`으로 지정하면 hidden layer 둘과 마지막 output affine 하나가 생긴다. 그래서 course convention으로는 **three-layer network**라고 부른다.
+예를 들어 hidden dimensions를 `[100, 100]`으로 지정하면 hidden layer 둘과 마지막 output affine 하나가 생긴다. 그래서 course convention으로는 <strong>three-layer network</strong>라고 부른다.
 
 핵심은 네 가지다.
 
 1. 각 layer에 맞는 `W`, `b`를 초기화한다.
-2. Forward에서 affine/ReLU를 반복하고 **layer별 cache를 순서대로 저장**한다.
+2. Forward에서 affine/ReLU를 반복하고 <strong>layer별 cache를 순서대로 저장</strong>한다.
 3. 최종 score로 softmax loss를 계산한다.
-4. Backward에서는 **cache를 역순으로** 꺼내면서 `dW`, `db`를 저장하고, `dX`를 다음 이전 layer의 upstream으로 전달한다.
+4. Backward에서는 <strong>cache를 역순으로</strong> 꺼내면서 `dW`, `db`를 저장하고, `dX`를 다음 이전 layer의 upstream으로 전달한다.
 
-`fc_net.py`에서 `for` loop로 여러 층을 처리하는 것은 복잡한 수학이 추가돼서가 아니다. **고정된 두 계층을 일반적인 개수의 계층으로 확장했기 때문**이다.
+`fc_net.py`에서 `for` loop로 여러 층을 처리하는 것은 복잡한 수학이 추가돼서가 아니다. <strong>고정된 두 계층을 일반적인 개수의 계층으로 확장했기 때문</strong>이다.
 
-Momentum, RMSProp, Adam은 **gradient를 계산하는 규칙이 아니라, 계산된 gradient로 parameter를 업데이트하는 방식의 차이**다. 이 글에서 backpropagation의 원리를 먼저 마친 이유가 바로 여기에 있다.
+Momentum, RMSProp, Adam은 <strong>gradient를 계산하는 규칙이 아니라, 계산된 gradient로 parameter를 업데이트하는 방식의 차이</strong>다. 이 글에서 backpropagation의 원리를 먼저 마친 이유가 바로 여기에 있다.
 
 ---
 
@@ -1130,29 +1130,29 @@ Momentum, RMSProp, Adam은 **gradient를 계산하는 규칙이 아니라, 계�
 
 ### 코드를 작성할 때의 순서
 
-1. **배열의 shape를 먼저 적는다.** 입력 `(N,D)`, hidden `(N,H)`, score `(N,C)`를 구분하고 weight·bias shape를 정한다.
-2. **작은 연산부터 연결한다.** Affine forward와 ReLU forward를 연결하고 각 연산의 cache를 남긴다.
-3. **Loss와 score gradient를 계산한다.** 평균 loss의 `1/N`을 어디에 적용하는지 한 곳으로 정한다.
-4. **Forward의 역순으로 backward한다.** 마지막 affine → ReLU → 첫 affine 순서로 upstream을 넘긴다. 각 gradient의 shape는 미분 대상과 같아야 한다.
-5. **L2 항을 loss와 gradient 양쪽에 넣는다.** $\lambda\lVert W\rVert_F^2/2$를 더했다면 weight gradient에는 $\lambda W$를 더한다.
-6. **Optimizer가 parameter를 갱신한다.** Cache를 사용하는 backward가 끝나기 전에 weight를 바꾸지 않는다.
+1. <strong>배열의 shape를 먼저 적는다.</strong> 입력 `(N,D)`, hidden `(N,H)`, score `(N,C)`를 구분하고 weight·bias shape를 정한다.
+2. <strong>작은 연산부터 연결한다.</strong> Affine forward와 ReLU forward를 연결하고 각 연산의 cache를 남긴다.
+3. <strong>Loss와 score gradient를 계산한다.</strong> 평균 loss의 `1/N`을 어디에 적용하는지 한 곳으로 정한다.
+4. <strong>Forward의 역순으로 backward한다.</strong> 마지막 affine → ReLU → 첫 affine 순서로 upstream을 넘긴다. 각 gradient의 shape는 미분 대상과 같아야 한다.
+5. <strong>L2 항을 loss와 gradient 양쪽에 넣는다.</strong> $\lambda\lVert W\rVert_F^2/2$를 더했다면 weight gradient에는 $\lambda W$를 더한다.
+6. <strong>Optimizer가 parameter를 갱신한다.</strong> Cache를 사용하는 backward가 끝나기 전에 weight를 바꾸지 않는다.
 
 실제 함수의 인자·반환값·정규화 계수는 사용하는 코드의 인터페이스에 맞춰야 한다.
 
 ### 한 줄씩 기억할 핵심
 
-- **Affine forward:** feature에 weight를 곱하고 bias를 더해서 output을 만든다.
-- **ReLU:** 중간에 nonlinearity를 넣는다.
-- **Loss:** 현재 score가 정답과 얼마나 맞지 않는지 계산한다.
-- **Gradient:** parameter가 바뀔 때 최종 loss가 얼마나 변하는지를 나타낸다.
-- **Chain rule:** 한 경로에서는 upstream gradient × local derivative.
-- **Branch sum:** 같은 변수로 돌아오는 여러 경로의 gradient contributions는 더한다.
-- **`dW`:** 같은 weight를 여러 sample이 공유하므로 sample별 contribution을 더한다.
-- **`db`:** 같은 bias를 여러 sample이 공유하고 local derivative가 1이므로 upstream을 sample 방향으로 더한다.
-- **`dX`:** 하나의 input이 여러 outputs에 영향을 줬으므로 그 output 경로들의 contribution을 더한다. **서로 다른 sample의 inputs는 합치지 않는다.**
-- **Transpose:** 현재 코드에서 sample을 row로 저장하므로 matrix multiplication의 shape가 맞게 배치하는 것이다.
-- **Cache:** backward에 필요한 forward 당시의 input/weight/activation 정보를 저장한다.
-- **SGD:** 구한 parameter gradient를 이용해 loss가 줄어드는 방향으로 weight를 업데이트한다.
+- <strong>Affine forward:</strong> feature에 weight를 곱하고 bias를 더해서 output을 만든다.
+- <strong>ReLU:</strong> 중간에 nonlinearity를 넣는다.
+- <strong>Loss:</strong> 현재 score가 정답과 얼마나 맞지 않는지 계산한다.
+- <strong>Gradient:</strong> parameter가 바뀔 때 최종 loss가 얼마나 변하는지를 나타낸다.
+- <strong>Chain rule:</strong> 한 경로에서는 upstream gradient × local derivative.
+- <strong>Branch sum:</strong> 같은 변수로 돌아오는 여러 경로의 gradient contributions는 더한다.
+- <strong>`dW`:</strong> 같은 weight를 여러 sample이 공유하므로 sample별 contribution을 더한다.
+- <strong>`db`:</strong> 같은 bias를 여러 sample이 공유하고 local derivative가 1이므로 upstream을 sample 방향으로 더한다.
+- <strong>`dX`:</strong> 하나의 input이 여러 outputs에 영향을 줬으므로 그 output 경로들의 contribution을 더한다. <strong>서로 다른 sample의 inputs는 합치지 않는다.</strong>
+- <strong>Transpose:</strong> 현재 코드에서 sample을 row로 저장하므로 matrix multiplication의 shape가 맞게 배치하는 것이다.
+- <strong>Cache:</strong> backward에 필요한 forward 당시의 input/weight/activation 정보를 저장한다.
+- <strong>SGD:</strong> 구한 parameter gradient를 이용해 loss가 줄어드는 방향으로 weight를 업데이트한다.
 
 ### 필기용 세 공식
 
@@ -1168,27 +1168,27 @@ $$
 \boxed{dX=dYW^T}
 $$
 
-이 공식 자체보다 **합산이 왜 생기는지**가 더 중요하다.
+이 공식 자체보다 <strong>합산이 왜 생기는지</strong>가 더 중요하다.
 
 ### 스스로 확인할 질문
 
-**Q1.** 이미지가 두 장일 때 왜 첫 번째 이미지와 두 번째 이미지가 **하나의 weight**에 대한 gradient를 각각 만들까?  
-**답:** 두 이미지가 그 weight를 공유하고, 전체 loss가 두 이미지 loss의 합 또는 평균이기 때문이다.
+<strong>Q1.</strong> 이미지가 두 장일 때 왜 첫 번째 이미지와 두 번째 이미지가 <strong>하나의 weight</strong>에 대한 gradient를 각각 만들까?  
+<strong>답:</strong> 두 이미지가 그 weight를 공유하고, 전체 loss가 두 이미지 loss의 합 또는 평균이기 때문이다.
 
-**Q2.** `dW = X.T @ dout`에는 `sum`이 없는데 왜 sample contribution이 더해질까?  
-**답:** Matrix multiplication 자체가 row와 column의 corresponding elements를 곱한 뒤 더하는 연산이기 때문이다.
+<strong>Q2.</strong> `dW = X.T @ dout`에는 `sum`이 없는데 왜 sample contribution이 더해질까?  
+<strong>답:</strong> Matrix multiplication 자체가 row와 column의 corresponding elements를 곱한 뒤 더하는 연산이기 때문이다.
 
-**Q3.** 왜 `db = dout.sum(axis=0)`에는 input 값이나 bias 값이 곱해지지 않을까?  
-**답:** Bias의 local derivative는 1이므로 각 sample의 upstream contribution만 남는다.
+<strong>Q3.</strong> 왜 `db = dout.sum(axis=0)`에는 input 값이나 bias 값이 곱해지지 않을까?  
+<strong>답:</strong> Bias의 local derivative는 1이므로 각 sample의 upstream contribution만 남는다.
 
-**Q4.** 왜 `dX`는 sample마다 나뉜 row를 그대로 유지할까?  
-**답:** 각 sample의 input은 서로 다른 변수이기 때문이다. 대신 하나의 input이 연결된 **여러 output neuron 방향**으로 gradient를 더한다.
+<strong>Q4.</strong> 왜 `dX`는 sample마다 나뉜 row를 그대로 유지할까?  
+<strong>답:</strong> 각 sample의 input은 서로 다른 변수이기 때문이다. 대신 하나의 input이 연결된 <strong>여러 output neuron 방향</strong>으로 gradient를 더한다.
 
-**Q5.** 왜 `affine_backward`는 `dx`, `dw`, `db` 세 개를 반환할까?  
-**답:** Affine forward의 입력인 `x`, `w`, `b` 각각에 대한 최종 loss gradient가 필요하기 때문이다. 이 중 `dw`와 `db`는 학습 parameter를 업데이트하는 데 쓰이고, `dx`는 앞선 layer로 gradient를 전달한다.
+<strong>Q5.</strong> 왜 `affine_backward`는 `dx`, `dw`, `db` 세 개를 반환할까?  
+<strong>답:</strong> Affine forward의 입력인 `x`, `w`, `b` 각각에 대한 최종 loss gradient가 필요하기 때문이다. 이 중 `dw`와 `db`는 학습 parameter를 업데이트하는 데 쓰이고, `dx`는 앞선 layer로 gradient를 전달한다.
 
-**Q6.** 왜 softmax loss 뒤의 `affine_backward`에서는 또 batch size로 나누지 않을까?  
-**답:** Softmax loss에서 이미 평균 loss를 미분하며 `1/N`이 gradient에 반영되었기 때문이다.
+<strong>Q6.</strong> 왜 softmax loss 뒤의 `affine_backward`에서는 또 batch size로 나누지 않을까?  
+<strong>답:</strong> Softmax loss에서 이미 평균 loss를 미분하며 `1/N`이 gradient에 반영되었기 때문이다.
 
 ---
 
