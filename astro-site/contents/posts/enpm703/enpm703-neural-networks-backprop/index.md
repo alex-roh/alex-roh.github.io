@@ -10,7 +10,7 @@ tags:
   - backpropagation
 series: "ENPM703 Deep Learning"
 seriesOrder: 1
-updatedAt: "2026-10-22T21:33:27-04:00"
+updatedAt: "2026-10-22T21:36:52-04:00"
 ---
 
 신경망은 입력 숫자에서 특징을 만들고, 그 특징으로 예측하는 함수를 학습한다. 이미지를 숫자로 펴서 class score를 계산하는 것까지는 행렬곱으로 설명할 수 있다. 학습을 이해하려면 그다음 질문까지 이어져야 한다. <strong>예측이 틀렸을 때, 어떤 weight를 어느 방향으로 바꿔야 할까?</strong>
@@ -1187,23 +1187,71 @@ $$
 
 ### 스스로 확인할 질문
 
-<strong>Q1.</strong> 이미지가 두 장일 때 왜 첫 번째 이미지와 두 번째 이미지가 <strong>하나의 weight</strong>에 대한 gradient를 각각 만들까?  
-<strong>답:</strong> 두 이미지가 그 weight를 공유하고, 전체 loss가 두 이미지 loss의 합 또는 평균이기 때문이다.
+<strong>Q1.</strong> 이미지가 두 장일 때 왜 첫 번째 이미지와 두 번째 이미지가 <strong>하나의 weight</strong>에 대한 gradient를 각각 만들까?
 
-<strong>Q2.</strong> `dW = X.T @ dout`에는 `sum`이 없는데 왜 sample contribution이 더해질까?  
-<strong>답:</strong> Matrix multiplication 자체가 row와 column의 corresponding elements를 곱한 뒤 더하는 연산이기 때문이다.
+<details class="review-answer"><summary>정답과 해설 펼치기</summary>
+<div class="review-answer-body">
 
-<strong>Q3.</strong> 왜 `db = dout.sum(axis=0)`에는 input 값이나 bias 값이 곱해지지 않을까?  
-<strong>답:</strong> Bias의 local derivative는 1이므로 각 sample의 upstream contribution만 남는다.
+두 이미지가 그 weight를 공유하고, 전체 loss가 두 이미지 loss의 합 또는 평균이기 때문이다.
 
-<strong>Q4.</strong> 왜 `dX`는 sample마다 나뉜 row를 그대로 유지할까?  
-<strong>답:</strong> 각 sample의 input은 서로 다른 변수이기 때문이다. 대신 하나의 input이 연결된 <strong>여러 output neuron 방향</strong>으로 gradient를 더한다.
+같은 parameter를 바꾸면 두 sample의 예측이 모두 바뀐다. 두 입력을 따로 학습하는 것이 아니라, 두 loss에 미치는 영향을 같은 parameter의 gradient로 모아 업데이트한다.
 
-<strong>Q5.</strong> 왜 `affine_backward`는 `dx`, `dw`, `db` 세 개를 반환할까?  
-<strong>답:</strong> Affine forward의 입력인 `x`, `w`, `b` 각각에 대한 최종 loss gradient가 필요하기 때문이다. 이 중 `dw`와 `db`는 학습 parameter를 업데이트하는 데 쓰이고, `dx`는 앞선 layer로 gradient를 전달한다.
+</div></details>
 
-<strong>Q6.</strong> 왜 softmax loss 뒤의 `affine_backward`에서는 또 batch size로 나누지 않을까?  
-<strong>답:</strong> Softmax loss에서 이미 평균 loss를 미분하며 `1/N`이 gradient에 반영되었기 때문이다.
+<strong>Q2.</strong> `dW = X.T @ dout`에는 `sum`이 없는데 왜 sample contribution이 더해질까?
+
+<details class="review-answer"><summary>정답과 해설 펼치기</summary>
+<div class="review-answer-body">
+
+Matrix multiplication 자체가 row와 column의 corresponding elements를 곱한 뒤 더하는 연산이기 때문이다.
+
+`dw[d, m]`은 모든 sample n에 대해 `X[n, d] * dout[n, m]`을 더한 값이다. 행렬곱에서 사라지는 축 N이 바로 합산하는 sample 축이다.
+
+</div></details>
+
+<strong>Q3.</strong> 왜 `db = dout.sum(axis=0)`에는 input 값이나 bias 값이 곱해지지 않을까?
+
+<details class="review-answer"><summary>정답과 해설 펼치기</summary>
+<div class="review-answer-body">
+
+Bias의 local derivative는 1이므로 각 sample의 upstream contribution만 남는다.
+
+Bias를 1만큼 늘리면 해당 output도 1만큼 늘어난다. Bias의 현재 값이 0인지 10인지는 이 local derivative를 바꾸지 않는다. `(N, M)`에서 sample 축을 합하면 bias와 같은 `(M,)`이 남는다.
+
+</div></details>
+
+<strong>Q4.</strong> 왜 `dX`는 sample마다 나뉜 row를 그대로 유지할까?
+
+<details class="review-answer"><summary>정답과 해설 펼치기</summary>
+<div class="review-answer-body">
+
+각 sample의 input은 서로 다른 변수이기 때문이다. 대신 하나의 input이 연결된 <strong>여러 output neuron 방향</strong>으로 gradient를 더한다.
+
+`dx[n, d]`는 같은 sample n의 output m들에 대해 `dout[n, m] * W[d, m]`을 더한다. 여기서 합산하는 축은 M이다. N을 합쳐 버리면 서로 다른 입력 변수들의 gradient가 섞인다.
+
+</div></details>
+
+<strong>Q5.</strong> 왜 `affine_backward`는 `dx`, `dw`, `db` 세 개를 반환할까?
+
+<details class="review-answer"><summary>정답과 해설 펼치기</summary>
+<div class="review-answer-body">
+
+Affine forward의 입력인 `x`, `w`, `b` 각각에 대한 최종 loss gradient가 필요하기 때문이다. 이 중 `dw`와 `db`는 학습 parameter를 업데이트하는 데 쓰이고, `dx`는 앞선 layer로 gradient를 전달한다.
+
+`dw`와 `db`는 parameter와 같은 shape로 저장하고 optimizer에 넘긴다. `dx`는 입력과 같은 shape로 복구해 앞선 layer에 넘긴다. 원본 이미지까지 도달한 `dx`가 있다고 해서 이미지 자체를 학습 parameter처럼 갱신하는 것은 아니다.
+
+</div></details>
+
+<strong>Q6.</strong> 왜 softmax loss 뒤의 `affine_backward`에서는 또 batch size로 나누지 않을까?
+
+<details class="review-answer"><summary>정답과 해설 펼치기</summary>
+<div class="review-answer-body">
+
+Softmax loss에서 이미 평균 loss를 미분하며 `1/N`이 gradient에 반영되었기 때문이다.
+
+평균 loss에서 나온 upstream은 이미 각 sample의 기여에 `1/N`을 포함한다. `dw = X.T @ dout`과 `db = dout.sum(axis=0)`은 그 기여를 합하면 된다. 다시 N으로 나누면 의도한 gradient보다 N배 작아진다.
+
+</div></details>
 
 ---
 
