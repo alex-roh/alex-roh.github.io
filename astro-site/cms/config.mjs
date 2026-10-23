@@ -28,6 +28,7 @@ export const config = {
   collections: [
     ['enai601', 'ENAI601 Numerical Methods', 'enai601'],
     ['python', 'ENAI607 Python Programming', 'python'],
+    ['enpm703', 'ENPM703 Deep Learning', 'enpm703'],
   ].map(([name, label, category]) => ({
     name, label, folder: `${sourceRoot}/contents/posts/${category}`,
     create: true, delete: false, extension: 'md', format: 'yaml-frontmatter',

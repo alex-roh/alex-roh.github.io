@@ -8,6 +8,7 @@ export const postHref = (post: Post) => href(`${post.id}/`);
 const stableSeriesSlugs: Record<string, string> = {
   'ENAI601 Numerical Methods': 'ENAI601',
   'ENAI607 Python Programming': 'ENAI607-Python',
+  'ENPM703 Deep Learning': 'ENPM703',
 };
 export const seriesSlug = (name: string) => stableSeriesSlugs[name] ?? groupSlug(name);
 export const seriesHref = (name: string) => href(`series/${encodeURIComponent(seriesSlug(name))}/`);
