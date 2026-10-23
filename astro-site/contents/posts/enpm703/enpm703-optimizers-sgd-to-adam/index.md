@@ -747,6 +747,8 @@ config["m"] = m_hat
 
 </div></details>
 
+다음 글: [Batch Normalization — 평균·분산에서 역전파와 LayerNorm까지](/enpm703-batch-normalization/)
+
 ## 참고 자료
 
 - ENPM703, Module 07a — Training Neural Networks, Part 1: Optimizers, Learning Rate Decay; Module 07b — Training Neural Networks, Part 2: Choosing Hyperparameters.
