@@ -10,6 +10,7 @@ tags:
   - adam
 series: "ENPM703 Deep Learning"
 seriesOrder: 2
+updatedAt: "2026-10-22T22:13:29-04:00"
 ---
 
 [앞 글](/enpm703-neural-networks-backprop/)에서는 입력으로 score와 loss를 계산하고, 역전파로 `dW`와 `db`를 구했다. 하지만 gradient가 생겼다는 것만으로 weight가 바뀌지는 않는다. <strong>현재 gradient를 받아 실제 parameter를 얼마나, 어느 방향으로 움직일지 정하는 규칙</strong>이 필요하다. 이것이 optimizer다.
@@ -54,6 +55,10 @@ next_w, config = update_rule(w, dw, config)  # optimizer
 ```
 
 `model.loss`는 평균 data loss와 필요한 regularization loss를 계산하고, `grads`에 parameter별 gradient를 넣는다. 예를 들어 `grads["W1"]`은 최종 loss의 `W1`에 대한 미분이다. `dw`는 이 중 optimizer가 지금 처리할 parameter의 gradient다.
+
+![Network는 gradient를 계산하고 optimizer는 parameter를 갱신한다. 갱신된 parameter와 optimizer 상태를 저장한 뒤 다음 batch로 반복한다.](training-update-cycle.svg)
+
+Network 상자는 <strong>어떻게 미분할지</strong>를, optimizer 상자는 <strong>그 미분값으로 어떻게 움직일지</strong>를 맡는다. 저장한 parameter는 다음 forward에 사용하고, `config`는 다음 optimizer update에 다시 사용한다. `config`를 network의 forward cache와 혼동하지 않도록 두 역할을 나눠 보자.
 
 이 글의 표기를 먼저 정하자.
 
@@ -217,6 +222,10 @@ a_2=0.09g_1+0.1g_2.
 $$
 
 첫 값의 계수는 $0.1$에서 $0.09$로 줄었다. 다음 update에서는 $0.081$이 된다. <strong>오래된 값은 곱해지는 $\beta$가 많아질수록 영향이 작아진다.</strong> 이것이 이전 값 전부를 같은 비중으로 더하는 단순 누적과 다른 점이다.
+
+![같은 gradient 2가 세 번 들어오면 이동평균은 0.2, 0.38, 0.542가 된다. 세 번째 계산에서 오래된 g1의 계수는 0.081이고 새 g3의 계수는 0.1이다.](ema-gradient-memory.svg)
+
+화살표의 `×0.9`는 <strong>이전 기록을 남기는 비율</strong>이고, 각 상자의 `+0.1 × current gradient`는 새 정보를 더하는 항이다. 세 번째 값의 계산에서 같은 숫자 2라도 오래된 $g_1$은 $0.081$, 새 $g_3$는 $0.1$의 계수를 받는다. 초기값이 0이므로 초반 이동평균이 관측값 2보다 작은 현상은 10절의 bias correction으로 이어진다.
 
 $\beta$가 클수록 과거를 오래 기억하고 새 변화에 느리게 반응한다. 작을수록 현재 gradient에 빠르게 반응한다. 앞 절의 Momentum 코드에는 현재 gradient 앞에 `1-rho`가 없었다. 둘 다 과거를 감쇠해 누적하지만 저장값의 스케일은 다르므로 식의 계수를 그대로 혼용하지 않는다.
 
@@ -403,6 +412,10 @@ w_1=1-0.001\frac{2}{\sqrt4+\epsilon}\approx0.999.
 $$
 
 $\epsilon=10^{-8}$은 이 예의 분모 2에 비해 매우 작으므로 근사에서 생략했다. Gradient가 2라고 해서 SGD처럼 곧바로 $0.002$를 빼는 것이 아니다. 제곱평균의 제곱근으로 나눈 값이 실제 update에 들어간다.
+
+![Adam의 첫 gradient 2가 m과 v의 두 경로로 나뉜다. 두 이동평균을 보정해 2와 4를 얻고, 제곱근과 learning rate를 적용해 weight 1을 약 0.999로 갱신한다.](adam-first-update.svg)
+
+파란 경로는 <strong>gradient의 방향</strong>, 보라 경로는 <strong>제곱 gradient의 규모</strong>를 기억한다. 두 경로가 합쳐질 때 더하는 것이 아니라, 보정한 방향을 보정한 규모의 제곱근으로 나눈다. 그림의 `step`에는 learning rate가 이미 곱해져 있으므로 마지막에는 `w_old - step`만 계산한다.
 
 같은 gradient 2가 한 번 더 들어오면:
 
