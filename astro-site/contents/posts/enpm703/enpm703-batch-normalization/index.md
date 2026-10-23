@@ -10,6 +10,7 @@ tags:
   - layer-normalization
 series: "ENPM703 Deep Learning"
 seriesOrder: 3
+updatedAt: "2026-10-22T22:52:03-04:00"
 ---
 
 [앞 글의 Adam](/enpm703-optimizers-sgd-to-adam/)은 계산된 gradient로 parameter를 어떻게 갱신할지 정했다. 그런데 신경망 안에서 전달되는 값이 지나치게 커지거나 작아지고, layer마다 규모가 달라지면 어떨까? Optimizer만 바꾸는 것과 별개로 <strong>network 안에서 중간 값 자체를 다루는 방법</strong>도 필요하다.
@@ -187,6 +188,10 @@ $$
 
 중심은 10, 표준편차는 약 2가 된다. Gamma가 음수라면 값의 방향도 뒤집히며 표준편차는 부호를 갖지 않으므로 약 $|\gamma|$다.
 
+![한 feature의 값 1·3·5를 정규화한 뒤 gamma 2와 beta 10을 적용한다. 최종 출력은 약 7.5505·10·12.4495이며 중심은 10, 표준편차는 2다.](batchnorm-scale-shift.svg)
+
+위에서 아래로 <strong>현재 batch의 통계로 정규화 → 학습하는 gamma·beta 적용</strong>을 나눠 보자. 가운데 값이 평균 0·표준편차 1에 맞춰지는 것이고, 최종 출력의 중심과 규모는 gamma·beta에 따라 다시 달라진다. 그림은 epsilon을 생략한 계산이며 벡터의 표시값은 반올림했다.
+
 | 값 | Shape | 어디서 생기는가? |
 |---|---|---|
 | `x`, `x_hat`, `out` | `(N, D)` | sample마다 feature D개 |
@@ -306,11 +311,9 @@ def batchnorm_forward(x, gamma, beta, bn_param):
 
 Feature 하나에 sample 세 개가 있으면:
 
-```text
-x1 ─┐                          ┌─ x_hat1 ─ y1
-x2 ─┼─ 평균·분산 ─ 정규화 기준 ┼─ x_hat2 ─ y2
-x3 ─┘                          └─ x_hat3 ─ y3
-```
+![각 입력은 자기 출력의 직접 경로와 공유 평균·분산을 거치는 경로를 가진다. x3도 모든 출력에 영향을 주므로 dout3이 0이어도 dx3은 0이 아닐 수 있다.](batchnorm-shared-dependencies.svg)
+
+점선은 자기 출력으로 이어지는 직접 의존관계, 실선은 batch 통계를 공유하는 의존관계다. 화살표는 forward에서 무엇이 무엇에 영향을 주는지 표시한다. Backward는 이 연결을 거꾸로 따라가 모든 기여를 더한다. 아래 숫자는 11절에서 계산할 예제로, <strong>직접 받은 dout이 0이어도 공유 경로의 기여는 남을 수 있다</strong>는 것을 보여준다.
 
 `x1`을 바꾸면 평균과 분산도 바뀌므로 `x_hat2`, `x_hat3`까지 달라질 수 있다. 따라서 `dx1`을 구하려면 자기 출력에서 직접 오는 경로만 볼 수 없다. <strong>공유된 평균과 분산을 거치는 모든 경로의 기여</strong>도 합쳐야 한다.
 
@@ -651,6 +654,10 @@ y_{ij}=\gamma_j\widehat x_{ij}+\beta_j.
 $$
 
 Gamma·beta는 여전히 feature별 `(D,)`다. 달라진 것은 <strong>통계를 구하는 축</strong>이다.
+
+![같은 3×2 행렬에서 BatchNorm은 세로 열마다, LayerNorm은 가로 행마다 평균·분산을 계산한다. 두 방식 모두 gamma·beta는 feature별 두 개다.](batchnorm-layernorm-axes.svg)
+
+같은 색으로 묶인 값들이 평균·분산 하나를 공유한다. 왼쪽은 <strong>feature를 고정하고 sample들을 묶는 BN</strong>, 오른쪽은 <strong>sample을 고정하고 feature들을 묶는 LN</strong>이다. 어느 쪽도 입력 행렬의 shape를 바꾸지는 않는다.
 
 | 구분 | Fully connected BatchNorm | Fully connected LayerNorm |
 |---|---|---|
