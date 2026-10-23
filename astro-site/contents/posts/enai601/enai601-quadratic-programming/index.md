@@ -9,7 +9,7 @@ tags:
   - optimization
 date: 2026-10-22
 publishedAt: "2026-10-22T03:45:55-04:00"
-updatedAt: "2026-10-22T16:40:34-04:00"
+updatedAt: "2026-10-22T22:26:48-04:00"
 ---
 
 [앞 글의 Linear Programming](/enai601-linear-programming/)에서는 목적함수가 직선처럼 일정한 기울기를 가지고, 조건이 성립할 때 다면체의 꼭짓점에서 최적해를 찾을 수 있음을 살펴보았다. 그러나 AI 모델의 예측 오차처럼 <strong>차이를 제곱한 비용</strong>은 직선이 아니라 포물선으로 표현된다. 이때도 꼭짓점만 확인하면 최적해를 구할 수 있을까?
@@ -1759,4 +1759,4 @@ $$
 - <strong>학습용 수치 예제:</strong> 단일 가중치 회귀 데이터, 정사각형 두 개의 거리, 반공간으로 제한된 최적점, 2×2 Eigenvalue 계산은 이해를 위해 사용한 숫자 예제이며 교안의 원래 관측 데이터가 아니다.
 - <strong>보충 설명:</strong> 고유벡터와 곡률의 연결, Singular PSD 반례, 정지점·경계 최적점의 차이, Full Column Rank 및 Taylor Approximation은 학습 흐름을 연결하기 위한 설명이다.
 
-이 글은 QP의 모델링과 기초 최적성 판단을 다룬다. 보다 일반적인 제약 문제의 최적성 조건인 <strong>KKT Conditions와 Complementary Slackness</strong>는 Duality를 다룰 때 본격적으로 연결한다.
+이 글은 QP의 모델링과 기초 최적성 판단을 다룬다. [다음 GP 글](/enai601-geometric-programming/)에서는 곱과 거듭제곱이 있는 문제를 로그 변수로 바꾸어 볼록 문제로 푸는 방법을 살펴본다. 그 뒤 Duality에서 보다 일반적인 제약 문제의 최적성 조건인 <strong>KKT Conditions와 Complementary Slackness</strong>를 연결한다.

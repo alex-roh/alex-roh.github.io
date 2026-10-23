@@ -1,8 +1,8 @@
 ---
-title: "[ENAI601] 10 — Duality Part 2: Strong Duality에서 Complementary Slackness와 KKT까지"
+title: "[ENAI601] 11 — Duality Part 2: Strong Duality에서 Complementary Slackness와 KKT까지"
 description: "1변수 제약 문제에서 출발해 여유와 승수, KKT 네 조건을 숫자로 익힌다. 3변수 자원 배분을 단계별로 풀고, Strong Duality·Slater의 근거와 Water Filling·SVM 응용을 연결한다."
 series: ENAI601 Numerical Methods
-seriesOrder: 10
+seriesOrder: 11
 tags:
   - ENAI601
   - optimization
@@ -12,7 +12,7 @@ tags:
   - convex-optimization
 date: 2026-10-22
 publishedAt: "2026-10-22T17:26:38-04:00"
-updatedAt: "2026-10-22T18:00:19-04:00"
+updatedAt: "2026-10-22T22:26:48-04:00"
 ---
 
 [앞 글의 Duality Part 1](/enai601-duality-part1/)에서는 제약을 목적함수에 더해 원래 최소 비용의 <strong>하한(lower bound)</strong>을 만들었다. 이번에는 그 하한과 실제 비용이 일치할 때의 조건을 이용해, <strong>제약이 있는 최적점을 직접 계산하는 방법</strong>을 배운다. 출발점은 QP에서 남았던 질문, “최적점인데 왜 목적함수의 기울기가 0이 아닐까?”다. 한 변수 문제로 여유와 승수를 익히고 KKT 네 조건을 써 본 뒤, 총 4단위의 자원을 세 작업에 배분하는 문제를 끝까지 푼다. 그 과정에서 필요한 Strong Duality와 Slater의 이유를 설명하고, 응용 뒤의 심화 메모에는 상대내부·민감도·추가 유도를 모았다.

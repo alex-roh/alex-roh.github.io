@@ -1,8 +1,8 @@
 ---
-title: "[ENAI601] 09 — Lagrangian Duality Part 1: 하한에서 Dual Problem까지"
+title: "[ENAI601] 10 — Lagrangian Duality Part 1: 하한에서 Dual Problem까지"
 description: "최적값을 모르더라도 해의 품질을 평가하는 법. 작은 1변수 예제부터 Lagrangian, dual function, weak duality, LP·QP dual까지 단계별로 유도한다."
 series: ENAI601 Numerical Methods
-seriesOrder: 9
+seriesOrder: 10
 tags:
   - ENAI601
   - optimization
@@ -11,10 +11,10 @@ tags:
   - convex-optimization
 date: 2026-10-22
 publishedAt: "2026-10-22T16:58:32-04:00"
-updatedAt: "2026-10-22T18:21:42-04:00"
+updatedAt: "2026-10-22T22:26:48-04:00"
 ---
 
-[앞 글의 Quadratic Programming](/enai601-quadratic-programming/)에서는 제약조건이 있는 이차함수의 최적점을 찾고, Gradient와 PSD를 이용해 답을 검증했다. 그러나 현실의 최적화 문제가 항상 쉽게 풀리는 것은 아니다. 특히 Nonconvex Optimization에서는 알고리즘이 찾아낸 해가 전체에서 가장 좋은 해인지 확인하기 어렵다.
+[앞서 본 Quadratic Programming](/enai601-quadratic-programming/)에서는 제약조건이 있는 이차함수의 최적점을 찾고, Gradient와 PSD를 이용해 답을 검증했다. [앞 글의 GP](/enai601-geometric-programming/)에서는 로그 변수를 써서 등가인 볼록 문제를 만들고 원래 해를 복원했다. 그러나 현실의 최적화 문제가 항상 쉽게 풀리는 것은 아니다. 특히 Nonconvex Optimization에서는 알고리즘이 찾아낸 해가 전체에서 가장 좋은 해인지 확인하기 어렵다.
 
 여기서 <strong>Duality(쌍대성)</strong>의 질문이 등장한다.
 
