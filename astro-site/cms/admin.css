@@ -1,4 +1,15 @@
 @font-face{font-family:Noto;src:url('/fonts/noto-sans-kr-v13-latin-regular.woff2') format('woff2');font-weight:400;font-display:swap}
+/* Article-local tools stay next to the body in both Markdown and Rich Text. */
+#nc-root [data-cave-removed]{display:none!important}
+.cave-writing-tools{padding:14px 0;border-bottom:1px solid var(--line);margin-bottom:14px}
+.cave-writing-actions{display:flex;gap:8px;flex-wrap:wrap}
+.cave-writing-tools button{padding:7px 12px;border:1px solid var(--line);border-radius:5px;cursor:pointer;font-size:13px}
+.cave-draft-note,.cave-writing-status{font-size:12px;line-height:1.7;margin:8px 0;color:var(--muted)}
+.cave-writing-status:empty{display:none}
+.cave-uploaded-images{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:12px}
+.cave-uploaded-images li{display:flex;gap:8px;flex-wrap:wrap;align-items:center;min-width:0}
+.cave-uploaded-images span{width:100%;font-size:12px;overflow-wrap:anywhere}
+.cave-uploaded-images input{min-width:0;flex:1 1 100%;padding:8px;font:12px/1.5 ui-monospace,Consolas,monospace;border:1px solid var(--line);border-radius:4px}
 @font-face{font-family:Noto;src:url('/fonts/noto-sans-kr-v13-latin-700.woff2') format('woff2');font-weight:700;font-display:swap}
 /* Palette is injected from the blog stylesheet by build-cms.mjs. */
 :root{--hover:var(--hover-wash);--brand-dot:var(--accent)}

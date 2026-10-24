@@ -1,6 +1,7 @@
 import { renderPreview } from './preview.mjs';
 import ko from 'decap-cms-locales/dist/esm/ko/index.js';
 import { attachPreview, initializeEditor } from './editor-ui.mjs';
+import { registerWritingTools, removeDuplicateActions } from './writing-tools.mjs';
 import './admin.css';
 import '../src/styles/header-controls.css';
 
@@ -12,8 +13,12 @@ phrases.app.header.content = 'POSTS';
 phrases.app.header.media = '미디어';
 phrases.app.header.quickAdd = 'NEW POST';
 phrases.collection.collectionTop.newButton = '새 글 쓰기';
+phrases.editor.editorToolbar.backCollection = '글 목록';
 CMS.registerLocale('ko', phrases);
 initializeEditor();
+removeDuplicateActions(phrases.editor.editorToolbar);
+const drafts = registerWritingTools(CMS, h);
+let publishingDraft;
 let pendingPublication;
 let deploymentTimer;
 let noticeTimer;
@@ -25,17 +30,18 @@ function showPublicationStatus(html, autoHide = false) {
   status.querySelector('button').onclick = () => { clearTimeout(noticeTimer); status.hidden = true; };
   if (autoHide) noticeTimer = setTimeout(() => { status.hidden = true; }, 8000);
 }
-const Preview = ({ entry }) => {
+const Preview = ({ entry, getAsset }) => {
   const data = entry.get('data');
   return h('article', { className: 'cms-preview', ref: attachPreview },
     h('header', {}, h('p', { className: 'eyebrow' }, 'CAVE · ARTICLE PREVIEW'),
       h('h1', {}, data.get('title'))),
     h('div', { className: 'prose', dangerouslySetInnerHTML: {
-      __html: renderPreview(data.get('body') || '', entry.get('slug').replace(/\/index$/, '')),
+      __html: renderPreview(data.get('body') || '', entry.get('slug').replace(/\/index$/, ''), getAsset),
     } }));
 };
 CMS.registerPreviewTemplate('enai601', Preview);
 CMS.registerPreviewTemplate('python', Preview);
+CMS.registerPreviewTemplate('enpm703', Preview);
 CMS.registerPreviewTemplate('enai601-guide', ({ entry }) => h('article', { className: 'cms-preview' },
   h('div', { className: 'prose', dangerouslySetInnerHTML: {
     __html: renderPreview(entry.get('data').get('body') || '', 'editorial-guide'),
@@ -46,6 +52,7 @@ CMS.registerPreviewStyle('/admin/katex/katex.min.css');
 CMS.registerEventListener({
   name: 'preSave',
   handler: ({ entry }) => {
+    publishingDraft = CMS.editor.getCurrentEntry();
     const data = entry.get('data');
     if (entry.get('slug') === 'enai601-guide') { pendingPublication = undefined; return data; }
     const now = new Date().toISOString();
@@ -60,6 +67,7 @@ CMS.registerEventListener({
 CMS.registerEventListener({
   name: 'postSave',
   handler: () => {
+    if (publishingDraft) drafts.published(publishingDraft).catch(() => {});
     if (!pendingPublication) {
       clearInterval(deploymentTimer);
       showPublicationStatus('편집 지침을 GitHub에 저장했습니다. 이후 작업은 수정된 지침 파일을 기준으로 진행합니다.', true);
