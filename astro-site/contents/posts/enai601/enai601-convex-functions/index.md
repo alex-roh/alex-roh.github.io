@@ -9,7 +9,7 @@ series: ENAI601 Numerical Methods
 seriesOrder: 4
 date: 2026-10-21
 publishedAt: 2026-10-21T02:52:02-04:00
-updatedAt: 2026-10-24T04:18:40.265Z
+updatedAt: 2026-10-24T04:48:32.555Z
 ---
 
 Convex function의 모양은 함수값과 미분값의 역할을 구별하는 데서 이해할 수 있다. <strong>$f$는 높이, $f'$는 기울기, $f''$는 기울기의 변화</strong>다. 이 세 가지를 구분하고 나면, 왜 그래프가 chord 아래에 놓이는지, 왜 접선은 함수 전체의 하한이 되는지, 왜 다변수에서는 Hessian을 보는지가 하나의 흐름으로 이어진다.
@@ -56,6 +56,8 @@ Convex function의 모양은 함수값과 미분값의 역할을 구별하는 �
 | 양수 | 양수 | 증가하면서 더 가파르게 올라간다(Concave up) |
 
 영어 미적분에서 <strong>concave up</strong>은 기울기가 증가하는 쪽의 휘어짐이고, convex optimization에서 말하는 convex와 연결된다. <strong>Concave down</strong>은 기울기가 감소하는 쪽이며 concave와 연결된다. Convex한 함수는 U-shape이고 Concave한 함수는 cap-shape라고 표현하곤 하지만, 직관을 위한 표현일 뿐 그렇게 되기 위해 함수가 반드시 대칭이거나 최소·최댓값을 가져야 한다는 조건은 아니다.
+
+![convex-8d0d3140-66f2-417c-bf11-a0c08fca4b6e](/uploads/convex-8d0d3140-66f2-417c-bf11-a0c08fca4b6e.png)
 
 예를 들어 $e^{-x}$는 모든 $x$에서 감소하지만 convex다. 직선은 기울기가 일정해서 convex이면서 concave다. 볼록성의 핵심은 <strong>기울기의 부호가 아니라 기울기가 어떻게 바뀌는가</strong>다.
 
