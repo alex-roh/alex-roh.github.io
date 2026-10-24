@@ -2,6 +2,7 @@ import { renderPreview } from './preview.mjs';
 import ko from 'decap-cms-locales/dist/esm/ko/index.js';
 import { attachPreview, initializeEditor } from './editor-ui.mjs';
 import { registerWritingTools } from './writing-tools.mjs';
+import { createPublicationMonitor } from './publication.mjs';
 import './admin.css';
 import '../src/styles/header-controls.css';
 
@@ -16,12 +17,12 @@ phrases.collection.collectionTop.newButton = '새 글 쓰기';
 phrases.editor.editorToolbar.backCollection = '글 목록';
 phrases.editor.editorToolbar.unsavedChanges = '저장 전';
 phrases.editor.editorToolbar.changesSaved = '저장됨';
+phrases.editor.editorToolbar.published = 'GitHub 저장됨';
 CMS.registerLocale('ko', phrases);
 initializeEditor();
 const drafts = registerWritingTools(CMS, h);
 let publishingDraft;
 let pendingPublication;
-let deploymentTimer;
 let noticeTimer;
 function showPublicationStatus(html, autoHide = false) {
   const status = document.getElementById('publish-status');
@@ -31,6 +32,22 @@ function showPublicationStatus(html, autoHide = false) {
   status.querySelector('button').onclick = () => { clearTimeout(noticeTimer); status.hidden = true; };
   if (autoHide) noticeTimer = setTimeout(() => { status.hidden = true; }, 8000);
 }
+const actionsLink = '<a href="https://github.com/alex-roh/alex-roh.github.io/actions/workflows/deploy-astro.yml" target="_blank" rel="noopener noreferrer">Actions에서 진행 상황 보기 ↗</a>';
+let publicationStorage;
+try { publicationStorage = sessionStorage; } catch {}
+const publication = createPublicationMonitor({ fetch: (...args) => fetch(...args), storage: publicationStorage,
+  onStatus: ({ phase, elapsed, slug }) => {
+    const minutes = Math.floor(elapsed / 60000);
+    const seconds = Math.floor(elapsed / 1000) % 60;
+    const duration = `${minutes}분 ${seconds}초`;
+    window.cavePublicationLabel = phase === 'live' ? '최근 게시 · 블로그 반영 완료'
+      : phase === 'delayed' ? '최근 게시 · 배포 확인 지연' : '최근 게시 · 배포 중';
+    for (const label of document.querySelectorAll('.cave-published-label')) label.textContent = window.cavePublicationLabel;
+    if (phase === 'live') showPublicationStatus(`블로그 반영이 완료되었습니다. <a href="/${encodeURIComponent(slug)}/" target="_blank" rel="noopener noreferrer">수정한 글 열기 ↗</a>`);
+    else showPublicationStatus(`GitHub 저장 완료 · ${phase === 'delayed' ? '아직 블로그 반영을 확인하지 못했습니다. 계속 확인 중입니다.' : '빌드·배포 및 블로그 반영을 기다리는 중입니다.'} (${duration}) ${actionsLink}`);
+  },
+});
+publication.resume();
 const Preview = ({ entry, getAsset }) => {
   const data = entry.get('data');
   return h('article', { className: 'cms-preview', ref: attachPreview },
@@ -67,38 +84,14 @@ CMS.registerEventListener({
 });
 CMS.registerEventListener({
   name: 'postSave',
-  handler: () => {
+  handler: ({ entry }) => {
     if (publishingDraft) drafts.published(publishingDraft).catch(() => {});
     if (!pendingPublication) {
-      clearInterval(deploymentTimer);
+      publication.stop();
       showPublicationStatus('편집 지침을 GitHub에 저장했습니다. 이후 작업은 수정된 지침 파일을 기준으로 진행합니다.', true);
       return;
     }
-    showPublicationStatus('GitHub에 저장했습니다. 자동 배포가 진행됩니다. <a href="https://github.com/alex-roh/alex-roh.github.io/actions/workflows/deploy-astro.yml" target="_blank" rel="noopener noreferrer">배포 상태 확인 ↗</a>');
-    clearInterval(deploymentTimer);
-    const expected = pendingPublication;
-    if (!expected) return;
-    const started = Date.now();
-    deploymentTimer = setInterval(async () => {
-      if (Date.now() - started > 180000) {
-        clearInterval(deploymentTimer);
-        showPublicationStatus('GitHub 저장은 완료됐지만 아직 블로그 반영을 확인하지 못했습니다. <a href="https://github.com/alex-roh/alex-roh.github.io/actions/workflows/deploy-astro.yml" target="_blank" rel="noopener noreferrer">배포 상태 확인 ↗</a>');
-        return;
-      }
-      try {
-        const result = await fetch(`/deployment.json?v=${Date.now()}`, { cache: 'no-store' });
-        if (!result.ok) return;
-        const deployment = await result.json();
-        const match = expected.slug
-          ? [expected.slug, deployment.posts[expected.slug]]
-          : Object.entries(deployment.posts).find(([, post]) => Date.parse(post[expected.field]) === Date.parse(expected.timestamp));
-        const [slug, post] = match || [];
-        if (post && Date.parse(post[expected.field]) === Date.parse(expected.timestamp)) {
-          clearInterval(deploymentTimer);
-          showPublicationStatus(`블로그 반영이 완료되었습니다. <a href="/${encodeURIComponent(slug)}/" target="_blank" rel="noopener noreferrer">수정한 글 열기 ↗</a>`, true);
-        }
-      } catch { /* Keep the saved change and expose the Actions link on timeout. */ }
-    }, 5000);
+    publication.start({ ...pendingPublication, slug: entry?.get('slug')?.replace(/\/index$/, '') || pendingPublication.slug });
   },
 });
 CMS.init();

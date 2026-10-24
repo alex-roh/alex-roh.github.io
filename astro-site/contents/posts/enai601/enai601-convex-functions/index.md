@@ -57,7 +57,7 @@ Convex function의 모양은 함수값과 미분값의 역할을 구별하는 �
 
 영어 미적분에서 <strong>concave up</strong>은 기울기가 증가하는 쪽의 휘어짐이고, convex optimization에서 말하는 convex와 연결된다. <strong>Concave down</strong>은 기울기가 감소하는 쪽이며 concave와 연결된다. Convex한 함수는 U-shape이고 Concave한 함수는 cap-shape라고 표현하곤 하지만, 직관을 위한 표현일 뿐 그렇게 되기 위해 함수가 반드시 대칭이거나 최소·최댓값을 가져야 한다는 조건은 아니다.
 
-![convex-8d0d3140-66f2-417c-bf11-a0c08fca4b6e](/uploads/convex-8d0d3140-66f2-417c-bf11-a0c08fca4b6e.png)
+![](convex.png)
 
 예를 들어 $e^{-x}$는 모든 $x$에서 감소하지만 convex다. 직선은 기울기가 일정해서 convex이면서 concave다. 볼록성의 핵심은 <strong>기울기의 부호가 아니라 기울기가 어떻게 바뀌는가</strong>다.
 

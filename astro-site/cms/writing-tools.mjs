@@ -9,6 +9,7 @@ export function registerWritingTools(CMS, h, store = createDraftStore(window.ind
       super(props);
       this.state = { ...this.state, images: [], message: '', busy: false, history: [], selectedDraft: '', revision: 0 };
       this.entryKey = draftKey(CMS.editor.getCurrentEntry());
+      this.bodyId = `cave-body-${crypto.randomUUID()}`;
     }
     componentDidMount() {
       super.componentDidMount?.();
@@ -20,6 +21,10 @@ export function registerWritingTools(CMS, h, store = createDraftStore(window.ind
     componentWillUnmount() { this.mounted = false; }
     tell(message) { if (this.mounted) this.setState({ message }); }
     refreshBody() { if (this.mounted) this.setState(state => ({ revision: state.revision + 1 })); }
+    selectMode(mode) {
+      this.setState({ mode, pendingFocus: false });
+      try { localStorage.setItem('cms.md-mode', mode); } catch {}
+    }
     async perform(task) {
       if (this.state.busy) return;
       this.setState({ busy: true, message: '' });
@@ -39,15 +44,10 @@ export function registerWritingTools(CMS, h, store = createDraftStore(window.ind
       await this.perform(async () => {
         for (const source of files) {
           if (!source.type.startsWith('image/')) throw new Error(`${source.name}: 이미지 파일을 선택해 주세요.`);
-          // Unique names prevent a new upload from replacing an existing article's image.
-          const dot = source.name.lastIndexOf('.');
-          const stem = dot > 0 ? source.name.slice(0, dot) : source.name;
-          const extension = dot > 0 ? source.name.slice(dot) : '';
-          const file = new File([source], `${stem}-${crypto.randomUUID()}${extension}`, { type: source.type });
           const entry = CMS.editor.getCurrentEntry();
-          const asset = await this.upload(file);
+          const asset = await this.upload(source);
           drafts.remember(entry, asset);
-          if (this.mounted) this.setState(state => ({ images: [...state.images, asset.publicPath] }));
+          if (this.mounted) this.setState(state => ({ images: [...new Set([...state.images, asset.publicPath])] }));
         }
         this.tell('이미지를 첨부했습니다. 본문 끝에 넣거나 Markdown을 복사하세요. 글을 게시하면 이미지도 함께 반영됩니다.');
       });
@@ -89,10 +89,6 @@ export function registerWritingTools(CMS, h, store = createDraftStore(window.ind
               `${index + 1}. ${draft.data.title || '제목 없음'} · ${new Date(draft.savedAt).toLocaleString('ko-KR')}`))),
             button('불러오기', () => this.restoreDraft())),
           h('p', { className: 'cave-draft-note' }, `임시저장 ${history.length}/3 · 이 브라우저에 최근 3개를 보관합니다.`),
-          h('div', { className: 'cave-editor-mode', role: 'group', 'aria-label': '본문 편집 모드' },
-            ...[['raw', 'Markdown'], ['rich_text', '리치 텍스트']].map(([value, label]) =>
-              h('button', { type: 'button', disabled: busy, 'aria-pressed': mode === value,
-                onClick: () => this.handleMode(value) }, label))),
           h('p', { role: 'status', className: 'cave-writing-status' }, busy ? '처리 중…' : message),
           images.length > 0 && h('ul', { className: 'cave-uploaded-images' }, ...images.map(path =>
             h('li', { key: path },
@@ -107,7 +103,19 @@ export function registerWritingTools(CMS, h, store = createDraftStore(window.ind
               })))))),
         // Slate takes its initial value only on mount. Refresh after an explicit
         // insert/restore so both modes show the same data that will be published.
-        h(editor.type, { ...editor.props, key: this.state.revision }));
+        h('div', { className: 'cave-editor-mode', role: 'tablist', 'aria-label': '본문 편집 모드' },
+          ...[['raw', 'Markdown'], ['rich_text', '리치 텍스트']].map(([value, label], index) =>
+            h('button', { type: 'button', role: 'tab', id: `${this.bodyId}-${value}`, disabled: busy,
+              'aria-selected': mode === value, 'aria-controls': this.bodyId, tabIndex: mode === value ? 0 : -1,
+              onClick: () => this.selectMode(value), onKeyDown: event => {
+                if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+                event.preventDefault();
+                const next = event.key === 'Home' ? 0 : event.key === 'End' ? 1 : 1 - index;
+                this.selectMode(next ? 'rich_text' : 'raw');
+                event.currentTarget.parentElement.querySelectorAll('[role="tab"]')[next].focus();
+              } }, label))),
+        h('div', { role: 'tabpanel', id: this.bodyId, 'aria-labelledby': `${this.bodyId}-${mode}` },
+          h(editor.type, { ...editor.props, key: this.state.revision })));
     }
   }
   CMS.registerWidget('markdown', WritingControl, markdown.preview, markdown.schema);

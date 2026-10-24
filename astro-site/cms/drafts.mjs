@@ -71,16 +71,28 @@ export function createDraftController(editor, store) {
       const history = versions(await store.get(key));
       const draft = id ? history.find(draft => draft.id === id) : history[0];
       if (!draft) throw new Error('이 글의 임시저장이 없습니다.');
+      const data = { ...draft.data };
+      const restoredAssets = [];
       for (const asset of draft.assets) {
         if (draftKey(editor.getCurrentEntry()) !== key) throw new Error('편집 중인 글이 바뀌었습니다.');
         const restored = assets.get(key)?.get(asset.path) || await upload(asset.file);
-        if (restored.path !== asset.path) throw new Error('이미지 경로가 달라 복원을 중단했습니다.');
+        if (restored.path !== asset.path) {
+          if (restored.path.split('/').at(-1) !== asset.path.split('/').at(-1) || !asset.publicPath || !restored.publicPath) {
+            throw new Error('이미지 경로가 달라 복원을 중단했습니다.');
+          }
+          // Older browser drafts used /uploads; retain their images when moving
+          // them into the article folder and shorten only the Markdown target.
+          const oldUrl = imageMarkdown(asset.publicPath).slice(4, -1);
+          const newUrl = imageMarkdown(restored.publicPath).slice(4, -1);
+          data.body = (data.body || '').replaceAll(`](${oldUrl})`, `](${newUrl})`);
+        }
+        restoredAssets.push(restored);
         this.remember(entry, restored);
       }
       if (draftKey(editor.getCurrentEntry()) !== key) throw new Error('편집 중인 글이 바뀌었습니다.');
-      const result = editor.applyFieldPatch(editablePatches(entry, draft.data));
+      const result = editor.applyFieldPatch(editablePatches(entry, data));
       if (result.rejected.length) throw new Error('일부 항목을 불러오지 못했습니다. 임시저장은 보관되어 있습니다.');
-      return draft;
+      return { ...draft, data, assets: restoredAssets };
     },
     async published(entry) {
       const key = draftKey(entry);
@@ -99,17 +111,15 @@ export function uploadPublicPath(path) {
   const normalized = path.replace(/^\/+/, '');
   if (normalized.startsWith('astro-site/public/uploads/')) return normalized.slice('astro-site/public'.length);
   // Accept entry-relative assets returned by older, already-cached CMS config too.
-  const match = normalized.match(/^astro-site\/contents\/posts\/[^/]+\/([^/]+)\/([^/]+)$/);
-  if (match) return `/media/${match[1]}/${match[2]}`;
+  const match = normalized.match(/^astro-site\/contents\/posts\/[^/]+\/(?:[^/]+\/)?([^/]+)$/);
+  if (match) return match[1];
   throw new Error('이미지 저장 경로를 확인할 수 없습니다.');
 }
 
 export function imageMarkdown(path) {
-  const name = path.split('/').at(-1);
-  const alt = name.replace(/\.[^.]+$/, '').replace(/[\\[\]]/g, '\\$&');
   const url = path.split('/').map(segment => encodeURIComponent(segment)
     .replace(/[!'()*]/g, character => `%${character.charCodeAt(0).toString(16).toUpperCase()}`)).join('/');
-  return `![${alt}](${url})`;
+  return `![](${url})`;
 }
 
 export function appendImage(body, path) {

@@ -97,13 +97,14 @@ test('each entry retains three selectable drafts and migrates its existing singl
 });
 
 test('image paths accept actual entry-folder uploads and collections explicitly override Decap defaults', () => {
-  assert.equal(uploadPublicPath('astro-site/contents/posts/python/sample/actual.png'), '/media/sample/actual.png');
+  assert.equal(uploadPublicPath('astro-site/contents/posts/python/sample/actual.png'), 'actual.png');
+  assert.equal(uploadPublicPath('astro-site/contents/posts/python/actual.png'), 'actual.png');
   assert.equal(uploadPublicPath('/astro-site/public/uploads/actual.png'), '/uploads/actual.png');
   assert.equal(uploadPublicPath('astro-site/public/uploads/actual.png'), '/uploads/actual.png');
   assert.throws(() => uploadPublicPath('unrelated/file.png'), /저장 경로/);
   for (const collection of config.collections.filter(collection => collection.folder)) {
-    assert.equal(collection.media_folder, '/astro-site/public/uploads');
-    assert.equal(collection.public_folder, '/uploads');
+    assert.equal(collection.media_folder, '');
+    assert.equal(collection.public_folder, '');
   }
 });
 
@@ -143,9 +144,21 @@ test('restore refuses to put one article draft into another article during an up
 });
 
 test('image Markdown preserves the body and safely encodes filenames', () => {
-  assert.equal(imageMarkdown('/uploads/figure [1](test).png'), '![figure \\[1\\](test)](/uploads/figure%20%5B1%5D%28test%29.png)');
-  assert.equal(appendImage('Existing text', '/uploads/a.png'), 'Existing text\n\n![a](/uploads/a.png)\n');
-  assert.equal(appendImage('', '/uploads/a.png'), '![a](/uploads/a.png)\n');
+  assert.equal(imageMarkdown('/uploads/figure [1](test).png'), '![](/uploads/figure%20%5B1%5D%28test%29.png)');
+  assert.equal(appendImage('Existing text', 'a.png'), 'Existing text\n\n![](a.png)\n');
+  assert.equal(appendImage('', 'a.png'), '![](a.png)\n');
+});
+
+test('older saved image drafts remain restorable after switching to short article-local paths', async () => {
+  const f = fixture();
+  f.current.data.body = 'Before\n\n![old caption](/uploads/figure.png)';
+  const controller = createDraftController(f.editor, f.store);
+  controller.remember(f.current, { path: 'astro-site/public/uploads/figure.png', publicPath: '/uploads/figure.png', file: new Blob(['png']) });
+  await controller.save();
+  const reopened = createDraftController(f.editor, f.store);
+  const restored = await reopened.restore(async file => ({ path: 'astro-site/contents/posts/python/example/figure.png', publicPath: 'figure.png', file }));
+  assert.equal(f.current.data.body, 'Before\n\n![old caption](figure.png)');
+  assert.equal(restored.assets[0].publicPath, 'figure.png');
 });
 
 test('only sanitized uploaded images resolve to local preview blobs', () => {
@@ -180,24 +193,27 @@ test('writing tools use the CMS media pipeline and remount Slate after insertion
     });
     control.componentDidMount();
     await control.uploadFiles([new File(['png'], 'Original.PNG', { type: 'image/png' })]);
-    assert.deepEqual(control.state.images, ['/media/example/actual.png']);
+    assert.deepEqual(control.state.images, ['actual.png']);
     assert.equal(control.state.mode, 'raw');
     const tree = control.render();
     const walk = node => node && typeof node === 'object' ? [node, ...[node.props?.children || []].flat(Infinity).flatMap(walk)] : [];
     const insert = walk(tree).find(node => node.type === 'button' && node.props.children[0] === '본문 끝에 넣기');
     insert.props.onClick();
-    assert.match(f.current.data.body, /!\[actual\]\(\/media\/example\/actual.png\)/);
+    assert.match(f.current.data.body, /!\[\]\(actual.png\)/);
     assert.equal(control.state.revision, 1);
     await control.saveDraft();
     f.current.data.body = control.props.value = 'Changed again';
     await control.restoreDraft();
-    assert.match(f.current.data.body, /!\[actual\]/);
+    assert.match(f.current.data.body, /!\[\]\(actual.png\)/);
     assert.equal(control.state.revision, 2);
     const richText = walk(control.render()).find(node => node.type === 'button' && node.props.children[0] === '리치 텍스트');
-    assert.equal(richText.props['aria-pressed'], false);
+    assert.equal(richText.props['aria-selected'], false);
     richText.props.onClick();
-    const modeButtons = walk(control.render()).filter(node => node.type === 'button' && Object.hasOwn(node.props, 'aria-pressed'));
-    assert.deepEqual(modeButtons.map(button => button.props['aria-pressed']), [false, true]);
+    const modeButtons = walk(control.render()).filter(node => node.props?.role === 'tab');
+    assert.deepEqual(modeButtons.map(button => button.props['aria-selected']), [false, true]);
+    assert.deepEqual(modeButtons.map(button => button.props.tabIndex), [-1, 0]);
+    const panel = walk(control.render()).find(node => node.props?.role === 'tabpanel');
+    assert.equal(panel.props.id, modeButtons[1].props['aria-controls']);
     control.componentWillUnmount();
   } finally { globalThis.window = previousWindow; }
 });

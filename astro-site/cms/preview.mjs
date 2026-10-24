@@ -22,11 +22,14 @@ export function renderPreview(markdown, slug, getAsset) {
     .use(() => tree => {
       if (getAsset) visit(tree, 'element', node => {
         const src = node.properties?.src;
-        if (node.tagName === 'img' && typeof src === 'string' && src.startsWith('/uploads/')) {
+        const relativePrefix = `/media/${encodeURIComponent(slug)}/`;
+        if (node.tagName === 'img' && typeof src === 'string' && (src.startsWith('/uploads/') || src.startsWith(relativePrefix))) {
           // Resolve only sanitized upload URLs, never arbitrary author-supplied HTML.
-          let path = src;
-          try { path = decodeURI(src); } catch { /* A literal percent is a valid filename. */ }
-          const asset = String(getAsset(path) || src);
+          let path = src.startsWith(relativePrefix) ? src.slice(relativePrefix.length) : src;
+          try { path = decodeURI(path); } catch { /* A literal percent is a valid filename. */ }
+          const resolved = getAsset(path);
+          const useResolved = resolved?.fileObj || src.startsWith('/uploads/');
+          const asset = String(useResolved ? resolved || src : src);
           if (/^(?:blob:|https?:|\/)/.test(asset)) node.properties.src = asset;
         }
       });

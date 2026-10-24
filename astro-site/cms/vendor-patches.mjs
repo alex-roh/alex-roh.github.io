@@ -10,6 +10,6 @@ export function patchDecap(source) {
   source = source.replace(newEntry,
     `renderNewEntrySimplePublishControls=()=>{const{onPersist,isPersisting,t}=this.props;return ${jsx}("button",{type:"button",className:"cave-publish-button",disabled:isPersisting,onClick:()=>{if(!isPersisting)onPersist()},children:t(isPersisting?"editor.editorToolbar.publishing":"editor.editorToolbar.publish")})};`);
   source = source.replace(existing,
-    `renderExistingEntrySimplePublishControls=()=>{const{t}=this.props;return ${jsx}("span",{className:"cave-published-label",children:t("editor.editorToolbar.published")})};`);
+    `renderExistingEntrySimplePublishControls=()=>{const{t}=this.props;return ${jsx}("span",{className:"cave-published-label",role:"status",children:window.cavePublicationLabel||t("editor.editorToolbar.published")})};`);
   return source.replace('showMediaButton:!0,controlMedia:', 'showMediaButton:!1,controlMedia:');
 }
