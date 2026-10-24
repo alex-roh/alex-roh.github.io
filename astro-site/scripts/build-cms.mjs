@@ -2,11 +2,13 @@ import { mkdir, cp, writeFile, readFile } from 'node:fs/promises';
 import { build } from 'esbuild';
 import { createHash } from 'node:crypto';
 import { config } from '../cms/config.mjs';
+import { patchDecap } from '../cms/vendor-patches.mjs';
 
 await mkdir('public/admin/vendor', { recursive: true });
 await cp('node_modules/decap-cms/dist', 'public/admin/vendor', {
   recursive: true, filter: source => !source.endsWith('.map') && !/[/\\](?:\d+\.)?cms\.js/.test(source),
 });
+await writeFile('public/admin/vendor/decap-cms.js', patchDecap(await readFile('public/admin/vendor/decap-cms.js', 'utf8')));
 await cp('node_modules/katex/dist', 'public/admin/katex', { recursive: true });
 await build({ entryPoints: ['cms/admin.mjs'], bundle: true, format: 'esm', external: ['/fonts/*'], outfile: 'public/admin/admin.js', minify: true });
 // JSON is a YAML subset accepted by Decap. Keep one typed config for tests and build.
@@ -23,6 +25,7 @@ await writeFile('public/admin/preview.css', styles + '\n.cms-preview{max-width:8
 // Each release must refresh the editor even when GitHub Pages caches static files.
 const assetHash = async path => createHash('sha256').update(await readFile(path)).digest('hex').slice(0, 12);
 const html = (await readFile('cms/index.html', 'utf8'))
+  .replace('/admin/vendor/decap-cms.js', '/admin/vendor/decap-cms.js?v=' + await assetHash('public/admin/vendor/decap-cms.js'))
   .replace('/admin/admin.css', '/admin/admin.css?v=' + await assetHash('public/admin/admin.css'))
   .replace('/admin/admin.js', '/admin/admin.js?v=' + await assetHash('public/admin/admin.js'));
 await writeFile('public/admin/index.html', html);

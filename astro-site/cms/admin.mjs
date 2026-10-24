@@ -1,7 +1,7 @@
 import { renderPreview } from './preview.mjs';
 import ko from 'decap-cms-locales/dist/esm/ko/index.js';
 import { attachPreview, initializeEditor } from './editor-ui.mjs';
-import { registerWritingTools, removeDuplicateActions } from './writing-tools.mjs';
+import { registerWritingTools } from './writing-tools.mjs';
 import './admin.css';
 import '../src/styles/header-controls.css';
 
@@ -14,9 +14,10 @@ phrases.app.header.media = '미디어';
 phrases.app.header.quickAdd = 'NEW POST';
 phrases.collection.collectionTop.newButton = '새 글 쓰기';
 phrases.editor.editorToolbar.backCollection = '글 목록';
+phrases.editor.editorToolbar.unsavedChanges = '저장 전';
+phrases.editor.editorToolbar.changesSaved = '저장됨';
 CMS.registerLocale('ko', phrases);
 initializeEditor();
-removeDuplicateActions(phrases.editor.editorToolbar);
 const drafts = registerWritingTools(CMS, h);
 let publishingDraft;
 let pendingPublication;

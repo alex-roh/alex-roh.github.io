@@ -1,8 +1,17 @@
 @font-face{font-family:Noto;src:url('/fonts/noto-sans-kr-v13-latin-regular.woff2') format('woff2');font-weight:400;font-display:swap}
 /* Article-local tools stay next to the body in both Markdown and Rich Text. */
-#nc-root [data-cave-removed]{display:none!important}
 .cave-writing-tools{padding:14px 0;border-bottom:1px solid var(--line);margin-bottom:14px}
 .cave-writing-actions{display:flex;gap:8px;flex-wrap:wrap}
+.cave-draft-history{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.cave-draft-history select{flex:1;min-width:0;max-width:100%;padding:8px;border:1px solid var(--line);border-radius:5px;background:var(--paper);color:var(--ink)}
+.cave-editor-mode{display:flex;gap:8px;margin-top:12px}
+#nc-root .cave-editor-mode button[aria-pressed="true"]{color:var(--accent)!important;background:var(--hover-wash)!important;border-color:var(--accent)!important}
+#nc-root .cave-writing-control [class*="ToolbarToggle"]{display:none}
+#nc-root .cave-publish-button{padding:8px 18px;border:1px solid var(--accent);border-radius:5px;font-size:14px;font-weight:700;cursor:pointer;color:var(--accent)!important}
+.cave-published-label{font-size:12px;color:var(--muted)}
+#nc-root [class*="ToolbarSectionBackLink"]>div:last-child{display:flex;align-items:center;gap:10px;min-width:0}
+#nc-root [class*="BackStatus"]{margin-top:0;white-space:nowrap;font-size:11px;font-weight:400;padding:0;background:transparent;color:var(--muted)}
+#nc-root [class*="BackCollection"]{white-space:nowrap}
 .cave-writing-tools button{padding:7px 12px;border:1px solid var(--line);border-radius:5px;cursor:pointer;font-size:13px}
 .cave-draft-note,.cave-writing-status{font-size:12px;line-height:1.7;margin:8px 0;color:var(--muted)}
 .cave-writing-status:empty{display:none}
@@ -150,8 +159,8 @@ html,body,#nc-root{background:var(--paper)!important;color:var(--ink)!important;
 #nc-root [class*="AppHeaderSiteLink"]{color:var(--muted)}
 #nc-root [class*="AppHeaderSiteLink"]:hover{color:var(--accent)}
 #nc-root [class*="ToolbarSectionMeta"] [class*="SettingsWrapper"]{position:fixed;top:15px;right:60px;z-index:1001}
-#nc-root [class*="EditorContainer"]:has(>[class*="ToolbarContainer"]>[class*="ToolbarSectionBackLink"]){padding-top:132px}
-#nc-root [class*="ToolbarContainer"]:has(>[class*="ToolbarSectionBackLink"]){top:66px;padding-right:16px!important;border-top:1px solid var(--line)}
+#nc-root [class*="EditorContainer"]:has(>[class*="ToolbarContainer"]>[class*="ToolbarSectionBackLink"]){padding-top:110px}
+#nc-root [class*="ToolbarContainer"]:has(>[class*="ToolbarSectionBackLink"]){top:66px;height:44px;padding-right:16px!important;border-top:1px solid var(--line)}
 #nc-root [class*="ToolbarSectionMeta"]{display:flex;width:0;padding:0}
 @media(max-width:800px){
  #cave-editor-brand{left:12px;gap:8px}
@@ -172,7 +181,8 @@ html,body,#nc-root{background:var(--paper)!important;color:var(--ink)!important;
 #nc-root [class*="ToolbarToggleLabel"]{color:var(--muted)}
 #nc-root [class*="ToolbarToggle"]:has(>[role="switch"][aria-checked="false"])>[class*="ToolbarToggleLabel"]:first-child,
 #nc-root [class*="ToolbarToggle"]:has(>[role="switch"][aria-checked="true"])>[class*="ToolbarToggleLabel"]:last-child{color:var(--accent)}
-#nc-root [role="switch"] [class*="ToggleBackground"]{background:var(--accent)}
+#nc-root [role="switch"][aria-checked="false"] [class*="ToggleBackground"]{background:var(--line)}
+#nc-root [role="switch"][aria-checked="true"] [class*="ToggleBackground"]{background:var(--accent)}
 #nc-root [role="switch"] [class*="ToggleHandle"]{background:var(--paper);border:1px solid var(--accent);box-sizing:border-box}
 #publish-status a{color:var(--accent)}
 

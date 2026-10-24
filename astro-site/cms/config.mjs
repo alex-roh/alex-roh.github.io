@@ -33,6 +33,8 @@ export const config = {
     name, label, folder: `${sourceRoot}/contents/posts/${category}`,
     create: true, delete: false, extension: 'md', format: 'yaml-frontmatter',
     path: '{{slug}}/index', slug: '{{slug}}', identifier_field: 'title',
+    // A path-based collection otherwise defaults to entry-relative media folders.
+    media_folder: `/${sourceRoot}/public/uploads`, public_folder: '/uploads',
     preview_path: '{{dirname}}/',
     // Folder assets may include README.md; only real series articles are entries.
     filter: { field: 'series', value: label },
