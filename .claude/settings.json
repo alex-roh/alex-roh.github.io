@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; curl -fsS --max-time 5 --create-dirs -o \"$H.new\" https://agent-hq-api.roheunyoung.workers.dev/hook.mjs && mv \"$H.new\" \"$H\"; [ -f \"$H\" ] || exit 0; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; P=4b0ae1b1f89e45919987313ec2336c42944cec24e495a804b111ac46e13e2e9e; curl -fsS --max-time 5 --create-dirs -o \"$H.new\" https://agent-hq-api.roheunyoung.workers.dev/hook.mjs && mv \"$H.new\" \"$H\"; [ -f \"$H\" ] || exit 0; [ \"$(sha256sum \"$H\" | cut -d' ' -f1)\" = \"$P\" ] || { rm -f \"$H\"; echo \"[HQ] 받은 hook.mjs의 해시가 고정값과 달라 실행하지 않았다.\"; exit 0; }; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
             "timeout": 15
           }
         ]
