@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; P=b3e11daa82b966c0d539226e17ce69d0a037f09bf3ccc4e7004e1d2fce22f524; curl -fsS --max-time 5 --create-dirs -o \"$H.new\" https://agent-hq-api.roheunyoung.workers.dev/hook.mjs && mv \"$H.new\" \"$H\"; [ -f \"$H\" ] || exit 0; [ \"$(sha256sum \"$H\" | cut -d' ' -f1)\" = \"$P\" ] || { rm -f \"$H\"; echo \"[HQ] 받은 hook.mjs의 해시가 고정값과 달라 실행하지 않았다.\"; exit 0; }; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; P=225781d52789de9206ff5413bfeb9b6977f5f94356476196c21110cd609c79d8; curl -fsS --max-time 5 --create-dirs -o \"$H.new\" https://agent-hq-api.roheunyoung.workers.dev/hook.mjs && mv \"$H.new\" \"$H\"; [ -f \"$H\" ] || exit 0; [ \"$(sha256sum \"$H\" | cut -d' ' -f1)\" = \"$P\" ] || { rm -f \"$H\"; echo \"[HQ] 받은 hook.mjs의 해시가 고정값과 달라 실행하지 않았다.\"; exit 0; }; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
             "timeout": 15
           }
         ]
