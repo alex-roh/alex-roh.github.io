@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; P=cd1a64f2bca7cd513a0b1ba8fd10ca62dd468f2b6f8272e123231c2204d6129f; curl -fsS --max-time 5 --create-dirs -o \"$H.new\" https://agent-hq-api.roheunyoung.workers.dev/hook.mjs && mv \"$H.new\" \"$H\"; curl -fsS --max-time 5 -o ~/.hq/COMMON.md https://agent-hq-api.roheunyoung.workers.dev/common.md || rm -f ~/.hq/COMMON.md; [ -f \"$H\" ] || exit 0; [ \"$(sha256sum \"$H\" | cut -d' ' -f1)\" = \"$P\" ] || { rm -f \"$H\"; echo \"[HQ] 받은 hook.mjs의 해시가 고정값과 달라 실행하지 않았다.\"; exit 0; }; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; H=~/.hq/hq-hook.mjs; P=cd1a64f2bca7cd513a0b1ba8fd10ca62dd468f2b6f8272e123231c2204d6129f; curl -fsS --max-time 5 --create-dirs -o \"$H.new\" https://agent-hq-api.roheunyoung.workers.dev/hook.mjs && { if [ \"$(sha256sum \"$H.new\" | cut -d' ' -f1)\" = \"$P\" ]; then mv \"$H.new\" \"$H\"; else rm -f \"$H.new\"; echo \"[HQ] 받은 hook.mjs가 이 브랜치의 고정값과 달라 버렸다(브랜치가 낡았거나 배포 전). 해시를 고치지 말고 일을 계속한다. 보고만 빠질 수 있다.\"; fi; }; curl -fsS --max-time 5 -o ~/.hq/COMMON.md https://agent-hq-api.roheunyoung.workers.dev/common.md || rm -f ~/.hq/COMMON.md; [ -f \"$H\" ] || exit 0; [ \"$(sha256sum \"$H\" | cut -d' ' -f1)\" = \"$P\" ] || { rm -f \"$H\"; echo \"[HQ] 받은 hook.mjs의 해시가 고정값과 달라 실행하지 않았다.\"; exit 0; }; NODE_USE_ENV_PROXY=1 NODE_USE_SYSTEM_CA=1 node \"$H\" claude",
             "timeout": 15
           }
         ]
