@@ -26,18 +26,6 @@
           }
         ]
       }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash|PowerShell|Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "timeout": 5,
-            "command": "F=~/.agent-kit/hook.mjs; [ -f \"$F\" ] || exit 0; node \"$F\" claude"
-          }
-        ]
-      }
     ]
   }
 }
