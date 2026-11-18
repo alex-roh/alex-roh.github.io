@@ -1,7 +1,7 @@
-공통 규칙: 세션 시작 훅이 `[공통 규칙]`으로 넣는다. 문맥에 없거나 `못 받음`이면 첫 답 맨 앞에 알리고, 레포들이 모인 폴더에 `agent-kit/RULES.md`가 있으면 읽고 따른다. 아래는 이 레포의 지침이다.
+Talk to the user in Korean (reports, questions, cards). The session-start hook injects the common rules as `[공통 규칙]`. If missing from context or `못 받음`, say so first in the first reply. If `agent-kit/RULES.md` exists in the folder holding the repos, read and follow it. Below is this repo's guidance.
 
-# 블로그 에이전트 진입 안내
+# Blog agent entry guide
 
-이 레포는 공개 콘텐츠를 배포한다. 비공개 내용·인증값·개인정보를 콘텐츠나 빌드 산출물에 넣지 않는다. 게시글 폴더의 하위 `AGENTS.md`에 있는 콘텐츠 규칙을 함께 지킨다.
+This repo deploys public content. Never put private content, credentials or personal information into content or build output. Also follow the content rules in the `AGENTS.md` under a post folder.
 
-배포는 공통 규칙 `ship.md`(main push)의 예외다. GitHub Pages는 Actions로만 배포된다: `astro-site/`를 바꾼 커밋을 main에 올리면 `deploy-astro.yml`이 배포한다. Actions가 꺼져 있으면 배포가 안 나가니 push 뒤 Pages가 갱신됐는지 본다.
+Deploy is an exception to the common rule `ship.md` (push main). GitHub Pages deploys only through Actions: pushing a commit that changes `astro-site/` to main makes `deploy-astro.yml` deploy. If Actions is off, nothing deploys, so after pushing check that Pages updated.
